@@ -1080,6 +1080,7 @@
         <a href="#about">About</a>
         <a href="#work">Work</a>
         <a href="#projects">Projects</a>
+        <a href="#websites">Websites</a>
         <a href="#software">Software</a>
         <a href="#games">Games</a>
         <a href="#art">Art</a>
@@ -1095,6 +1096,7 @@
       <a href="#about" class="mobile-link">About</a>
       <a href="#work" class="mobile-link">Work</a>
       <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#websites" class="mobile-link">Websites</a>
       <a href="#software" class="mobile-link">Software</a>
       <a href="#games" class="mobile-link">Games</a>
       <a href="#art" class="mobile-link">Art</a>
@@ -1263,6 +1265,7 @@
           <span class="card-tag">E-Commerce</span>
         </div>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+          <a href="supreme.html" class="btn btn-outline-sm">View Live ↗</a>
           <a href="https://github.com/vexn999/supreme-clothing" target="_blank" class="btn btn-outline-sm">GitHub ↗</a>
         </div>
       </div>
@@ -1350,6 +1353,62 @@
     </div>
   </section>
 
+  <!-- ── Websites gallery ─────────────────────────────────────────────────── -->
+  <section class="art-section" id="websites">
+    <div class="section-header reveal-up">
+      <p class="tag">// Websites</p>
+      <h2>Websites &amp; <span class="accent">Web Design</span></h2>
+    </div>
+    <div class="games-carousel reveal-up">
+      <div class="games-track" id="websitesTrack">
+
+        <div class="game-card">
+          <div class="game-card-img"><img src="games/supreme_4_hero.png" alt="Supreme Hero"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag">HTML · CSS · JavaScript · E-Commerce</span>
+            <h3>Supreme<span class="accent">.</span>Store — Hero</h3>
+            <p>Supreme-inspired streetwear storefront concept. Bold minimal design with full product catalogue and cart system. Placeholder images throughout.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+              <a href="supreme.html" class="btn btn-outline-sm">View Live ↗</a>
+              <a href="https://github.com/vexn999/supreme-clothing" target="_blank" class="btn btn-outline-sm">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <div class="game-card-img"><img src="games/supreme_1_grid.png" alt="Supreme Product Grid"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag">HTML · CSS · JavaScript</span>
+            <h3>Supreme<span class="accent">.</span>Store — Product Grid</h3>
+            <p>Category-filtered product grid with dynamic card layout, hover effects and price display.</p>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <div class="game-card-img"><img src="games/supreme_2_modal.png" alt="Supreme Quick View"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag">HTML · CSS · JavaScript</span>
+            <h3>Supreme<span class="accent">.</span>Store — Quick View</h3>
+            <p>Product quick-view modal with size selector, add-to-cart, and smooth overlay animation.</p>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <div class="game-card-img"><img src="games/supreme_3_cart.png" alt="Supreme Cart"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag">HTML · CSS · JavaScript</span>
+            <h3>Supreme<span class="accent">.</span>Store — Cart</h3>
+            <p>Shopping cart with item management, size tracking, quantity controls and checkout flow.</p>
+          </div>
+        </div>
+
+      </div>
+      <button class="games-btn games-prev" id="websitesPrev">‹</button>
+      <button class="games-btn games-next" id="websitesNext">›</button>
+      <div class="slide-progress" id="websitesProgress" style="position:absolute;bottom:0;left:0;height:3px;background:var(--accent);width:0%;transition:width 0.1s linear;z-index:5;"></div>
+    </div>
+  </section>
+
   <!-- ── Software gallery ────────────────────────────────────────────────── -->
   <section class="art-section" id="software">
     <div class="section-header reveal-up">
@@ -1360,20 +1419,43 @@
       <div class="games-track" id="softwareTrack">
 
         <div class="game-card" style="border-left-color:var(--red);">
-          <div class="game-card-img">
-            <img src="games/solsniper_preview.png" alt="SolSniper">
-          </div>
+          <div class="game-card-img"><img src="games/sniper_1_dashboard.png" alt="SolSniper Dashboard"></div>
           <div class="game-card-info">
             <span class="game-card-tag" style="color:var(--red);">Python · FastAPI · Solana · WebSockets</span>
-            <h3>SolSniper</h3>
-            <p>Solana token sniper with auto-buy, exit management, and live web dashboard.</p>
+            <h3>SolSniper — Dashboard</h3>
+            <p>Live trading dashboard with real-time P&amp;L, win rate, active positions and token feed.</p>
             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
               <a href="https://github.com/vexn999/solsniper" target="_blank" class="btn btn-outline-sm" style="border-color:var(--red);color:var(--red);">GitHub ↗</a>
             </div>
           </div>
         </div>
 
-        <!-- Add more software cards here -->
+        <div class="game-card" style="border-left-color:var(--red);">
+          <div class="game-card-img"><img src="games/sniper_2_trades.png" alt="SolSniper Trade History"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag" style="color:var(--red);">Jupiter API · DEXScreener · Pump.fun</span>
+            <h3>SolSniper — Trade History</h3>
+            <p>Full trade log with entry/exit prices, position size, P&amp;L per trade and win/loss status.</p>
+          </div>
+        </div>
+
+        <div class="game-card" style="border-left-color:var(--red);">
+          <div class="game-card-img"><img src="games/sniper_3_chart.png" alt="SolSniper P&L Chart"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag" style="color:var(--red);">Chart.js · Lightweight Charts</span>
+            <h3>SolSniper — P&amp;L Chart</h3>
+            <p>Live equity curve showing cumulative profit and loss across all executed trades.</p>
+          </div>
+        </div>
+
+        <div class="game-card" style="border-left-color:var(--red);">
+          <div class="game-card-img"><img src="games/sniper_4_settings.png" alt="SolSniper Settings"></div>
+          <div class="game-card-info">
+            <span class="game-card-tag" style="color:var(--red);">Stop-Loss · Take-Profit · Filters</span>
+            <h3>SolSniper — Settings</h3>
+            <p>Configurable filters: stop-loss, take-profit, trailing stops, liquidity thresholds and simulation mode.</p>
+          </div>
+        </div>
 
       </div>
       <button class="games-btn games-prev" id="softwarePrev" style="border-color:var(--red);">‹</button>
@@ -1728,6 +1810,24 @@
       slideshow.addEventListener('mouseenter', () => { clearInterval(timer); progress.style.transition = 'none'; });
       slideshow.addEventListener('mouseleave', () => resetTimer());
 
+      resetTimer();
+    })();
+
+    // ── Websites Carousel ────────────────────────────────────────────────────
+    (function () {
+      const track = document.getElementById('websitesTrack');
+      if (!track) return;
+      const cards = Array.from(track.querySelectorAll('.game-card'));
+      const progress = document.getElementById('websitesProgress');
+      const total = cards.length; let current = 0, timer = null, startTime = null;
+      const INTERVAL = 3500;
+      function goTo(i) { current=(i+total)%total; track.style.transform=`translateX(-${current*(cards[0].offsetWidth+24)}px)`; resetTimer(); }
+      function resetTimer() { clearInterval(timer); startTime=Date.now(); if(progress) progress.style.width='0%'; if(total>1) timer=setInterval(()=>goTo(current+1),INTERVAL); requestAnimationFrame(tick); }
+      function tick() { if(!startTime) return; const p=Math.min(((Date.now()-startTime)/INTERVAL)*100,100); if(progress) progress.style.width=p+'%'; if(p<100) requestAnimationFrame(tick); }
+      document.getElementById('websitesPrev')?.addEventListener('click',()=>goTo(current-1));
+      document.getElementById('websitesNext')?.addEventListener('click',()=>goTo(current+1));
+      track.closest('.games-carousel')?.addEventListener('mouseenter',()=>clearInterval(timer));
+      track.closest('.games-carousel')?.addEventListener('mouseleave',()=>resetTimer());
       resetTimer();
     })();
 

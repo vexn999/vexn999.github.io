@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Supreme</title>
+    <style>
+        :root {
+            --supreme-red: #FF0000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        /* Header */
+        header {
+            background-color: #000;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { font-size: 28px; font-weight: bold; letter-spacing: -2px; }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            font-size: 15px;
+        }
+        .nav-links a { color: #fff; text-decoration: none; }
+        .cart-icon {
+            font-size: 22px;
+            cursor: pointer;
+            position: relative;
+        }
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--supreme-red);
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Shop Container */
+        .shop-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 35px 25px;
+        }
+        .product-card {
+            background-color: #111;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(255, 0, 0, 0.2);
+        }
+        .product-image {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            background-color: #222;
+            transition: transform 0.4s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .product-info {
+            padding: 16px 18px;
+        }
+        .product-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .product-price {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        /* Quick View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #111;
+            max-width: 900px;
+            width: 90%;
+            display: flex;
+            gap: 30px;
+            padding: 30px;
+            position: relative;
+        }
+        .modal-image {
+            width: 50%;
+            height: 500px;
+            object-fit: cover;
+        }
+        .modal-info {
+            width: 50%;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .size-label {
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: #aaa;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+        }
+        .size-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .size-btn {
+            width: 48px;
+            height: 48px;
+            border: 1px solid #444;
+            background: none;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .size-btn:hover {
+            border-color: #fff;
+        }
+        .size-btn.selected {
+            background: var(--supreme-red);
+            border-color: var(--supreme-red);
+            color: #fff;
+        }
+        .size-error {
+            color: var(--supreme-red);
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        /* Cart Drawer */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100%;
+            background: #000;
+            border-left: 1px solid #333;
+            transition: right 0.4s ease;
+            z-index: 3000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .cart-drawer.open { right: 0; }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            border-top: 1px solid #333;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 80px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+            .product-image { height: 280px; }
+            .modal-content { flex-direction: column; }
+            .modal-image { width: 100%; height: 300px; }
+            .modal-info { width: 100%; }
+            .cart-drawer { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="nav">
+            <div class="logo">SUPREME</div>
+            <div class="nav-links">
+                <a href="#">Shop</a>
+                <a href="#">New</a>
+                <a href="#">Jackets</a>
+                <a href="#">Tops</a>
+                <a href="#">Bottoms</a>
+                <a href="#">Accessories</a>
+            </div>
+            <div class="cart-icon" id="cartIcon">🛍️ <span class="cart-count" id="cartCount">0</span></div>
+        </div>
+    </header>
+
+    <!-- Shop Content -->
+    <div class="shop-container">
+        <h1>SHOP</h1>
+        <div class="product-grid" id="productGrid"></div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quickViewModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">×</span>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div class="modal-info">
+                <h2 id="modalTitle"></h2>
+                <p id="modalPrice"></p>
+                <div class="size-label">Select Size</div>
+                <div class="size-options" id="sizeOptions">
+                    <button class="size-btn" data-size="S">S</button>
+                    <button class="size-btn" data-size="M">M</button>
+                    <button class="size-btn" data-size="L">L</button>
+                    <button class="size-btn" data-size="XL">XL</button>
+                    <button class="size-btn" data-size="XXL">XXL</button>
+                </div>
+                <div class="size-error" id="sizeError">Please select a size</div>
+                <button id="addToCartModal" style="background:#FF0000; color:white; border:none; padding:14px 30px; font-size:16px; cursor:pointer; margin-top:20px;">
+                    ADD TO CART
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer" id="cartDrawer">
+        <h2>Your Cart</h2>
+        <div id="cartItems"></div>
+        <div style="margin-top:30px; border-top:1px solid #333; padding-top:20px;">
+            <strong>Total: $<span id="cartTotal">0</span></strong><br><br>
+            <button style="width:100%; background:#FF0000; color:white; border:none; padding:16px; font-size:16px;">CHECKOUT</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Supreme New York. All Rights Reserved.</p>
+        <p>This is a reconstructed interactive demo.</p>
+    </footer>
+
+    <script>
+        let products = [
+            { id: 1, title: "Supreme®/Mitchell & Ness® Teams Varsity Jacket", price: 298, img: "https://us.supreme.com/cdn/shop/files/J71_R_720x.jpg?v=1779224541" },
+            { id: 2, title: "Supreme®/Mitchell & Ness® Teams Hooded Satin Varsity Jacket", price: 278, img: "https://us.supreme.com/cdn/shop/files/J70_R_720x.jpg?v=1779224546" },
+            { id: 3, title: "Supreme®/Mitchell & Ness® Teams Sweater", price: 138, img: "https://us.supreme.com/cdn/shop/files/SK36_720x.jpg?v=1779224564" },
+            { id: 4, title: "Supreme®/Mitchell & Ness® Teams Zip Up Hooded Sweatshirt", price: 158, img: "https://us.supreme.com/cdn/shop/files/SW63_R_720x.jpg?v=1779224576" },
+            { id: 5, title: "Supreme®/Mitchell & Ness® Teams Basketball Jersey", price: 98, img: "https://us.supreme.com/cdn/shop/files/KN76_c04b461e-c29a-48b8-8f2c-f26ef4319278_720x.jpg?v=1779224591" },
+            { id: 6, title: "Harrington Jacket", price: 198, img: "https://us.supreme.com/cdn/shop/files/J103_720x.jpg?v=1778685100" },
+            { id: 7, title: "Floral Flannel Shirt", price: 128, img: "https://us.supreme.com/cdn/shop/files/S21_720x.jpg?v=1779224635" },
+            { id: 8, title: "Supreme®/Nike® Air Force 1 Low", price: 120, img: "https://us.supreme.com/cdn/shop/products/SNE10_2x-1_720x.jpg?v=1676930291" },
+        ];
+
+        let cart = [];
+
+        const grid = document.getElementById('productGrid');
+        const modal = document.getElementById('quickViewModal');
+        const cartDrawer = document.getElementById('cartDrawer');
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+
+        function renderProducts() {
+            grid.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.img}" alt="${product.title}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">${product.title}</div>
+                        <div class="product-price">$${product.price}</div>
+                    </div>
+                `;
+                card.addEventListener('click', () => openQuickView(product));
+                grid.appendChild(card);
+            });
+        }
+
+        let selectedSize = null;
+
+        document.getElementById('sizeOptions').addEventListener('click', (e) => {
+            const btn = e.target.closest('.size-btn');
+            if (!btn) return;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSize = btn.dataset.size;
+            document.getElementById('sizeError').style.display = 'none';
+        });
+
+        function openQuickView(product) {
+            document.getElementById('modalImage').src = product.img;
+            document.getElementById('modalTitle').textContent = product.title;
+            document.getElementById('modalPrice').textContent = `$${product.price}`;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('sizeError').style.display = 'none';
+            selectedSize = null;
+            document.getElementById('addToCartModal').onclick = () => addToCart(product);
+            modal.style.display = 'flex';
+        }
+
+        document.getElementById('closeModal').addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+
+        function addToCart(product) {
+            if (!selectedSize) {
+                document.getElementById('sizeError').style.display = 'block';
+                return;
+            }
+            cart.push({ ...product, size: selectedSize });
+            updateCart();
+            modal.style.display = 'none';
+        }
+
+        function updateCart() {
+            cartCount.textContent = cart.length;
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.style.marginBottom = '15px';
+                div.innerHTML = `
+                    <div style="display:flex; gap:10px; align-items:flex-start;">
+                        <img src="${item.img}" style="width:60px; height:60px; object-fit:cover; flex-shrink:0;">
+                        <div>
+                            <div style="font-size:14px; line-height:1.3;">${item.title}</div>
+                            <div style="color:#aaa; font-size:12px; margin-top:3px;">Size: ${item.size}</div>
+                            <div style="color:#ccc; margin-top:4px;">$${item.price}</div>
+                            <button onclick="removeFromCart(${index})" style="color:red; background:none; border:none; padding:0; margin-top:5px; cursor:pointer; font-size:13px;">Remove</button>
+                        </div>
+                    </div>
+                `;
+                cartItems.appendChild(div);
+            });
+
+            cartTotal.textContent = total;
+        }
+
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            updateCart();
+        };
+
+        document.getElementById('cartIcon').addEventListener('click', () => {
+            cartDrawer.classList.toggle('open');
+        });
+
+        renderProducts();
+    </script>
+
+</body>
+</html>
