@@ -6,12 +6,65 @@
 <title>GRID WARS</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #050510; overflow: hidden; font-family: 'Courier New', monospace; }
+  body { background: #050510; overflow: hidden; font-family: 'Courier New', monospace; touch-action: none; }
   canvas { display: block; cursor: crosshair; }
+
+  /* ── Mobile joysticks ─────────────────────────────────────────────── */
+  #mobile-ui { display: none; position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+  @media (pointer: coarse) { #mobile-ui { display: block; } }
+
+  .stick-zone {
+    position: absolute; bottom: 28px;
+    width: 130px; height: 130px;
+    pointer-events: all;
+    touch-action: none;
+  }
+  #left-zone  { left: 24px; }
+  #right-zone { right: 24px; }
+
+  .stick-base {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.18);
+  }
+  .stick-nub {
+    position: absolute;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  #left-nub  { background: rgba(0,255,200,0.55); border: 2px solid #00ffcc; }
+  #right-nub { background: rgba(0,180,255,0.55); border: 2px solid #00b4ff; }
+
+  #bomb-btn {
+    position: absolute; bottom: 172px; right: 24px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,80,0,0.3); border: 2px solid #ff5000;
+    color: #ff5000; font-size: 22px; line-height: 52px; text-align: center;
+    pointer-events: all; touch-action: none; user-select: none;
+    font-family: 'Courier New', monospace; font-weight: bold;
+  }
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
+
+<!-- Mobile dual-stick overlay -->
+<div id="mobile-ui">
+  <div class="stick-zone" id="left-zone">
+    <div class="stick-base"></div>
+    <div class="stick-nub" id="left-nub"></div>
+  </div>
+  <div class="stick-zone" id="right-zone">
+    <div class="stick-base"></div>
+    <div class="stick-nub" id="right-nub"></div>
+  </div>
+  <div id="bomb-btn">B</div>
+</div>
+
 <script>
 (function(){
 'use strict';
@@ -44,6 +97,123 @@ window.addEventListener('mousedown', e => {
 });
 window.addEventListener('mouseup', e => { if (e.button === 0) mouse.down = false; });
 window.addEventListener('contextmenu', e => e.preventDefault());
+
+// ─── Mobile Dual-Stick Touch ──────────────────────────────────────────────────
+const leftZone  = document.getElementById('left-zone');
+const rightZone = document.getElementById('right-zone');
+const leftNub   = document.getElementById('left-nub');
+const rightNub  = document.getElementById('right-nub');
+const bombBtn   = document.getElementById('bomb-btn');
+
+const STICK_R = 65; // half of zone width
+const touch = {
+  leftId: null, leftOx: 0, leftOy: 0, leftDx: 0, leftDy: 0,
+  rightId: null, rightOx: 0, rightOy: 0,
+};
+
+function zoneCenter(el) {
+  const r = el.getBoundingClientRect();
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
+function clampStick(dx, dy) {
+  const len = Math.sqrt(dx*dx + dy*dy);
+  if (len > STICK_R) { dx = dx/len*STICK_R; dy = dy/len*STICK_R; }
+  return { dx, dy };
+}
+
+function moveNub(nub, dx, dy) {
+  nub.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+}
+
+function handleTouchStart(e) {
+  e.preventDefault();
+  for (const t of e.changedTouches) {
+    const lc = zoneCenter(leftZone), rc = zoneCenter(rightZone);
+    const tx = t.clientX, ty = t.clientY;
+
+    // Tap on canvas (outside sticks) to start/restart
+    const overLeft  = Math.hypot(tx - lc.x, ty - lc.y) < STICK_R + 20;
+    const overRight = Math.hypot(tx - rc.x, ty - rc.y) < STICK_R + 20;
+    if (!overLeft && !overRight && (state === 'MENU' || state === 'GAME_OVER')) {
+      startGame(); continue;
+    }
+
+    if (overLeft && touch.leftId === null) {
+      touch.leftId = t.identifier;
+      touch.leftOx = tx; touch.leftOy = ty;
+      touch.leftDx = 0; touch.leftDy = 0;
+    } else if (overRight && touch.rightId === null) {
+      touch.rightId = t.identifier;
+      touch.rightOx = tx; touch.rightOy = ty;
+      // Point mouse toward first touch position (aim from player centre)
+      mouse.x = tx; mouse.y = ty; mouse.down = true;
+    }
+  }
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  for (const t of e.changedTouches) {
+    if (t.identifier === touch.leftId) {
+      const { dx, dy } = clampStick(t.clientX - touch.leftOx, t.clientY - touch.leftOy);
+      touch.leftDx = dx; touch.leftDy = dy;
+      moveNub(leftNub, dx, dy);
+      // Inject into keys
+      keys['a'] = dx < -12; keys['d'] = dx > 12;
+      keys['w'] = dy < -12; keys['s'] = dy > 12;
+    }
+    if (t.identifier === touch.rightId) {
+      const { dx, dy } = clampStick(t.clientX - touch.rightOx, t.clientY - touch.rightOy);
+      moveNub(rightNub, dx, dy);
+      // Only fire when stick is pushed far enough
+      const dist = Math.hypot(t.clientX - touch.rightOx, t.clientY - touch.rightOy);
+      if (dist > 18) {
+        // Aim = player pos + stick direction (mapped to screen)
+        mouse.x = (player.x || W/2) + dx * 6;
+        mouse.y = (player.y || H/2) + dy * 6;
+        mouse.down = true;
+      } else {
+        mouse.down = false;
+      }
+    }
+  }
+}
+
+function handleTouchEnd(e) {
+  e.preventDefault();
+  for (const t of e.changedTouches) {
+    if (t.identifier === touch.leftId) {
+      touch.leftId = null;
+      touch.leftDx = 0; touch.leftDy = 0;
+      moveNub(leftNub, 0, 0);
+      keys['a'] = keys['d'] = keys['w'] = keys['s'] = false;
+    }
+    if (t.identifier === touch.rightId) {
+      touch.rightId = null;
+      moveNub(rightNub, 0, 0);
+      mouse.down = false;
+    }
+  }
+}
+
+canvas.addEventListener('touchstart',  handleTouchStart, { passive: false });
+canvas.addEventListener('touchmove',   handleTouchMove,  { passive: false });
+canvas.addEventListener('touchend',    handleTouchEnd,   { passive: false });
+canvas.addEventListener('touchcancel', handleTouchEnd,   { passive: false });
+
+leftZone.addEventListener('touchstart',  handleTouchStart, { passive: false });
+leftZone.addEventListener('touchmove',   handleTouchMove,  { passive: false });
+leftZone.addEventListener('touchend',    handleTouchEnd,   { passive: false });
+leftZone.addEventListener('touchcancel', handleTouchEnd,   { passive: false });
+
+rightZone.addEventListener('touchstart',  handleTouchStart, { passive: false });
+rightZone.addEventListener('touchmove',   handleTouchMove,  { passive: false });
+rightZone.addEventListener('touchend',    handleTouchEnd,   { passive: false });
+rightZone.addEventListener('touchcancel', handleTouchEnd,   { passive: false });
+
+bombBtn.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); useBomb(); }, { passive: false });
+bombBtn.addEventListener('mousedown',  e => { e.preventDefault(); useBomb(); });
 
 // ─── Audio ────────────────────────────────────────────────────────────────────
 let audioCtx = null;
