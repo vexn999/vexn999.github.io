@@ -80,6 +80,7 @@
       cursor: pointer; transition: all 0.2s; white-space: nowrap;
     }
     .btn-sm:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(0,245,255,0.25); }
+    .btn-sm.muted { border-color: rgba(255,255,255,0.08); color: var(--muted); }
 
     /* ── Canvas ──────────────────────────────────────────────────────────── */
     .canvas-wrap {
@@ -335,6 +336,7 @@
   <div class="game-header">
     <div class="game-title">SNAKE<span class="title-accent">_</span>EXE</div>
     <div class="scores">
+      <button class="btn-sm" id="muteBtn">♪ ON</button>
       <button class="btn-sm" id="headerCustomBtn">CUSTOMISE</button>
       <button class="btn-sm" id="headerLbBtn">LEADERBOARD</button>
       <div class="score-box">
@@ -403,6 +405,7 @@
     <span><span class="key">R</span> restart</span>
     <span><span class="key">L</span> leaderboard</span>
     <span><span class="key">C</span> customise</span>
+    <span><span class="key">M</span> mute</span>
   </div>
 
   <div class="touch-controls">
@@ -659,7 +662,7 @@ function tick() {
   dir={...nextDir};
   const head={x:(snake[0].x+dir.x+COLS)%COLS, y:(snake[0].y+dir.y+ROWS)%ROWS};
   if(snake.some(s=>s.x===head.x&&s.y===head.y)) {
-    flashAlpha=1; spawnDeathParticles(snake[0]);
+    sfxDeath(); flashAlpha=1; spawnDeathParticles(snake[0]);
     gameState='over'; setTimeout(showGameOver,900); return;
   }
   snake.unshift(head);
@@ -667,9 +670,11 @@ function tick() {
     score+=10;
     if(score>best){ best=score; localStorage.setItem('snakeBest',best); bestDisp.textContent=best; }
     scoreDisp.textContent=score;
+    const prevLvl=levelForScore(score-10);
     tickMs=speedForScore(score);
     const lvl=levelForScore(score);
     speedBadge.innerHTML=lvl>0?`// speed level <span>${lvl}</span>`:'&nbsp;';
+    if(lvl>prevLvl) sfxLevelUp(); else sfxEat();
     spawnFoodParticles(food.x,food.y); placeFood();
   } else {
     const tail=snake.pop();
@@ -823,6 +828,7 @@ function startGame() {
   closeLb(); customModal.classList.add('hidden');
   hideOverlay(); cancelAnimationFrame(rafId);
   gameState='playing'; init();
+  sfxStart();
   rafId=requestAnimationFrame(loop);
 }
 
@@ -860,6 +866,15 @@ customModal.addEventListener('click', e=>{ if(e.target===customModal) closeCusto
 // Game over → Main menu
 document.getElementById('overMenuBtn').addEventListener('click', goToMenu);
 
+// Mute
+document.getElementById('muteBtn').addEventListener('click', toggleMute);
+
+// Menu button click sounds
+['menuPlay','menuCustom','menuLb','restartBtn','lbPlay','customPlay','overLbBtn','overMenuBtn'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.addEventListener('click', sfxMenuClick);
+});
+
 // ═══════════════════════════ KEYBOARD ════════════════════════════════════════
 
 const DIRS={
@@ -871,7 +886,8 @@ const DIRS={
 
 document.addEventListener('keydown', e=>{
   if(document.activeElement===nameInput) return;
-  if(e.key==='p'||e.key==='P'){ if(gameState==='playing') paused=!paused; return; }
+  if(e.key==='p'||e.key==='P'){ if(gameState==='playing'){ paused=!paused; sfxPause(); } return; }
+  if(e.key==='m'||e.key==='M'){ toggleMute(); return; }
   if(e.key==='r'||e.key==='R'){ if(gameState!=='idle') startGame(); return; }
   if(e.key==='l'||e.key==='L'){ lbModal.classList.contains('hidden')?openLb():closeLb(); return; }
   if(e.key==='c'||e.key==='C'){ customModal.classList.contains('hidden')?openCustom():closeCustom(); return; }
@@ -888,10 +904,117 @@ document.getElementById('bD').addEventListener('click',()=>td({x:0,y:1}));
 document.getElementById('bL').addEventListener('click',()=>td({x:-1,y:0}));
 document.getElementById('bR').addEventListener('click',()=>td({x:1,y:0}));
 
+// ═══════════════════════════ AUDIO SYSTEM ════════════════════════════════════
+
+let audioCtx = null;
+let muted = localStorage.getItem('snakeMuted') === '1';
+
+function getACtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+// Play a single oscillator tone
+function tone(freq, type, vol, dur, delay, endFreq) {
+  if (muted) return;
+  try {
+    const a = getACtx();
+    const osc = a.createOscillator(), gain = a.createGain();
+    osc.connect(gain); gain.connect(a.destination);
+    osc.type = type;
+    const t0 = a.currentTime + (delay || 0);
+    osc.frequency.setValueAtTime(freq, t0);
+    if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, t0 + dur);
+    gain.gain.setValueAtTime(vol, t0);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.start(t0); osc.stop(t0 + dur);
+  } catch(e) {}
+}
+
+// Play a noise burst (for death crunch)
+function noiseBurst(vol, dur, delay, filterFreq) {
+  if (muted) return;
+  try {
+    const a = getACtx();
+    const buf = a.createBuffer(1, Math.ceil(a.sampleRate * dur), a.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const src = a.createBufferSource(), gain = a.createGain(), filt = a.createBiquadFilter();
+    filt.type = 'bandpass'; filt.frequency.value = filterFreq || 800; filt.Q.value = 0.6;
+    src.buffer = buf;
+    src.connect(filt); filt.connect(gain); gain.connect(a.destination);
+    const t0 = a.currentTime + (delay || 0);
+    gain.gain.setValueAtTime(vol, t0);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.start(t0); src.stop(t0 + dur);
+  } catch(e) {}
+}
+
+// ── Sound effects ─────────────────────────────────────────────────────────────
+
+function sfxEat() {
+  // Quick chiptune blip — three ascending square pulses
+  tone(440,  'square', 0.10, 0.04);
+  tone(660,  'square', 0.09, 0.05, 0.04);
+  tone(1100, 'sine',   0.07, 0.07, 0.08);
+}
+
+function sfxLevelUp() {
+  // Rising fanfare — played instead of sfxEat on speed increase
+  tone(523,  'square', 0.11, 0.07);
+  tone(659,  'square', 0.11, 0.07, 0.08);
+  tone(784,  'square', 0.11, 0.07, 0.16);
+  tone(1047, 'sine',   0.09, 0.13, 0.24);
+}
+
+function sfxDeath() {
+  // Descending crash + noise crunch
+  tone(260, 'sawtooth', 0.22, 0.08);
+  tone(180, 'sawtooth', 0.19, 0.10, 0.07);
+  tone(120, 'sawtooth', 0.16, 0.14, 0.15);
+  tone(70,  'sawtooth', 0.13, 0.18, 0.27);
+  tone(55,  'sine',     0.28, 0.38, 0.12);   // low thud
+  noiseBurst(0.20, 0.14, 0, 350);             // crunch
+}
+
+function sfxStart() {
+  // Boot-up — four-note sine sweep
+  tone(262, 'sine', 0.10, 0.08);
+  tone(330, 'sine', 0.10, 0.08, 0.09);
+  tone(392, 'sine', 0.10, 0.08, 0.18);
+  tone(523, 'sine', 0.13, 0.15, 0.27);
+}
+
+function sfxPause() {
+  tone(660, 'square', 0.07, 0.05);
+  tone(440, 'square', 0.05, 0.05, 0.06);
+}
+
+function sfxMenuClick() {
+  tone(700, 'square', 0.05, 0.04);
+}
+
+// ── Mute toggle ───────────────────────────────────────────────────────────────
+function toggleMute() {
+  muted = !muted;
+  localStorage.setItem('snakeMuted', muted ? '1' : '0');
+  updateMuteBtn();
+  if (!muted) tone(880, 'sine', 0.06, 0.08); // confirmation beep on unmute
+}
+
+function updateMuteBtn() {
+  const btn = document.getElementById('muteBtn');
+  if (!btn) return;
+  btn.textContent = muted ? '♪ OFF' : '♪ ON';
+  btn.classList.toggle('muted', muted);
+}
+
 // ═══════════════════════════ BOOT ═════════════════════════════════════════════
 init();
 draw();
 showPanel('panelMenu');
+updateMuteBtn();
 </script>
 </body>
 </html>
