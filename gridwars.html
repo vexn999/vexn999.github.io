@@ -394,6 +394,9 @@ function initPlayer() {
     shootTimer: 0,
     rapidFire: 0,
     shield: false,
+    tripleShot: 0,
+    slowTime: 0,
+    frenzy: 0,
     dead: false
   };
 }
@@ -435,14 +438,23 @@ function updatePlayer(dt) {
     player.blinkTimer += dt;
   }
 
-  // Rapid fire
+  // Timed powerup countdowns
   if (player.rapidFire > 0) player.rapidFire -= dt;
+  if (player.tripleShot > 0) player.tripleShot -= dt;
+  if (player.slowTime > 0) player.slowTime -= dt;
+  if (player.frenzy > 0) player.frenzy -= dt;
 
   // Shooting
   player.shootTimer -= dt;
   const fireRate = player.rapidFire > 0 ? 0.06 : 0.13;
   if (mouse.down && player.shootTimer <= 0) {
-    spawnBullet(player.x, player.y, player.angle);
+    if (player.tripleShot > 0) {
+      spawnBullet(player.x, player.y, player.angle - 0.18);
+      spawnBullet(player.x, player.y, player.angle);
+      spawnBullet(player.x, player.y, player.angle + 0.18);
+    } else {
+      spawnBullet(player.x, player.y, player.angle);
+    }
     player.shootTimer = fireRate;
     playShoot();
   }
@@ -628,20 +640,21 @@ function getWaveTypes(wave) {
 
 function updateEnemy(e, dt) {
   if (!e.alive) return;
+  const adt = player.slowTime > 0 ? dt * 0.3 : dt; // slow time effect
   const px = player.x, py = player.y;
   const dx = px - e.x, dy = py - e.y;
   const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-  e.timer += dt;
+  e.timer += adt;
 
   switch(e.type) {
     case 'geom': {
       const speed = 70 + wave * 4;
-      e.vx += (dx/dist) * speed * dt * 2;
-      e.vy += (dy/dist) * speed * dt * 2;
+      e.vx += (dx/dist) * speed * adt * 2;
+      e.vy += (dy/dist) * speed * adt * 2;
       const len = Math.sqrt(e.vx*e.vx + e.vy*e.vy);
       if (len > speed) { e.vx = (e.vx/len)*speed; e.vy = (e.vy/len)*speed; }
-      e.x += e.vx * dt; e.y += e.vy * dt;
-      e.angle += 2.5 * dt;
+      e.x += e.vx * adt; e.y += e.vy * adt;
+      e.angle += 2.5 * adt;
       break;
     }
     case 'drone': {
@@ -650,21 +663,21 @@ function updateEnemy(e, dt) {
       const zigzag = Math.sin(e.timer * 4) * 1.2;
       const ax = Math.cos(baseAngle + zigzag) * speed;
       const ay = Math.sin(baseAngle + zigzag) * speed;
-      e.vx += (ax - e.vx) * 4 * dt;
-      e.vy += (ay - e.vy) * 4 * dt;
-      e.x += e.vx * dt; e.y += e.vy * dt;
+      e.vx += (ax - e.vx) * 4 * adt;
+      e.vy += (ay - e.vy) * 4 * adt;
+      e.x += e.vx * adt; e.y += e.vy * adt;
       e.angle = Math.atan2(e.vy, e.vx);
       break;
     }
     case 'grunt': {
       const speed = 45 + wave * 2;
-      e.vx += (dx/dist) * speed * dt * 1.5;
-      e.vy += (dy/dist) * speed * dt * 1.5;
+      e.vx += (dx/dist) * speed * adt * 1.5;
+      e.vy += (dy/dist) * speed * adt * 1.5;
       const len = Math.sqrt(e.vx*e.vx + e.vy*e.vy);
       if (len > speed) { e.vx = (e.vx/len)*speed; e.vy = (e.vy/len)*speed; }
-      e.x += e.vx * dt; e.y += e.vy * dt;
-      e.angle += 0.8 * dt;
-      e.shootTimer -= dt;
+      e.x += e.vx * adt; e.y += e.vy * adt;
+      e.angle += 0.8 * adt;
+      e.shootTimer -= adt;
       if (e.shootTimer <= 0) {
         spawnEnemyBullet(e.x, e.y, px, py);
         e.shootTimer = 2.0;
@@ -673,24 +686,23 @@ function updateEnemy(e, dt) {
     }
     case 'snake': {
       const speed = 100 + wave * 3;
-      e.phase += dt * 2.5;
+      e.phase += adt * 2.5;
       const baseAngle = Math.atan2(dy, dx);
       const sine = Math.sin(e.phase) * 1.0;
       const tx = Math.cos(baseAngle + sine) * speed;
       const ty = Math.sin(baseAngle + sine) * speed;
-      e.vx += (tx - e.vx) * 3 * dt;
-      e.vy += (ty - e.vy) * 3 * dt;
-      e.x += e.vx * dt; e.y += e.vy * dt;
+      e.vx += (tx - e.vx) * 3 * adt;
+      e.vy += (ty - e.vy) * 3 * adt;
+      e.x += e.vx * adt; e.y += e.vy * adt;
       e.trailPos.push({ x: e.x, y: e.y });
       if (e.trailPos.length > 12) e.trailPos.shift();
       break;
     }
     case 'mine': {
-      e.armTimer -= dt;
+      e.armTimer -= adt;
       if (e.armTimer <= 0) e.armed = true;
-      e.pulseTimer += dt;
+      e.pulseTimer += adt;
       if (e.armed && dist < 80) {
-        // Explode
         killEnemy(e, true);
         if (!player.dead && player.invincible <= 0) hitPlayer();
         return;
@@ -717,8 +729,9 @@ function killEnemy(e, noPoints) {
   if (!noPoints) {
     if (killMultiplier < 1) killMultiplier = 1;
     killMultiplierTimer = 4;
-    score += e.scoreValue * killMultiplier;
-    showFloatingText(e.x, e.y, '+' + (e.scoreValue * killMultiplier), color);
+    const frenzyMult = player.frenzy > 0 ? 2 : 1;
+    score += e.scoreValue * killMultiplier * frenzyMult;
+    showFloatingText(e.x, e.y, '+' + (e.scoreValue * killMultiplier * frenzyMult), color);
     killMultiplier++;
   }
   if (Math.random() < 0.05) spawnPowerup(e.x, e.y);
@@ -826,7 +839,11 @@ function drawEnemy(e) {
 let powerups = [];
 
 function spawnPowerup(x, y) {
-  const type = Math.random() < 0.5 ? 'rapid' : 'shield';
+  const types = ['rapid', 'shield', 'triple', 'slow', 'bomb', 'frenzy'];
+  const weights = [3, 2, 2, 2, 2, 1]; // rarer types lower
+  let total = weights.reduce((a,b) => a+b, 0), r = Math.random() * total;
+  let type = types[0];
+  for (let i = 0; i < types.length; i++) { r -= weights[i]; if (r <= 0) { type = types[i]; break; } }
   powerups.push({ x, y, type, life: 8, timer: 0 });
 }
 
@@ -836,8 +853,12 @@ function updatePowerups(dt) {
     if (p.life <= 0) continue;
     const dx = player.x - p.x, dy = player.y - p.y;
     if (Math.sqrt(dx*dx + dy*dy) < 20) {
-      if (p.type === 'rapid') { player.rapidFire = 5; showFloatingText(p.x, p.y, 'RAPID FIRE!', '#00ffff'); }
-      if (p.type === 'shield') { player.shield = true; showFloatingText(p.x, p.y, 'SHIELD!', '#ffffff'); }
+      if (p.type === 'rapid')  { player.rapidFire = 5;   showFloatingText(p.x, p.y, 'RAPID FIRE!',   '#00ffff'); }
+      if (p.type === 'shield') { player.shield = true;   showFloatingText(p.x, p.y, 'SHIELD!',        '#ffffff'); }
+      if (p.type === 'triple') { player.tripleShot = 6;  showFloatingText(p.x, p.y, 'TRIPLE SHOT!',  '#ffdd00'); }
+      if (p.type === 'slow')   { player.slowTime = 5;    showFloatingText(p.x, p.y, 'SLOW TIME!',    '#cc44ff'); }
+      if (p.type === 'bomb')   { bombs = Math.min(bombs + 1, 9); showFloatingText(p.x, p.y, '+1 BOMB!', '#ff8800'); }
+      if (p.type === 'frenzy') { player.frenzy = 6;     showFloatingText(p.x, p.y, 'SCORE FRENZY!', '#ff44cc'); }
       p.life = 0;
     }
   }
@@ -859,7 +880,7 @@ function drawPowerups() {
       ctx.moveTo(0, -s); ctx.lineTo(s, 0); ctx.lineTo(0, s); ctx.lineTo(-s, 0);
       ctx.closePath(); ctx.stroke();
       ctx.fillStyle = 'rgba(0,255,255,0.2)'; ctx.fill();
-    } else {
+    } else if (p.type === 'shield') {
       ctx.shadowBlur = 15; ctx.shadowColor = '#ffffff';
       ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2;
       const s = 9 + pulse;
@@ -873,6 +894,45 @@ function drawPowerups() {
       }
       ctx.closePath(); ctx.stroke();
       ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.fill();
+    } else if (p.type === 'triple') {
+      // Three small arrows fanned out
+      ctx.shadowBlur = 15; ctx.shadowColor = '#ffdd00';
+      ctx.strokeStyle = '#ffdd00'; ctx.fillStyle = 'rgba(255,220,0,0.2)'; ctx.lineWidth = 2;
+      const s = 8 + pulse;
+      for (const off of [-0.4, 0, 0.4]) {
+        ctx.save(); ctx.rotate(off);
+        ctx.beginPath(); ctx.moveTo(0, -s); ctx.lineTo(s*0.5, s*0.5); ctx.lineTo(0, 0); ctx.lineTo(-s*0.5, s*0.5); ctx.closePath();
+        ctx.stroke(); ctx.fill(); ctx.restore();
+      }
+    } else if (p.type === 'slow') {
+      // Hourglass / clock shape
+      ctx.shadowBlur = 15; ctx.shadowColor = '#cc44ff';
+      ctx.strokeStyle = '#cc44ff'; ctx.fillStyle = 'rgba(180,50,255,0.2)'; ctx.lineWidth = 2;
+      const s = 9 + pulse;
+      ctx.beginPath();
+      ctx.moveTo(-s, -s); ctx.lineTo(s, -s); ctx.lineTo(0, 0); ctx.lineTo(s, s); ctx.lineTo(-s, s); ctx.lineTo(0, 0); ctx.closePath();
+      ctx.stroke(); ctx.fill();
+    } else if (p.type === 'bomb') {
+      // Circle with cross hairs
+      ctx.shadowBlur = 15; ctx.shadowColor = '#ff8800';
+      ctx.strokeStyle = '#ff8800'; ctx.lineWidth = 2;
+      const s = 9 + pulse;
+      ctx.beginPath(); ctx.arc(0, 0, s, 0, Math.PI*2); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,136,0,0.2)'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(0, -s-4); ctx.lineTo(0, s+4); ctx.moveTo(-s-4, 0); ctx.lineTo(s+4, 0); ctx.stroke();
+    } else if (p.type === 'frenzy') {
+      // Star burst
+      ctx.shadowBlur = 18; ctx.shadowColor = '#ff44cc';
+      ctx.strokeStyle = '#ff44cc'; ctx.fillStyle = 'rgba(255,50,200,0.2)'; ctx.lineWidth = 2;
+      const s = 10 + pulse;
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        const r = i % 2 === 0 ? s : s * 0.45;
+        if (i===0) ctx.moveTo(Math.cos(a)*r, Math.sin(a)*r);
+        else ctx.lineTo(Math.cos(a)*r, Math.sin(a)*r);
+      }
+      ctx.closePath(); ctx.stroke(); ctx.fill();
     }
     ctx.restore();
   }
@@ -954,21 +1014,19 @@ function drawHUD() {
   ctx.fillStyle = '#aaaaff';
   ctx.fillText('WAVE ' + wave, W - 10, 54);
 
-  // Power-up indicators
-  if (player.rapidFire > 0) {
-    ctx.textAlign = 'left';
-    ctx.font = '12px Courier New';
-    ctx.shadowBlur = 8; ctx.shadowColor = '#00ffff';
-    ctx.fillStyle = '#00ffff';
-    ctx.fillText('RAPID FIRE ' + player.rapidFire.toFixed(1) + 's', 10, H - 30);
-  }
-  if (player.shield) {
-    ctx.textAlign = 'left';
-    ctx.font = '12px Courier New';
-    ctx.shadowBlur = 8; ctx.shadowColor = '#ffffff';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('SHIELD ACTIVE', 10, H - 14);
-  }
+  // Active powerup indicators (stack vertically bottom-left)
+  ctx.textAlign = 'left';
+  ctx.font = '12px Courier New';
+  const indicators = [];
+  if (player.shield)               indicators.push({ text: 'SHIELD',       color: '#ffffff' });
+  if (player.rapidFire > 0)        indicators.push({ text: 'RAPID FIRE ' + player.rapidFire.toFixed(1) + 's', color: '#00ffff' });
+  if (player.tripleShot > 0)       indicators.push({ text: 'TRIPLE SHOT ' + player.tripleShot.toFixed(1) + 's', color: '#ffdd00' });
+  if (player.slowTime > 0)         indicators.push({ text: 'SLOW TIME '  + player.slowTime.toFixed(1)  + 's', color: '#cc44ff' });
+  if (player.frenzy > 0)           indicators.push({ text: 'FRENZY ×2 '  + player.frenzy.toFixed(1)   + 's', color: '#ff44cc' });
+  indicators.forEach((ind, i) => {
+    ctx.shadowBlur = 8; ctx.shadowColor = ind.color; ctx.fillStyle = ind.color;
+    ctx.fillText(ind.text, 10, H - 10 - i * 16);
+  });
 
   ctx.restore();
 }
