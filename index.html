@@ -1172,6 +1172,24 @@
       </div>
     </div>
 
+    <div class="feature-row row-reverse reveal-up">
+      <div class="row-img">
+        <div class="art-slideshow" id="gameSlideshow">
+          <div class="slide active"><img src="games/snake_preview.png" alt="Snake.EXE"></div>
+          <button class="slide-btn slide-prev-btn" id="gameSlidePrev">‹</button>
+          <button class="slide-btn slide-next-btn" id="gameSlideNext">›</button>
+          <div class="slide-counter" id="gameSlideCounter">1 / 1</div>
+          <div class="slide-progress" id="gameSlideProgress"></div>
+        </div>
+      </div>
+      <div class="row-content">
+        <p class="tag" style="color:#7b2fff;">// 04 — Games</p>
+        <h3>Games &amp;<br><span style="color:#7b2fff;">Interactive</span></h3>
+        <p>Original games built from scratch — neon snake, and more to come. Playable in the browser or downloadable as standalone desktop apps for Windows and Linux.</p>
+        <a href="#projects" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">View Games</a>
+      </div>
+    </div>
+
   </div>
 
   <!-- ── Projects grid ─────────────────────────────────────────────────── -->
@@ -1559,6 +1577,53 @@
       let   timer      = null;
       let   startTime  = null;
       const INTERVAL   = 4000;
+
+      function goTo(index) {
+        slides[current].classList.remove('active');
+        current = (index + total) % total;
+        slides[current].classList.add('active');
+        counter.textContent = `${current + 1} / ${total}`;
+        resetTimer();
+      }
+
+      function resetTimer() {
+        clearInterval(timer);
+        startTime = Date.now();
+        progress.style.width = '0%';
+        timer = setInterval(() => goTo(current + 1), INTERVAL);
+        requestAnimationFrame(tickProgress);
+      }
+
+      function tickProgress() {
+        const elapsed = Date.now() - startTime;
+        const pct = Math.min((elapsed / INTERVAL) * 100, 100);
+        progress.style.width = pct + '%';
+        if (pct < 100) requestAnimationFrame(tickProgress);
+      }
+
+      prevBtn.addEventListener('click', () => goTo(current - 1));
+      nextBtn.addEventListener('click', () => goTo(current + 1));
+
+      slideshow.addEventListener('mouseenter', () => { clearInterval(timer); progress.style.transition = 'none'; });
+      slideshow.addEventListener('mouseleave', () => resetTimer());
+
+      resetTimer();
+    })();
+
+    // ── Games Slideshow ──────────────────────────────────────────────────────
+    (function () {
+      const slideshow  = document.getElementById('gameSlideshow');
+      if (!slideshow) return;
+      const slides     = Array.from(slideshow.querySelectorAll('.slide'));
+      const counter    = document.getElementById('gameSlideCounter');
+      const progress   = document.getElementById('gameSlideProgress');
+      const prevBtn    = document.getElementById('gameSlidePrev');
+      const nextBtn    = document.getElementById('gameSlideNext');
+      const total      = slides.length;
+      let   current    = 0;
+      let   timer      = null;
+      let   startTime  = null;
+      const INTERVAL   = 3500;
 
       function goTo(index) {
         slides[current].classList.remove('active');
