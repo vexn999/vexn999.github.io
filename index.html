@@ -1080,6 +1080,7 @@
         <a href="#about">About</a>
         <a href="#work">Work</a>
         <a href="#projects">Projects</a>
+        <a href="#software">Software</a>
         <a href="#games">Games</a>
         <a href="#art">Art</a>
         <a href="#contact">Contact</a>
@@ -1094,6 +1095,7 @@
       <a href="#about" class="mobile-link">About</a>
       <a href="#work" class="mobile-link">Work</a>
       <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#software" class="mobile-link">Software</a>
       <a href="#games" class="mobile-link">Games</a>
       <a href="#art" class="mobile-link">Art</a>
       <a href="#contact" class="mobile-link">Contact</a>
@@ -1342,6 +1344,38 @@
         <a href="#" class="btn btn-outline-sm" style="margin-top: 0.75rem; align-self: flex-start; border-color: var(--red); color: var(--red);">View on GitHub ↗</a>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ── Software gallery ────────────────────────────────────────────────── -->
+  <section class="art-section" id="software">
+    <div class="section-header reveal-up">
+      <p class="tag" style="color:var(--red);">// Software</p>
+      <h2>Tools &amp; <span class="accent">Software</span></h2>
+    </div>
+    <div class="games-carousel reveal-up">
+      <div class="games-track" id="softwareTrack">
+
+        <div class="game-card" style="border-left-color:var(--red);">
+          <div class="game-card-img">
+            <img src="games/solsniper_preview.png" alt="SolSniper">
+          </div>
+          <div class="game-card-info">
+            <span class="game-card-tag" style="color:var(--red);">Python · FastAPI · Solana · WebSockets</span>
+            <h3>SolSniper</h3>
+            <p>Solana token sniper with auto-buy, exit management, and live web dashboard.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+              <a href="https://github.com/vexn999/solsniper" target="_blank" class="btn btn-outline-sm" style="border-color:var(--red);color:var(--red);">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more software cards here -->
+
+      </div>
+      <button class="games-btn games-prev" id="softwarePrev" style="border-color:var(--red);">‹</button>
+      <button class="games-btn games-next" id="softwareNext" style="border-color:var(--red);">›</button>
+      <div class="slide-progress" id="softwareProgress" style="position:absolute;bottom:0;left:0;height:3px;background:var(--red);width:0%;transition:width 0.1s linear;z-index:5;"></div>
     </div>
   </section>
 
@@ -1691,6 +1725,40 @@
       slideshow.addEventListener('mouseenter', () => { clearInterval(timer); progress.style.transition = 'none'; });
       slideshow.addEventListener('mouseleave', () => resetTimer());
 
+      resetTimer();
+    })();
+
+    // ── Software Carousel ────────────────────────────────────────────────────
+    (function () {
+      const track    = document.getElementById('softwareTrack');
+      if (!track) return;
+      const cards    = Array.from(track.querySelectorAll('.game-card'));
+      const progress = document.getElementById('softwareProgress');
+      const total    = cards.length;
+      let   current  = 0, timer = null, startTime = null;
+      const INTERVAL = 3500;
+      function goTo(i) {
+        current = (i + total) % total;
+        track.style.transform = `translateX(-${current * (cards[0].offsetWidth + 24)}px)`;
+        resetTimer();
+      }
+      function resetTimer() {
+        clearInterval(timer);
+        startTime = Date.now();
+        if (progress) progress.style.width = '0%';
+        if (total > 1) timer = setInterval(() => goTo(current + 1), INTERVAL);
+        requestAnimationFrame(tick);
+      }
+      function tick() {
+        if (!startTime) return;
+        const pct = Math.min(((Date.now() - startTime) / INTERVAL) * 100, 100);
+        if (progress) progress.style.width = pct + '%';
+        if (pct < 100) requestAnimationFrame(tick);
+      }
+      document.getElementById('softwarePrev')?.addEventListener('click', () => goTo(current - 1));
+      document.getElementById('softwareNext')?.addEventListener('click', () => goTo(current + 1));
+      track.closest('.games-carousel')?.addEventListener('mouseenter', () => clearInterval(timer));
+      track.closest('.games-carousel')?.addEventListener('mouseleave', () => resetTimer());
       resetTimer();
     })();
 
