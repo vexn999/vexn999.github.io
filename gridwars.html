@@ -147,7 +147,11 @@ function ensureAudio() {
   if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
+let _lastShootSound = 0;
 function playShoot() {
+  const now = performance.now();
+  if (now - _lastShootSound < 80) return; // max ~12/sec to avoid AudioContext overload
+  _lastShootSound = now;
   try {
     ensureAudio();
     const o = audioCtx.createOscillator();
