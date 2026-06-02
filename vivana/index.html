@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vivana Lounge | Newcastle</title>
+  <style>
+    :root {
+      --purple: #6b21a8;
+      --purple-light: #a855f7;
+      --dark: #0d0d0d;
+      --dark2: #161616;
+      --dark3: #1a1a1a;
+      --light: #f0e8f8;
+      --muted: #999999;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(13, 13, 13, 0.97);
+      z-index: 1000;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--purple);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: var(--light);
+    }
+
+    .logo span {
+      color: var(--purple-light);
+      font-weight: 300;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--purple-light);
+    }
+
+    .reserve-btn {
+      background: var(--purple);
+      color: white;
+      padding: 10px 24px;
+      border: none;
+      font-weight: bold;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .reserve-btn:hover {
+      background: var(--purple-light);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.38);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.2) 60%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 5% 6rem;
+      max-width: 700px;
+    }
+
+    .hero-location {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h2 {
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      margin-bottom: 2rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .cta {
+      display: inline-block;
+      background: var(--purple);
+      color: white;
+      padding: 14px 36px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: 0.3s;
+    }
+
+    .cta:hover {
+      background: var(--purple-light);
+      transform: translateY(-2px);
+    }
+
+    .cta-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    .cta-outline:hover {
+      border-color: var(--purple-light);
+      color: var(--purple-light);
+      background: transparent;
+      transform: translateY(-2px);
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 80px 5%;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 0.75rem;
+    }
+
+    h2.section-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== SPLIT ROWS ===== */
+    .split-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 480px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .split-row.reverse { direction: rtl; }
+    .split-row.reverse > * { direction: ltr; }
+
+    .split-img {
+      overflow: hidden;
+    }
+
+    .split-img img {
+      height: 100%;
+      transition: transform 0.6s ease;
+      filter: brightness(0.7);
+    }
+
+    .split-img:hover img {
+      transform: scale(1.04);
+      filter: brightness(0.85);
+    }
+
+    .split-text {
+      background: var(--dark2);
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .split-row.reverse .split-text {
+      border-left: none;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .split-text h3 {
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .split-text p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .btn-sm {
+      display: inline-block;
+      border: 1px solid var(--purple-light);
+      color: var(--purple-light);
+      padding: 10px 24px;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: 0.3s;
+      align-self: flex-start;
+    }
+
+    .btn-sm:hover {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: white;
+    }
+
+    /* ===== ABOUT BAND ===== */
+    .about-band {
+      background: var(--dark2);
+      border-top: 2px solid var(--purple);
+      border-bottom: 2px solid var(--purple);
+    }
+
+    .about-band .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-band p {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .stat {
+      padding: 1.5rem;
+      border: 1px solid rgba(168,85,247,0.2);
+      text-align: center;
+    }
+
+    .stat-num {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: var(--purple-light);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ===== SPECIALS / EVENTS ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .card {
+      background: var(--dark2);
+      padding: 2.5rem;
+      border-left: 4px solid var(--purple);
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(107, 33, 168, 0.25);
+      border-left-color: var(--purple-light);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .card .card-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: -0.25rem;
+    }
+
+    /* ===== MENU GRID ===== */
+    .menu-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+      margin-bottom: 2.5rem;
+    }
+
+    .tab {
+      background: none;
+      border: none;
+      padding: 0.9rem 2rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: 0.25s;
+    }
+
+    .tab:hover { color: var(--light); }
+    .tab.active { color: var(--purple-light); border-bottom-color: var(--purple-light); }
+
+    .menu-panel { display: none; }
+    .menu-panel.active { display: block; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .menu-item {
+      background: var(--dark2);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .menu-item img {
+      height: 260px;
+      transition: transform 0.5s ease, filter 0.4s ease;
+      filter: brightness(0.6);
+    }
+
+    .menu-item:hover img {
+      transform: scale(1.06);
+      filter: brightness(0.45);
+    }
+
+    .menu-item-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(to top, rgba(13,13,13,0.96), transparent);
+    }
+
+    .menu-item-label .section-label {
+      margin-bottom: 0.25rem;
+    }
+
+    .menu-item-label h4 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.2rem;
+    }
+
+    .menu-price {
+      font-size: 0.85rem;
+      color: var(--purple-light);
+      font-weight: 600;
+    }
+
+    .menu-note {
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* ===== REVIEWS ===== */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .review-card {
+      background: var(--dark2);
+      padding: 2rem;
+    }
+
+    .review-stars {
+      color: var(--purple-light);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: 2px;
+    }
+
+    .review-card p {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+      flex: 1;
+    }
+
+    .review-source {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    .review-score {
+      background: var(--dark3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-left: 4px solid var(--purple);
+    }
+
+    .review-score-num {
+      font-size: 4rem;
+      font-weight: bold;
+      color: var(--purple-light);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    /* ===== INSTAGRAM SECTION ===== */
+    .insta-section {
+      background: var(--dark2);
+    }
+
+    .insta-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+    }
+
+    .insta-header h2.section-title {
+      margin-bottom: 0;
+    }
+
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 3px;
+    }
+
+    .insta-post {
+      aspect-ratio: 1;
+      overflow: hidden;
+      display: block;
+    }
+
+    .insta-post img {
+      height: 100%;
+      filter: brightness(0.65);
+      transition: filter 0.4s ease, transform 0.5s ease;
+    }
+
+    .insta-post:hover img {
+      filter: brightness(0.9);
+      transform: scale(1.06);
+    }
+
+    /* ===== GALLERY ===== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 300px 220px;
+      gap: 3px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-item img {
+      height: 100%;
+      filter: brightness(0.65);
+      transition: filter 0.4s, transform 0.5s ease;
+    }
+
+    .gallery-item:hover img {
+      filter: brightness(0.9);
+      transform: scale(1.04);
+    }
+
+    .gi-wide { grid-column: span 2; }
+
+    /* ===== LOCATION / INFO ===== */
+    .info-band {
+      background: var(--dark2);
+      border-top: 2px solid var(--purple);
+    }
+
+    .info-band .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .info-block h3 {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 1rem;
+    }
+
+    .info-block p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 2;
+    }
+
+    .info-block a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .info-block a:hover { color: var(--purple-light); }
+
+    /* ===== CONTACT FORM ===== */
+    .contact-section .content {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .cf-intro h2.section-title { text-align: left; }
+    .cf-intro p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .cf-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .cf-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .cf-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .cf-field label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .cf-field input,
+    .cf-field select,
+    .cf-field textarea {
+      background: var(--dark3);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--light);
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.25s;
+      width: 100%;
+      resize: vertical;
+    }
+
+    .cf-field input:focus,
+    .cf-field select:focus,
+    .cf-field textarea:focus {
+      border-color: var(--purple-light);
+    }
+
+    .cf-field input::placeholder,
+    .cf-field textarea::placeholder {
+      color: var(--muted);
+      opacity: 0.4;
+    }
+
+    .cf-field select option { background: var(--dark3); }
+
+    .cf-submit {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 0.3s;
+      align-self: flex-start;
+      font-family: inherit;
+    }
+
+    .cf-submit:hover { background: var(--purple-light); }
+
+    .cf-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .cf-note a { color: var(--purple-light); opacity: 1; }
+
+    /* ===== CTA BANNER ===== */
+    .cta-banner {
+      position: relative;
+      min-height: 450px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .cta-banner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.3);
+    }
+
+    .cta-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(13,13,13,0.9) 0%, rgba(13,13,13,0.4) 70%);
+    }
+
+    .cta-banner-content {
+      position: relative;
+      z-index: 2;
+      padding: 5rem 5%;
+      max-width: 580px;
+    }
+
+    .cta-banner-content h2.section-title {
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+
+    .cta-banner-content p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .cta-banner-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #080808;
+      padding: 60px 5% 30px;
+      border-top: 2px solid var(--purple);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto 3rem;
+    }
+
+    .footer-logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: var(--light);
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo span { color: var(--purple-light); font-weight: 300; }
+
+    .footer-brand p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    .footer-col h4 {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col a,
+    .footer-col p {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      line-height: 2;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--purple-light); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      opacity: 0.5;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      nav ul, .reserve-btn { display: none; }
+      .hamburger { display: flex; }
+      .split-row, .split-row.reverse { grid-template-columns: 1fr; direction: ltr; }
+      .split-row.reverse > * { direction: ltr; }
+      .split-img { height: 280px; }
+      .split-text { padding: 2.5rem; }
+      .about-band .content { grid-template-columns: 1fr; gap: 2rem; }
+      .reviews-grid { grid-template-columns: 1fr 1fr; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gi-wide { grid-column: span 1; }
+      .info-band .content { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-section .content { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.8rem; }
+      .hero-btns { flex-direction: column; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .cf-row { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== HAMBURGER (mobile) ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 1px; background: var(--light); }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: rgba(13,13,13,0.98);
+      padding: 1.5rem 5%;
+      gap: 1.2rem;
+      border-bottom: 1px solid rgba(168,85,247,0.2);
+    }
+    .mobile-menu a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--purple-light); }
+    .mobile-menu.open { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">VIVANA <span>LOUNGE</span></div>
+    <nav>
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#space">The Space</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="https://wa.me/447979099550" target="_blank" class="reserve-btn">Reserve</a>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#experience">Experience</a>
+    <a href="#events">Events</a>
+    <a href="#menu">Menu</a>
+    <a href="#space">The Space</a>
+    <a href="#contact">Contact</a>
+    <a href="https://wa.me/447979099550" target="_blank" class="reserve-btn" style="text-align:center;margin-top:0.5rem;">Reserve a Table</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="https://picsum.photos/seed/vivana-hero/1600/900" alt="Vivana Lounge" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-location">Newcastle upon Tyne, UK</p>
+      <h1>VIVANA<br>LOUNGE</h1>
+      <h2>Middle Eastern Luxury &amp; Hospitality</h2>
+      <div class="hero-btns">
+        <a href="https://wa.me/447979099550" target="_blank" class="cta">Reserve a Table</a>
+        <a href="#experience" class="cta cta-outline">Explore</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT BAND -->
+  <section class="about-band">
+    <div class="content">
+      <div>
+        <p class="section-label">Newcastle upon Tyne</p>
+        <h2 class="section-title">Enter If<br>You Dare</h2>
+        <p>Vivana Lounge is a Middle East-inspired escape in the heart of Newcastle. Premium shisha, exotic flavours, DJ nights, and an ambience that transports you far beyond the ordinary.</p>
+        <p style="margin-top:1rem;">From the moment you step through our doors you are welcomed into a world of warmth, luxury, and authentic Middle Eastern hospitality — where every detail is designed for your comfort and pleasure.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-num">5.0</span>
+          <span class="stat-label">Facebook Rating</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">£20</span>
+          <span class="stat-label">Starting From</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Premium Quality</span>
+        </div>
+        <div class="stat" style="grid-column:span 3; border-color:rgba(168,85,247,0.35);">
+          <p style="font-style:italic; color:var(--muted); font-size:0.95rem;">"Trendy lounge with Middle East-inspired service giving you that ultimate escape right in the heart of Newcastle."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE SPLIT ROWS -->
+  <div id="experience">
+
+    <div class="split-row">
+      <div class="split-img">
+        <img src="https://picsum.photos/seed/vivana-shisha/800/600" alt="Premium Shisha" />
+      </div>
+      <div class="split-text">
+        <p class="section-label">Signature Experience</p>
+        <h3>Premium<br>Shisha</h3>
+        <p>Hand-selected tobacco blends and premium hookah setups. From classic double apple and mint mojito to our exotic fusion specials — every draw is crafted for an unparalleled experience. Clean setups, adjusted to your preference, every time.</p>
+        <a href="#menu" class="btn-sm">View Flavours</a>
+      </div>
+    </div>
+
+    <div class="split-row reverse">
+      <div class="split-img">
+        <img src="https://picsum.photos/seed/vivana-drinks/800/600" alt="Signature Drinks" />
+      </div>
+      <div class="split-text">
+        <p class="section-label">Drinks Menu</p>
+        <h3>Exotic Cocktails<br>&amp; Mocktails</h3>
+        <p>Saffron milk, Arabian iced tea, rose lemonade and our signature Vivana mocktail — every drink is crafted with a Middle Eastern twist. Rich, fragrant, and designed to complement your shisha session perfectly.</p>
+        <a href="#menu" class="btn-sm">See the Menu</a>
+      </div>
+    </div>
+
+    <div class="split-row">
+      <div class="split-img">
+        <img src="https://picsum.photos/seed/vivana-food2/800/600" alt="Middle Eastern Food" />
+      </div>
+      <div class="split-text">
+        <p class="section-label">Food</p>
+        <h3>Authentic<br>Middle Eastern Cuisine</h3>
+        <p>Mezze platters, hummus & flatbread, loaded fries, and sharing boards crafted to complement your evening. Rich, fragrant, and utterly indulgent.</p>
+        <a href="#menu" class="btn-sm">Explore Food</a>
+      </div>
+    </div>
+
+    <div class="split-row reverse">
+      <div class="split-img">
+        <img src="https://picsum.photos/seed/vivana-private2/800/600" alt="Private Events" />
+      </div>
+      <div class="split-text">
+        <p class="section-label">Private Events</p>
+        <h3>Celebrate in<br>True Vivana Style</h3>
+        <p>Host your birthday, celebration, or exclusive group event in our private area. A dedicated host, bespoke shisha setup, custom decorations, and an experience your guests will never forget.</p>
+        <a href="https://wa.me/447979099550" target="_blank" class="btn-sm">Enquire Now</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENTS / SPECIALS -->
+  <section id="events" style="background:var(--dark2);">
+    <div class="content">
+      <p class="section-label">What's On</p>
+      <h2 class="section-title">Events &amp; Specials</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <p class="card-tag">Weekly — Fri &amp; Sat</p>
+          <h3>DJ Nights</h3>
+          <p>The finest DJs playing Arabic, R&B, and Afrobeats every Friday & Saturday night. Premium shisha, flowing drinks, and an electric atmosphere. We fill up fast — book early.</p>
+          <a href="https://wa.me/447979099550" target="_blank" class="btn-sm" style="margin-top:auto;">Reserve a Spot</a>
+        </div>
+        <div class="card">
+          <p class="card-tag">Every Saturday</p>
+          <h3>Saturday Night Special</h3>
+          <p>Open 9pm till late. Expect nothing but the best — premium packages, live DJ sets, and Vivana at its finest.</p>
+          <a href="https://wa.me/447979099550" target="_blank" class="btn-sm" style="margin-top:auto;">Book Saturday</a>
+        </div>
+        <div class="card">
+          <p class="card-tag">Celebrations</p>
+          <h3>Birthday Packages</h3>
+          <p>Private area, decorated table, dedicated host, premium shisha, and a drinks package — all tailored to you. Make your night unforgettable.</p>
+          <a href="https://wa.me/447979099550" target="_blank" class="btn-sm" style="margin-top:auto;">Get a Quote</a>
+        </div>
+        <div class="card">
+          <p class="card-tag">Group Bookings</p>
+          <h3>Group &amp; VIP Tables</h3>
+          <p>Organising a group night out? We cater for groups of all sizes with VIP table service, bottle packages, and a bespoke setup.</p>
+          <a href="https://wa.me/447979099550" target="_blank" class="btn-sm" style="margin-top:auto;">Enquire</a>
+        </div>
+        <div class="card">
+          <p class="card-tag">Special Events</p>
+          <h3>Exclusive Collaborations</h3>
+          <p>From brand nights to pop-up events — Vivana is Newcastle's premier venue for high-profile evenings. Contact us to discuss your vision.</p>
+          <a href="https://wa.me/447979099550" target="_blank" class="btn-sm" style="margin-top:auto;">Get in Touch</a>
+        </div>
+        <div class="card">
+          <p class="card-tag">Always Available</p>
+          <h3>Walk-ins Welcome</h3>
+          <p>No booking? No problem. Walk-ins are welcome subject to availability. For the best experience, we always recommend reserving in advance.</p>
+          <a href="tel:+447979099550" class="btn-sm" style="margin-top:auto;">Call Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="content">
+      <p class="section-label">Flavours &amp; Packages</p>
+      <h2 class="section-title">Our Menu</h2>
+
+      <div class="menu-tabs">
+        <button class="tab active" data-tab="shisha">Shisha</button>
+        <button class="tab" data-tab="drinks">Drinks</button>
+        <button class="tab" data-tab="food">Food</button>
+        <button class="tab" data-tab="packages">Packages</button>
+      </div>
+
+      <div class="menu-panel active" id="tab-shisha">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/sh1/500/350" alt="Double Apple" />
+            <div class="menu-item-label">
+              <p class="section-label">Classic</p>
+              <h4>Double Apple</h4>
+              <p class="menu-price">From £20</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/sh2/500/350" alt="Mint Mojito" />
+            <div class="menu-item-label">
+              <p class="section-label">Refreshing</p>
+              <h4>Mint Mojito</h4>
+              <p class="menu-price">From £20</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/sh3/500/350" alt="Blueberry Ice" />
+            <div class="menu-item-label">
+              <p class="section-label">Fruity</p>
+              <h4>Blueberry Ice</h4>
+              <p class="menu-price">From £20</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/sh4/500/350" alt="Watermelon Chill" />
+            <div class="menu-item-label">
+              <p class="section-label">Fruity</p>
+              <h4>Watermelon Chill</h4>
+              <p class="menu-price">From £20</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/sh5/500/350" alt="Rose Lychee" />
+            <div class="menu-item-label">
+              <p class="section-label">Exotic</p>
+              <h4>Rose Lychee</h4>
+              <p class="menu-price">From £22</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/sh6/500/350" alt="Exotic Fusion" />
+            <div class="menu-item-label">
+              <p class="section-label">Chef's Special</p>
+              <h4>Exotic Fusion</h4>
+              <p class="menu-price">From £25</p>
+            </div>
+          </div>
+        </div>
+        <p class="menu-note">* Full flavour list available in lounge. Prices per session. Ask staff for today's specials.</p>
+      </div>
+
+      <div class="menu-panel" id="tab-drinks">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/dr1/500/350" alt="Vivana Mocktail" />
+            <div class="menu-item-label">
+              <p class="section-label">Signature</p>
+              <h4>Vivana Mocktail</h4>
+              <p class="menu-price">£6</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/dr2/500/350" alt="Arabian Iced Tea" />
+            <div class="menu-item-label">
+              <p class="section-label">Classic</p>
+              <h4>Arabian Iced Tea</h4>
+              <p class="menu-price">£5</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/dr3/500/350" alt="Rose Lemonade" />
+            <div class="menu-item-label">
+              <p class="section-label">Refreshing</p>
+              <h4>Rose Lemonade</h4>
+              <p class="menu-price">£5</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/dr4/500/350" alt="Saffron Milk" />
+            <div class="menu-item-label">
+              <p class="section-label">Exotic</p>
+              <h4>Saffron Milk</h4>
+              <p class="menu-price">£5</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/dr5/500/350" alt="Turkish Coffee" />
+            <div class="menu-item-label">
+              <p class="section-label">Hot</p>
+              <h4>Turkish Coffee</h4>
+              <p class="menu-price">£4</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/dr6/500/350" alt="Mint Lime Cooler" />
+            <div class="menu-item-label">
+              <p class="section-label">Refreshing</p>
+              <h4>Mint &amp; Lime Cooler</h4>
+              <p class="menu-price">£5</p>
+            </div>
+          </div>
+        </div>
+        <p class="menu-note">* Full drinks menu available in lounge.</p>
+      </div>
+
+      <div class="menu-panel" id="tab-food">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/fd1/500/350" alt="Mezze Platter" />
+            <div class="menu-item-label">
+              <p class="section-label">Sharing</p>
+              <h4>Mezze Platter</h4>
+              <p class="menu-price">£14</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/fd2/500/350" alt="Hummus & Flatbread" />
+            <div class="menu-item-label">
+              <p class="section-label">Classic</p>
+              <h4>Hummus &amp; Flatbread</h4>
+              <p class="menu-price">£7</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/fd3/500/350" alt="Loaded Fries" />
+            <div class="menu-item-label">
+              <p class="section-label">Snack</p>
+              <h4>Loaded Fries</h4>
+              <p class="menu-price">£8</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/fd4/500/350" alt="Baklava" />
+            <div class="menu-item-label">
+              <p class="section-label">Dessert</p>
+              <h4>Baklava Selection</h4>
+              <p class="menu-price">£6</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/fd5/500/350" alt="Chicken Wings" />
+            <div class="menu-item-label">
+              <p class="section-label">Snack</p>
+              <h4>Spiced Chicken Wings</h4>
+              <p class="menu-price">£9</p>
+            </div>
+          </div>
+          <div class="menu-item">
+            <img src="https://picsum.photos/seed/fd6/500/350" alt="Sharing Platter" />
+            <div class="menu-item-label">
+              <p class="section-label">Sharing</p>
+              <h4>Group Sharing Platter</h4>
+              <p class="menu-price">£22</p>
+            </div>
+          </div>
+        </div>
+        <p class="menu-note">* Full food menu available in lounge. Items subject to availability.</p>
+      </div>
+
+      <div class="menu-panel" id="tab-packages">
+        <div class="cards-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="card">
+            <p class="card-tag">Entry Level</p>
+            <h3>Classic Package</h3>
+            <p>1 premium shisha session, 1 soft drink of choice, standard lounge seating.</p>
+            <p style="font-size:1.8rem; font-weight:bold; color:var(--purple-light); margin-top:auto;">£20 <span style="font-size:0.8rem; color:var(--muted); font-weight:normal;">/ person</span></p>
+            <a href="https://wa.me/447979099550" target="_blank" class="btn-sm">Book Now</a>
+          </div>
+          <div class="card" style="border-left-color:var(--purple-light); border-top:2px solid var(--purple-light);">
+            <p class="card-tag">⭐ Most Popular</p>
+            <h3>Vivana Experience</h3>
+            <p>Premium shisha session, 2 drinks of choice, snack platter, priority seating.</p>
+            <p style="font-size:1.8rem; font-weight:bold; color:var(--purple-light); margin-top:auto;">£30 <span style="font-size:0.8rem; color:var(--muted); font-weight:normal;">/ person</span></p>
+            <a href="https://wa.me/447979099550" target="_blank" class="cta" style="margin-top:0.5rem;">Book Now</a>
+          </div>
+          <div class="card">
+            <p class="card-tag">Groups &amp; Celebrations</p>
+            <h3>Celebration Package</h3>
+            <p>Private area, bespoke shisha, dedicated host, custom decorations, drinks package — all tailored to you.</p>
+            <p style="font-size:1.8rem; font-weight:bold; color:var(--purple-light); margin-top:auto;">POA</p>
+            <a href="https://wa.me/447979099550" target="_blank" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section style="background:var(--dark2); padding-top:60px; padding-bottom:60px;">
+    <div class="content">
+      <p class="section-label">What People Say</p>
+      <h2 class="section-title" style="margin-bottom:2rem;">Guest Reviews</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Best place in north east to chill — best service."</p>
+          <span class="review-source">Google Review</span>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Absolutely loved the experience at Vivana Lounge."</p>
+          <span class="review-source">Google Review</span>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Clean setup, led's can all be adjusted and boss is very helpful."</p>
+          <span class="review-source">Google Review</span>
+        </div>
+        <div class="review-card review-score">
+          <div class="review-score-num">5.0</div>
+          <div class="review-stars">★★★★★</div>
+          <span class="review-source">Facebook · 4 Reviews</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE SPACE / GALLERY -->
+  <section id="space">
+    <div class="content">
+      <p class="section-label">The Space</p>
+      <h2 class="section-title">Step Inside Vivana</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item gi-wide">
+          <img src="https://picsum.photos/seed/sp1/900/400" alt="Vivana Interior" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://picsum.photos/seed/sp2/400/400" alt="Shisha Setup" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://picsum.photos/seed/sp3/400/300" alt="Drinks" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://picsum.photos/seed/sp4/400/300" alt="DJ Booth" />
+        </div>
+        <div class="gallery-item gi-wide">
+          <img src="https://picsum.photos/seed/sp5/900/300" alt="The Lounge" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM FEED -->
+  <section class="insta-section">
+    <div class="content">
+      <div class="insta-header">
+        <div>
+          <p class="section-label">Latest from Vivana</p>
+          <h2 class="section-title">@vivanalounge</h2>
+        </div>
+        <a href="https://www.instagram.com/vivanalounge/" target="_blank" class="btn-sm">View on Instagram</a>
+      </div>
+      <!-- Replace the grid below with your Instagram widget embed code from behold.so or lightwidget.com -->
+      <div class="insta-grid">
+        <a class="insta-post" href="https://www.instagram.com/vivanalounge/" target="_blank"><img src="https://picsum.photos/seed/ig1/400/400" alt="Vivana Lounge" /></a>
+        <a class="insta-post" href="https://www.instagram.com/vivanalounge/" target="_blank"><img src="https://picsum.photos/seed/ig2/400/400" alt="Vivana Lounge" /></a>
+        <a class="insta-post" href="https://www.instagram.com/vivanalounge/" target="_blank"><img src="https://picsum.photos/seed/ig3/400/400" alt="Vivana Lounge" /></a>
+        <a class="insta-post" href="https://www.instagram.com/vivanalounge/" target="_blank"><img src="https://picsum.photos/seed/ig4/400/400" alt="Vivana Lounge" /></a>
+        <a class="insta-post" href="https://www.instagram.com/vivanalounge/" target="_blank"><img src="https://picsum.photos/seed/ig5/400/400" alt="Vivana Lounge" /></a>
+        <a class="insta-post" href="https://www.instagram.com/vivanalounge/" target="_blank"><img src="https://picsum.photos/seed/ig6/400/400" alt="Vivana Lounge" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION & HOURS -->
+  <section class="info-band">
+    <div class="content">
+      <div class="info-block">
+        <h3>Location</h3>
+        <p>Unit 4, 20 Stanhope St<br>Newcastle upon Tyne<br>NE4 6BH</p>
+        <a href="https://maps.google.com/?q=20+Stanhope+St,+Newcastle+upon+Tyne+NE4+6BH" target="_blank" style="color:var(--purple-light); margin-top:0.75rem; display:inline-block;">Get Directions →</a>
+      </div>
+      <div class="info-block">
+        <h3>Hours</h3>
+        <p>
+          Mon – Thu &nbsp; 5pm – 1am<br>
+          Friday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4pm – 2am<br>
+          Saturday &nbsp;&nbsp;&nbsp;&nbsp; 4pm – 2am<br>
+          Sunday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4pm – 12am
+        </p>
+        <p style="margin-top:0.75rem; font-size:0.78rem; opacity:0.5;">Hours may vary on event nights.</p>
+      </div>
+      <div class="info-block">
+        <h3>Contact</h3>
+        <p>
+          <a href="tel:+447979099550">+44 7979 099550</a><br>
+          <a href="https://wa.me/447979099550" target="_blank">WhatsApp Reservations</a><br>
+          <a href="https://www.instagram.com/vivanalounge/" target="_blank">@vivanalounge</a><br>
+          <span>£20 – £30 per person</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section class="contact-section" id="contact">
+    <div class="content">
+      <div class="cf-intro">
+        <p class="section-label">Get in Touch</p>
+        <h2 class="section-title">Make an<br>Enquiry</h2>
+        <p>For reservations, private events, or any questions — fill in the form and we'll get back to you. For the fastest response, message us directly on WhatsApp.</p>
+        <a href="https://wa.me/447979099550" target="_blank" class="cta" style="margin-top:0.5rem;">
+          WhatsApp Us
+        </a>
+      </div>
+      <form class="cf-form" id="contactForm">
+        <div class="cf-row">
+          <div class="cf-field">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="Full name" required />
+          </div>
+          <div class="cf-field">
+            <label>Phone Number</label>
+            <input type="tel" name="phone" placeholder="+44 ..." />
+          </div>
+        </div>
+        <div class="cf-field">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="your@email.com" />
+        </div>
+        <div class="cf-field">
+          <label>Type of Enquiry</label>
+          <select name="type">
+            <option value="">Select...</option>
+            <option>Table Reservation</option>
+            <option>Private / Group Booking</option>
+            <option>Birthday Package</option>
+            <option>Event Collaboration</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <label>Message</label>
+          <textarea name="message" rows="4" placeholder="Tell us about your visit or event..."></textarea>
+        </div>
+        <button type="submit" class="cf-submit">Send Enquiry via WhatsApp</button>
+        <p class="cf-note">Submitting opens WhatsApp with your details pre-filled. Or <a href="tel:+447979099550">call us directly</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <img src="https://picsum.photos/seed/vivana-cta2/1600/600" alt="Vivana Lounge" />
+    <div class="cta-banner-overlay"></div>
+    <div class="cta-banner-content">
+      <p class="section-label">Book Your Visit</p>
+      <h2 class="section-title">Reserve Your<br>Table Tonight</h2>
+      <p>The quickest way to secure your spot at Vivana Lounge is via WhatsApp — we confirm fast.</p>
+      <div class="cta-banner-btns">
+        <a href="https://wa.me/447979099550" target="_blank" class="cta">WhatsApp Reservation</a>
+        <a href="tel:+447979099550" class="cta cta-outline">+44 7979 099550</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">VIVANA <span>LOUNGE</span></div>
+        <p>"Trendy lounge with Middle East-inspired service and products giving you that ultimate escape right in the heart of Newcastle."</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="#experience">Experience</a>
+        <a href="#events">Events</a>
+        <a href="#menu">Menu</a>
+        <a href="#space">The Space</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Visit</h4>
+        <p>Unit 4, 20 Stanhope St<br>Newcastle upon Tyne<br>NE4 6BH</p>
+        <a href="tel:+447979099550" style="margin-top:0.5rem;">+44 7979 099550</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="https://www.instagram.com/vivanalounge/" target="_blank">Instagram</a>
+        <a href="https://wa.me/447979099550" target="_blank">WhatsApp</a>
+        <a href="https://maps.google.com/?q=20+Stanhope+St,+Newcastle+upon+Tyne+NE4+6BH" target="_blank">Google Maps</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Vivana Lounge · Unit 4, 20 Stanhope St, Newcastle upon Tyne NE4 6BH</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+    // Menu tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Contact form → WhatsApp
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const f = e.target;
+      const msg = [
+        `Hi Vivana Lounge! My name is ${f.name.value}.`,
+        `Enquiry: ${f.type.value || 'General Enquiry'}`,
+        f.message.value ? `Message: ${f.message.value}` : '',
+        f.phone.value ? `Phone: ${f.phone.value}` : ''
+      ].filter(Boolean).join('\n');
+      window.open(`https://wa.me/447979099550?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.split-row, .card, .menu-item, .gallery-item, .insta-post, .review-card, .stat').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = `opacity 0.7s ease ${(i % 4) * 0.08}s, transform 0.7s ease ${(i % 4) * 0.08}s`;
+      el.classList.add('scroll-el');
+      obs.observe(el);
+    });
+
+    document.addEventListener('animationend', () => {});
+    const styleEl = document.createElement('style');
+    styleEl.textContent = '.scroll-el.in { opacity: 1 !important; transform: translateY(0) !important; }';
+    document.head.appendChild(styleEl);
+  </script>
+
+</body>
+</html>
