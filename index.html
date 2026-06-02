@@ -579,6 +579,52 @@
       padding: 5rem 0;
       border-top: 1px solid var(--border);
     }
+    .games-carousel {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      overflow: hidden;
+    }
+    .games-track {
+      display: flex;
+      gap: 1.5rem;
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .game-card {
+      min-width: 380px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid #7b2fff;
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .game-card-img { width: 100%; height: 220px; overflow: hidden; }
+    .game-card-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); transition: filter 0.4s, transform 0.5s; }
+    .game-card:hover .game-card-img img { filter: brightness(1); transform: scale(1.04); }
+    .game-card-info { padding: 1.25rem; }
+    .game-card-info h3 { font-size: 1.2rem; margin: 0.25rem 0 0.5rem; }
+    .game-card-info p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+    .game-card-tag { font-size: 0.7rem; color: #7b2fff; text-transform: uppercase; letter-spacing: 0.08em; }
+    .games-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.7);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 4;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .games-btn:hover { border-color: #7b2fff; color: #7b2fff; }
+    .games-prev { left: 2.5rem; }
+    .games-next { right: 2.5rem; }
     .gallery-grid {
       max-width: 1400px;
       margin: 0 auto;
@@ -1034,6 +1080,7 @@
         <a href="#about">About</a>
         <a href="#work">Work</a>
         <a href="#projects">Projects</a>
+        <a href="#games">Games</a>
         <a href="#art">Art</a>
         <a href="#contact">Contact</a>
       </div>
@@ -1047,6 +1094,7 @@
       <a href="#about" class="mobile-link">About</a>
       <a href="#work" class="mobile-link">Work</a>
       <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#games" class="mobile-link">Games</a>
       <a href="#art" class="mobile-link">Art</a>
       <a href="#contact" class="mobile-link">Contact</a>
       <a href="https://github.com/vexn999" target="_blank">GitHub ↗</a>
@@ -1292,6 +1340,40 @@
         <a href="#" class="btn btn-outline-sm" style="margin-top: 0.75rem; align-self: flex-start; border-color: var(--red); color: var(--red);">View on GitHub ↗</a>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ── Games gallery ───────────────────────────────────────────────────── -->
+  <section class="art-section" id="games">
+    <div class="section-header reveal-up">
+      <p class="tag" style="color:#7b2fff;">// Games</p>
+      <h2>Games &amp; <span style="color:#7b2fff;">Interactive</span></h2>
+    </div>
+    <div class="games-carousel reveal-up">
+      <div class="games-track" id="gamesTrack">
+
+        <div class="game-card">
+          <div class="game-card-img">
+            <img src="games/snake_preview.png" alt="Snake.EXE">
+          </div>
+          <div class="game-card-info">
+            <span class="game-card-tag">JavaScript · Python · Pygame</span>
+            <h3>Snake<span style="color:#7b2fff;">.</span>EXE</h3>
+            <p>Neon cyborg Snake with trails, leaderboard &amp; colour customiser.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+              <a href="snake.html" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">Play ↗</a>
+              <a href="https://github.com/vexn999/snake-exe/releases/latest/download/Snake.EXE-Windows.exe" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">Windows ↓</a>
+              <a href="https://github.com/vexn999/snake-exe/releases/latest/download/Snake.EXE-Linux" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">Linux ↓</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more game cards here as you build more games -->
+
+      </div>
+      <button class="games-btn games-prev" id="gamesPrev">‹</button>
+      <button class="games-btn games-next" id="gamesNext">›</button>
+      <div class="slide-progress" id="gamesProgress" style="position:absolute;bottom:0;left:0;height:3px;background:var(--accent);width:0%;transition:width 0.1s linear;z-index:5;"></div>
     </div>
   </section>
 
@@ -1606,6 +1688,48 @@
 
       slideshow.addEventListener('mouseenter', () => { clearInterval(timer); progress.style.transition = 'none'; });
       slideshow.addEventListener('mouseleave', () => resetTimer());
+
+      resetTimer();
+    })();
+
+    // ── Games Carousel ───────────────────────────────────────────────────────
+    (function () {
+      const track    = document.getElementById('gamesTrack');
+      if (!track) return;
+      const cards    = Array.from(track.querySelectorAll('.game-card'));
+      const progress = document.getElementById('gamesProgress');
+      const total    = cards.length;
+      let   current  = 0;
+      let   timer    = null;
+      let   startTime = null;
+      const INTERVAL = 3500;
+
+      function goTo(index) {
+        current = (index + total) % total;
+        const cardW = cards[0].offsetWidth + 24;
+        track.style.transform = `translateX(-${current * cardW}px)`;
+        resetTimer();
+      }
+
+      function resetTimer() {
+        clearInterval(timer);
+        startTime = Date.now();
+        if (progress) progress.style.width = '0%';
+        if (total > 1) timer = setInterval(() => goTo(current + 1), INTERVAL);
+        requestAnimationFrame(tick);
+      }
+
+      function tick() {
+        if (!startTime) return;
+        const pct = Math.min(((Date.now() - startTime) / INTERVAL) * 100, 100);
+        if (progress) progress.style.width = pct + '%';
+        if (pct < 100) requestAnimationFrame(tick);
+      }
+
+      document.getElementById('gamesPrev')?.addEventListener('click', () => goTo(current - 1));
+      document.getElementById('gamesNext')?.addEventListener('click', () => goTo(current + 1));
+      track.closest('.games-carousel')?.addEventListener('mouseenter', () => clearInterval(timer));
+      track.closest('.games-carousel')?.addEventListener('mouseleave', () => resetTimer());
 
       resetTimer();
     })();
