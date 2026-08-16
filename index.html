@@ -1340,7 +1340,7 @@
       <div class="about-stats reveal-up">
         <!-- Update these numbers as your portfolio grows -->
         <div class="stat">
-          <span class="stat-num">34+</span>
+          <span class="stat-num">32+</span>
           <span class="stat-label">Projects</span>
         </div>
         <div class="stat">
@@ -1372,7 +1372,7 @@
       <button class="cap-tile" data-jump="ai"       style="--tc:#00ffa3;"><span class="cap-glyph">&#10022;</span>AI<span class="cap-count">3 projects</span></button>
       <button class="cap-tile" data-jump="security" style="--tc:#ff6b00;"><span class="cap-glyph">&#9889;</span>Security<span class="cap-count">7 projects</span></button>
       <button class="cap-tile" data-jump="tools"    style="--tc:#00f5ff;"><span class="cap-glyph">&#9881;</span>Tools<span class="cap-count">4 projects</span></button>
-      <button class="cap-tile" data-jump="games"    style="--tc:#7b2fff;"><span class="cap-glyph">&#9672;</span>Games<span class="cap-count">6 projects</span></button>
+      <button class="cap-tile" data-jump="games"    style="--tc:#7b2fff;"><span class="cap-glyph">&#9672;</span>Games<span class="cap-count">4 projects</span></button>
       <a class="cap-tile" href="#art"               style="--tc:#00f5ff;"><span class="cap-glyph">&#9634;</span>Art<span class="cap-count">gallery</span></a>
     </div>
   </div>
@@ -1942,24 +1942,10 @@
         { id:'raiden', name:'Raiden Zero', cat:'games', live:true, tags:['HTML5','Canvas','Web Audio'],
           blurb:'A vertical scrolling shoot ’em up inspired by Raiden — 3 upgradeable weapons, multi-part bosses, parallax terrain and synthesised audio.',
           demo:{type:'iframe', src:'raiden.html'} },
-        { id:'cleave', name:'CLEAVE', cat:'games', tags:['Unity','C#','URP'],
-          blurb:'A 1:1 Unity C# port of a greybox action prototype — arc-sweep cleave attack, dodge, pinball launch, seeded deterministic runs, wave spawner and a momentum-reactive camera with hitstop.',
-          demo:{type:'preview', logo:'CLEAVE', stack:'Unity 2021+ — URP',
-            points:['Arc-sweep cleave, dodge and pinball-launch combat','Deterministic PRNG-seeded runs + wave spawner','Momentum-reactive chase camera with hitstop / bullet-time','Desktop build via Electron wrapper'] } },
         { id:'snakenative', name:'Snake (Native)', cat:'games', tags:['Python','Pygame','PyInstaller'],
           blurb:'The desktop cousin of Snake.EXE — a Pygame build with persistent settings and high scores, packaged into a standalone Windows .exe with PyInstaller.',
           demo:{type:'preview', logo:'SNAKE.EXE', stack:'python — pygame',
             points:['Retro Snake.EXE aesthetic, native performance','Persistent settings + high scores (JSON)','Optional numpy sound effects','Ships as a standalone Windows .exe (PyInstaller)'] } },
-        { id:'slotmonitor', name:'Slot Monitor', cat:'games', tags:['Python 3','numpy','RNG'],
-          blurb:'A slot-machine RNG simulator for testing fairness — run NORMAL, HIGH_RTP, LOW_RTP and BROKEN_RNG modes to probe paytables, probabilities and multipliers.',
-          demo:{type:'terminal', host:'slots@sim', lines:[
-            ['prompt','$ '],['cmd','python slot_monitor.py --mode NORMAL --spins 100000'],
-            ['dim','[ * ] running 100,000 spins …'],
-            ['out','[ rtp ] returned 96.1%  (target 96.0%)'],
-            ['out','[ hits ] top symbol ×5 → 0.0021% (expected 0.0020%)'],
-            ['ok','[ pass ] paytable within tolerance — RNG fair'],
-            ['warn','[ mode ] try --mode BROKEN_RNG to see it fail'],
-            ['prompt','$ '] ] } },
       ];
 
       // ── helpers ──────────────────────────────────────────────────────────
