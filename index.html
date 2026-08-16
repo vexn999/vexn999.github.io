@@ -1056,6 +1056,218 @@
       .cf-row { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
     }
+    /* ═══ Capabilities strip ═══════════════════════════════════════════════ */
+    .cap-strip { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 1rem; }
+    .cap-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 0.75rem; margin-top: 2rem;
+    }
+    .cap-tile {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 1.3rem 0.5rem; cursor: pointer;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-top: 2px solid var(--tc, var(--accent));
+      color: var(--muted2); font-family: inherit; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.12em; text-decoration: none;
+      transition: all 0.22s ease;
+    }
+    .cap-tile .cap-glyph { font-size: 1.5rem; color: var(--tc, var(--accent)); line-height: 1;
+      text-shadow: 0 0 16px var(--tc, var(--accent)); }
+    .cap-tile .cap-count { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; }
+    .cap-tile:hover {
+      color: #fff; background: var(--bg3);
+      box-shadow: 0 8px 30px -12px var(--tc, var(--accent));
+      transform: translateY(-3px);
+    }
+    @media (max-width: 900px) { .cap-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 560px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } .cap-strip { padding-top: 2.5rem; } }
+
+    /* ═══ Filter bar ═══════════════════════════════════════════════════════ */
+    .section-sub { color: var(--muted2); max-width: 640px; margin-top: 0.75rem; font-size: 0.9rem; line-height: 1.6; }
+    .filter-bar {
+      max-width: 1200px; margin: 0 auto 2rem; padding: 0 2rem;
+      display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
+    }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill {
+      padding: 0.5rem 1rem; cursor: pointer; font-family: inherit; font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      background: transparent; color: var(--muted2);
+      border: 1px solid var(--border2); border-radius: 2px; transition: all 0.18s ease;
+    }
+    .pill:hover { color: #fff; border-color: var(--accent); }
+    .pill.active { background: var(--accent); color: #001014; border-color: var(--accent); font-weight: 700;
+      box-shadow: 0 0 18px var(--accent-glow); }
+    .filter-search { position: relative; display: flex; align-items: center; gap: 0.6rem; }
+    .filter-search input {
+      background: var(--bg2); border: 1px solid var(--border2); color: #fff;
+      padding: 0.55rem 0.9rem; font-family: inherit; font-size: 0.8rem; width: 260px; border-radius: 2px;
+      transition: border-color 0.18s ease;
+    }
+    .filter-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 14px var(--accent-glow); }
+    .filter-search input::placeholder { color: var(--muted); }
+    .search-count { font-size: 0.68rem; color: var(--muted); white-space: nowrap; letter-spacing: 0.08em; }
+    @media (max-width: 700px) { .filter-search input { width: 100%; } .filter-search { width: 100%; } }
+
+    /* ═══ Project grid ═════════════════════════════════════════════════════ */
+    .proj-grid { max-width: 1200px; margin: 0 auto; padding: 0 2rem 2rem; }
+    .cat-band { margin-bottom: 2.5rem; }
+    .cat-band[hidden] { display: none; }
+    .cat-band-title {
+      display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--bc, var(--accent));
+    }
+    .cat-band-title::before { content: ''; width: 22px; height: 2px; background: var(--bc, var(--accent)); box-shadow: 0 0 10px var(--bc, var(--accent)); }
+    .cat-band-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+    .proj-grid.filtered .cat-band-title { display: none; }
+    .band-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.1rem; }
+
+    .pcard {
+      display: flex; flex-direction: column; overflow: hidden; cursor: pointer;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-left: 3px solid var(--pc, var(--accent)); border-radius: 2px;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .pcard[hidden] { display: none; }
+    .pcard:hover { transform: translateY(-5px); box-shadow: 0 16px 44px -18px var(--pc, var(--accent)); }
+    .pcard-thumb {
+      position: relative; height: 130px; display: flex; align-items: center; justify-content: center;
+      background:
+        radial-gradient(120% 120% at 20% 0%, color-mix(in srgb, var(--pc) 26%, transparent), transparent 60%),
+        linear-gradient(135deg, #05060a 0%, #0c0e15 70%);
+      overflow: hidden;
+    }
+    .pcard-thumb::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(var(--pc-dim) 1px, transparent 1px), linear-gradient(90deg, var(--pc-dim) 1px, transparent 1px);
+      background-size: 26px 26px; opacity: 0.5;
+      mask-image: radial-gradient(circle at 30% 30%, #000 0%, transparent 75%);
+    }
+    .pcard-glyph { position: relative; font-size: 2.6rem; color: var(--pc); line-height: 1;
+      text-shadow: 0 0 26px var(--pc); }
+    .pcard-cat {
+      position: absolute; top: 10px; right: 12px; font-size: 0.56rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--pc); padding: 3px 7px; border: 1px solid var(--pc);
+      border-radius: 2px; background: rgba(0,0,0,0.4);
+    }
+    .pcard-live { position: absolute; top: 10px; left: 12px; font-size: 0.52rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #04120a; background: #16e37a; padding: 3px 6px; border-radius: 2px; font-weight: 800;
+      box-shadow: 0 0 14px rgba(22,227,122,0.6); }
+    .pcard-body { padding: 1.1rem 1.2rem 0.6rem; flex: 1; }
+    .pcard-body h3 { font-size: 1.02rem; margin-bottom: 0.45rem; color: #fff; }
+    .pcard-body p { font-size: 0.8rem; color: var(--muted2); line-height: 1.55; }
+    .pcard-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 0.8rem; }
+    .pcard-tags span {
+      font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 7px;
+      border: 1px solid var(--border2); color: var(--muted2); background: var(--bg4); border-radius: 2px;
+    }
+    .pcard-foot { padding: 0.9rem 1.2rem 1.2rem; }
+    .pcard-launch {
+      width: 100%; padding: 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      background: transparent; color: var(--pc); border: 1px solid var(--pc); border-radius: 2px;
+      transition: all 0.18s ease;
+    }
+    .pcard:hover .pcard-launch { background: var(--pc); color: #05070c; box-shadow: 0 0 18px -2px var(--pc); }
+    .proj-empty { max-width: 1200px; margin: 0 auto; padding: 2rem; text-align: center; color: var(--muted2); }
+
+    /* ═══ Demo modal ═══════════════════════════════════════════════════════ */
+    .demo-modal {
+      position: fixed; inset: 0; z-index: 3000; display: none;
+      align-items: center; justify-content: center; padding: 2rem;
+      background: rgba(3,4,7,0.86); backdrop-filter: blur(6px);
+    }
+    .demo-modal.open { display: flex; }
+    .demo-modal-inner {
+      width: min(1080px, 100%); max-height: 90vh; display: flex; flex-direction: column;
+      background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8); overflow: hidden;
+      animation: demoPop 0.25s ease;
+    }
+    @keyframes demoPop { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: none; } }
+    .demo-modal-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 1rem 1.3rem; border-bottom: 1px solid var(--border);
+    }
+    .demo-modal-cat { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--dc, var(--accent)); border: 1px solid var(--dc, var(--accent)); padding: 2px 7px; border-radius: 2px; }
+    .demo-modal-title { display: flex; align-items: center; gap: 0.8rem; }
+    .demo-modal-title h3 { font-size: 1.1rem; color: #fff; }
+    .demo-modal-actions { display: flex; align-items: center; gap: 0.6rem; }
+    .demo-modal-close {
+      width: 34px; height: 34px; cursor: pointer; background: transparent; color: var(--muted2);
+      border: 1px solid var(--border2); border-radius: 2px; font-size: 1rem; transition: all 0.18s ease;
+    }
+    .demo-modal-close:hover { color: #fff; border-color: var(--red); background: var(--red-dim); }
+    .demo-modal-body { flex: 1; overflow: auto; background: #05060a; min-height: 320px; }
+    .demo-modal-foot { padding: 0.9rem 1.3rem; border-top: 1px solid var(--border); }
+    .demo-modal-foot p { font-size: 0.82rem; color: var(--muted2); line-height: 1.55; }
+    .demo-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 0.6rem; }
+    .demo-tags span { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 7px;
+      border: 1px solid var(--border2); color: var(--muted2); background: var(--bg4); border-radius: 2px; }
+    @media (max-width: 640px) { .demo-modal { padding: 0; } .demo-modal-inner { max-height: 100vh; height: 100vh; border-radius: 0; } }
+
+    /* ═══ Demo: terminal ═══════════════════════════════════════════════════ */
+    .demo-term { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 1.1rem 1.3rem; min-height: 320px; }
+    .demo-term-bar { display: flex; gap: 6px; margin-bottom: 1rem; align-items: center; }
+    .demo-term-bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .demo-term-bar i:nth-child(1) { background: #ff5f57; } .demo-term-bar i:nth-child(2) { background: #febc2e; } .demo-term-bar i:nth-child(3) { background: #28c840; }
+    .demo-term-bar span { margin-left: 0.6rem; font-size: 0.68rem; color: var(--muted2); letter-spacing: 0.08em; }
+    .demo-term pre { margin: 0; font-size: 0.8rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; color: #cdd6e4; }
+    .dt-prompt { color: var(--dc, var(--accent)); } .dt-cmd { color: #fff; }
+    .dt-ok { color: #16e37a; } .dt-warn { color: #febc2e; } .dt-err { color: #ff5f57; } .dt-dim { color: var(--muted); }
+    .dt-cursor { display: inline-block; width: 8px; height: 1rem; background: var(--dc, var(--accent)); vertical-align: text-bottom; animation: dtBlink 1s steps(1) infinite; }
+    @keyframes dtBlink { 50% { opacity: 0; } }
+
+    /* ═══ Demo: dashboard ══════════════════════════════════════════════════ */
+    .demo-dash { padding: 1.2rem; display: grid; gap: 1rem; }
+    .demo-dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.8rem; }
+    .dd-stat { background: var(--bg3); border: 1px solid var(--border); border-left: 2px solid var(--dc, var(--accent)); padding: 0.9rem 1rem; border-radius: 2px; }
+    .dd-stat .dd-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted2); }
+    .dd-stat .dd-val { font-size: 1.5rem; font-weight: 800; margin-top: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+    .dd-stat .dd-trend { font-size: 0.66rem; margin-top: 0.2rem; }
+    .dd-up { color: #16e37a; } .dd-down { color: #ff5f57; }
+    .demo-dash-main { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; }
+    @media (max-width: 720px) { .demo-dash-main { grid-template-columns: 1fr; } }
+    .dd-panel { background: var(--bg3); border: 1px solid var(--border); border-radius: 2px; padding: 1rem; }
+    .dd-panel h4 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted2); margin-bottom: 0.8rem; }
+    .dd-panel canvas { width: 100%; height: 150px; display: block; }
+    .dd-rows { display: flex; flex-direction: column; gap: 0.55rem; font-family: 'JetBrains Mono', monospace; }
+    .dd-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .dd-row:last-child { border-bottom: none; }
+    .dd-row .dd-sym { color: #fff; } .dd-row .dd-meta { color: var(--muted2); font-size: 0.66rem; }
+    .dd-bar { height: 6px; border-radius: 3px; background: var(--bg4); overflow: hidden; margin-top: 4px; }
+    .dd-bar i { display: block; height: 100%; background: var(--dc, var(--accent)); box-shadow: 0 0 8px var(--dc, var(--accent)); transition: width 0.8s ease; }
+
+    /* ═══ Demo: chat ═══════════════════════════════════════════════════════ */
+    .demo-chat { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.9rem; min-height: 320px; }
+    .dc-model { align-self: center; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted2);
+      border: 1px solid var(--border2); padding: 3px 9px; border-radius: 20px; margin-bottom: 0.4rem; }
+    .dc-msg { max-width: 82%; padding: 0.7rem 0.95rem; font-size: 0.84rem; line-height: 1.6; border-radius: 8px; opacity: 0; transform: translateY(8px); animation: dcIn 0.3s ease forwards; }
+    @keyframes dcIn { to { opacity: 1; transform: none; } }
+    .dc-user { align-self: flex-end; background: var(--dc, var(--accent)); color: #04121a; border-bottom-right-radius: 2px; }
+    .dc-bot { align-self: flex-start; background: var(--bg3); border: 1px solid var(--border); color: #d5deec; border-bottom-left-radius: 2px; }
+    .dc-bot .dc-role { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--dc, var(--accent)); display: block; margin-bottom: 0.35rem; }
+
+    /* ═══ Demo: globe / iframe / preview ═══════════════════════════════════ */
+    .demo-globe { position: relative; min-height: 420px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .demo-globe canvas { display: block; }
+    .demo-globe .dg-label { position: absolute; top: 14px; left: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--dc, var(--accent)); letter-spacing: 0.1em; }
+    .demo-globe .dg-feed { position: absolute; bottom: 14px; left: 16px; right: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--muted2); line-height: 1.6; }
+    .demo-frame { width: 100%; height: 74vh; border: none; display: block; background: #000; }
+    .demo-preview { padding: 1.2rem; }
+    .dp-window { border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; background: var(--bg3); }
+    .dp-bar { display: flex; align-items: center; gap: 6px; padding: 0.6rem 0.9rem; background: var(--bg4); border-bottom: 1px solid var(--border); }
+    .dp-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
+    .dp-bar span { margin-left: 0.6rem; font-size: 0.66rem; color: var(--muted2); font-family: 'JetBrains Mono', monospace; }
+    .dp-screen { height: 260px; display: flex; align-items: center; justify-content: center; position: relative;
+      background: radial-gradient(120% 120% at 30% 0%, color-mix(in srgb, var(--dc) 22%, transparent), transparent 60%), linear-gradient(135deg, #06070c, #0d1018); }
+    .dp-screen .dp-logo { font-size: 2rem; font-weight: 900; letter-spacing: 0.1em; color: var(--dc, var(--accent)); text-shadow: 0 0 30px var(--dc, var(--accent)); }
+    .dp-points { padding: 1.1rem 1.3rem; display: grid; gap: 0.6rem; }
+    .dp-points div { font-size: 0.82rem; color: #cdd6e4; display: flex; gap: 0.6rem; align-items: flex-start; }
+    .dp-points div::before { content: '▸'; color: var(--dc, var(--accent)); }
+    .dp-note { margin-top: 0.9rem; font-size: 0.72rem; color: var(--muted); font-style: italic; }
+
   </style>
 </head>
 <body>
@@ -1078,11 +1290,9 @@
       <div class="nav-logo">HAROON <span>KHAN</span></div>
       <div class="nav-center">
         <a href="#about">About</a>
-        <a href="#work">Work</a>
+        <a href="#work">Explore</a>
         <a href="#projects">Projects</a>
-        <a href="#websites">Websites</a>
-        <a href="#software">Software</a>
-        <a href="#games">Games</a>
+        <a href="#projects" data-jump="games">Games</a>
         <a href="#art">Art</a>
         <a href="#contact">Contact</a>
       </div>
@@ -1092,11 +1302,9 @@
     </div>
     <div class="nav-mobile" id="navMobile">
       <a href="#about" class="mobile-link">About</a>
-      <a href="#work" class="mobile-link">Work</a>
+      <a href="#work" class="mobile-link">Explore</a>
       <a href="#projects" class="mobile-link">Projects</a>
-      <a href="#websites" class="mobile-link">Websites</a>
-      <a href="#software" class="mobile-link">Software</a>
-      <a href="#games" class="mobile-link">Games</a>
+      <a href="#projects" class="mobile-link" data-jump="games">Games</a>
       <a href="#art" class="mobile-link">Art</a>
       <a href="#contact" class="mobile-link">Contact</a>
     </div>
@@ -1132,7 +1340,7 @@
       <div class="about-stats reveal-up">
         <!-- Update these numbers as your portfolio grows -->
         <div class="stat">
-          <span class="stat-num">10+</span>
+          <span class="stat-num">34+</span>
           <span class="stat-label">Projects</span>
         </div>
         <div class="stat">
@@ -1152,424 +1360,70 @@
     </div>
   </section>
 
-  <!-- ── Work / Split rows ─────────────────────────────────────────────── -->
-  <div class="feature-rows" id="work">
-
-    <div class="feature-row reveal-up">
-      <div class="row-img">
-        <!-- Replace with <img src="your-image.jpg" alt="Websites"> -->
-        <img src="games/supreme_screenshot.png" alt="Supreme Clothing" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85);">
-      </div>
-      <div class="row-content">
-        <p class="tag">// 01 — Web Development</p>
-        <h3>Websites &amp;<br><span class="accent">Web Apps</span></h3>
-        <p>Full-stack web development — from landing pages and business sites to interactive web applications. Every site built to be fast, responsive, and visually sharp.</p>
-        <a href="#projects" class="btn btn-outline-sm">View Websites</a>
-      </div>
+  <!-- ── Capabilities strip ───────────────────────────────────────────────── -->
+  <div class="cap-strip" id="work">
+    <div class="section-header reveal-up">
+      <p class="tag">// What I Build</p>
+      <h2>Explore by <span class="accent">Category</span></h2>
     </div>
-
-    <div class="feature-row row-reverse reveal-up">
-      <div class="row-img">
-        <!-- Replace with <img src="your-image.jpg" alt="Software"> -->
-        <img src="games/solsniper_preview.png" alt="SolSniper" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85);">
-      </div>
-      <div class="row-content">
-        <p class="tag" style="color: var(--red);">// 02 — Software</p>
-        <h3>Tools &amp;<br><span class="accent">Software</span></h3>
-        <p>Bots, automation tools, scripts, and applications. Built to solve real problems — from crypto trading bots to productivity utilities and everything in between.</p>
-        <a href="#projects" class="btn btn-outline-sm">View Software</a>
-      </div>
+    <div class="cap-grid reveal-up">
+      <button class="cap-tile" data-jump="web"      style="--tc:#a855f7;"><span class="cap-glyph">&#10095;</span>Web<span class="cap-count">7 projects</span></button>
+      <button class="cap-tile" data-jump="crypto"   style="--tc:#ff003c;"><span class="cap-glyph">&#8383;</span>Crypto<span class="cap-count">7 projects</span></button>
+      <button class="cap-tile" data-jump="ai"       style="--tc:#00ffa3;"><span class="cap-glyph">&#10022;</span>AI<span class="cap-count">3 projects</span></button>
+      <button class="cap-tile" data-jump="security" style="--tc:#ff6b00;"><span class="cap-glyph">&#9889;</span>Security<span class="cap-count">7 projects</span></button>
+      <button class="cap-tile" data-jump="tools"    style="--tc:#00f5ff;"><span class="cap-glyph">&#9881;</span>Tools<span class="cap-count">4 projects</span></button>
+      <button class="cap-tile" data-jump="games"    style="--tc:#7b2fff;"><span class="cap-glyph">&#9672;</span>Games<span class="cap-count">6 projects</span></button>
+      <a class="cap-tile" href="#art"               style="--tc:#00f5ff;"><span class="cap-glyph">&#9634;</span>Art<span class="cap-count">gallery</span></a>
     </div>
-
-    <div class="feature-row reveal-up">
-      <div class="row-img">
-        <div class="art-slideshow" id="artSlideshow">
-          <div class="slide active"><img src="art/IMG_0827.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0828.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0829.jpg" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0830.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0831.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0832.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0833.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0834.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0835.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0836.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0837.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0838.PNG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0839.jpg" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0374.JPG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0375.JPG" alt="Artwork"></div>
-
-          <div class="slide"><img src="art/IMG_0378.JPG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0379.JPG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0380.JPG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0381.JPG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0382.JPG" alt="Artwork"></div>
-          <div class="slide"><img src="art/IMG_0383.JPG" alt="Artwork"></div>
-          <button class="slide-btn slide-prev-btn" id="slidePrev">‹</button>
-          <button class="slide-btn slide-next-btn" id="slideNext">›</button>
-          <div class="slide-counter" id="slideCounter">1 / 23</div>
-          <div class="slide-progress" id="slideProgress"></div>
-        </div>
-      </div>
-      <div class="row-content">
-        <p class="tag">// 03 — Digital Art</p>
-        <h3>Artwork &amp;<br><span class="accent">Illustration</span></h3>
-        <p>Original digital artwork, illustrations, and creative visuals. Exploring colour, form, and ideas through the medium of digital art — from pixel work to full digital paintings.</p>
-        <a href="#art" class="btn btn-outline-sm">View Art</a>
-      </div>
-    </div>
-
-    <div class="feature-row row-reverse reveal-up">
-      <div class="row-img">
-        <div class="art-slideshow" id="gameSlideshow">
-          <div class="slide active"><img src="games/snake_preview.png" alt="Snake.EXE"></div>
-          <div class="slide"><img src="games/gridwars_preview.png" alt="Grid Wars"></div>
-          <div class="slide"><img src="games/raiden_preview.png" alt="Raiden Zero"></div>
-          <button class="slide-btn slide-prev-btn" id="gameSlidePrev">‹</button>
-          <button class="slide-btn slide-next-btn" id="gameSlideNext">›</button>
-          <div class="slide-counter" id="gameSlideCounter">1 / 3</div>
-          <div class="slide-progress" id="gameSlideProgress"></div>
-        </div>
-      </div>
-      <div class="row-content">
-        <p class="tag" style="color:#7b2fff;">// 04 — Games</p>
-        <h3>Games &amp;<br><span style="color:#7b2fff;">Interactive</span></h3>
-        <p>Original games built from scratch — neon Snake and a Geometry Wars-style bullet hell shooter. Playable in the browser or downloadable as standalone desktop apps for Windows and Linux.</p>
-        <a href="#projects" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">View Games</a>
-      </div>
-    </div>
-
   </div>
 
-  <!-- ── Projects grid ─────────────────────────────────────────────────── -->
+  <!-- ── Projects (unified filterable grid) ───────────────────────────────── -->
   <section class="projects-section" id="projects">
     <div class="section-header reveal-up">
       <p class="tag">// Featured Work</p>
       <h2>Projects &amp; <span class="accent">Builds</span></h2>
+      <p class="section-sub">Every project I've built, in one place. Filter by category or search by name and tech &mdash; then click any card to launch a live or interactive demo.</p>
     </div>
-    <div class="cards-grid">
-
-      <!-- WEBSITE CARDS -->
-      <div class="project-card reveal-up">
-        <span class="card-type">Website</span>
-        <h3>Supreme<span class="accent">.</span>Store</h3>
-        <img src="games/supreme_screenshot.png" alt="Supreme Clothing Website" style="width:100%;border-radius:2px;margin:0.75rem 0;filter:brightness(0.9);">
-        <p>Supreme-inspired clothing website design featuring a product shop, category navigation, and bold streetwear aesthetic. Built with placeholder images — designed as a concept for a high-end fashion e-commerce storefront.</p>
-        <div class="card-tags">
-          <span class="card-tag">HTML</span>
-          <span class="card-tag">CSS</span>
-          <span class="card-tag">JavaScript</span>
-          <span class="card-tag">E-Commerce</span>
-        </div>
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-          <a href="supreme.html" class="btn btn-outline-sm">View Live ↗</a>
-        </div>
+    <div class="filter-bar reveal-up">
+      <div class="filter-pills" id="filterPills">
+        <button class="pill active" data-cat="all">All</button>
+        <button class="pill" data-cat="web">Web</button>
+        <button class="pill" data-cat="crypto">Crypto</button>
+        <button class="pill" data-cat="ai">AI</button>
+        <button class="pill" data-cat="security">Security</button>
+        <button class="pill" data-cat="tools">Tools</button>
+        <button class="pill" data-cat="games">Games</button>
       </div>
-
-      <div class="project-card reveal-up" style="border-left-color:#6b21a8;">
-        <span class="card-type" style="color:#a855f7;">Website</span>
-        <h3>Vivana <span style="color:#a855f7;">Lounge</span></h3>
-        <img src="games/vivana_screenshot.png" alt="Vivana Lounge" style="width:100%;border-radius:2px;margin:0.75rem 0;filter:brightness(0.9);">
-        <p>Website design I helped create for Vivana Lounge — a premium shisha bar in Newcastle. Dark mood-led aesthetic with purple accents, shisha menu, gallery and booking section.</p>
-        <div class="card-tags">
-          <span class="card-tag">HTML</span>
-          <span class="card-tag">CSS</span>
-          <span class="card-tag">JavaScript</span>
-          <span class="card-tag">Web Design</span>
-        </div>
-        <a href="vivana/index.html" class="btn btn-outline-sm" style="margin-top:0.75rem;align-self:flex-start;border-color:#6b21a8;color:#a855f7;">View Live ↗</a>
+      <div class="filter-search">
+        <input type="text" id="projSearch" placeholder="Search projects, tech, keywords&hellip;" autocomplete="off">
+        <span class="search-count" id="searchCount"></span>
       </div>
-
-      <!-- SOFTWARE CARDS -->
-      <div class="project-card red-card reveal-up">
-        <span class="card-type red">Software</span>
-        <h3>Crypto<span style="color:var(--red)">//</span>Terminal</h3>
-        <img src="games/crypto_terminal_preview.png" alt="Crypto Terminal" style="width:100%;border-radius:2px;margin:0.75rem 0;filter:brightness(0.9);">
-        <p>Retro hacker-style crypto dashboard with live prices, 7-day candlestick charts, a real-time news ticker, and a portfolio tracker. Pulls live data from CoinGecko &amp; CryptoCompare. Three themes: Matrix, Neo, and Synth.</p>
-        <div class="card-tags">
-          <span class="card-tag">HTML5</span>
-          <span class="card-tag">JavaScript</span>
-          <span class="card-tag">CoinGecko API</span>
-          <span class="card-tag">Canvas</span>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;">
-          <a href="crypto_terminal.html" class="btn btn-outline-sm" style="border-color:var(--red);color:var(--red);">View Live ↗</a>
-        </div>
-      </div>
-
-      <div class="project-card red-card reveal-up">
-        <span class="card-type red">Software</span>
-        <h3>SolSniper</h3>
-        <img src="games/solsniper_preview.png" alt="SolSniper Dashboard" style="width:100%;border-radius:2px;margin:0.75rem 0;filter:brightness(0.9);">
-        <p>Python-based Solana token sniper — detects new tokens from Pump.fun &amp; DEXScreener, auto-buys on configurable filters, and manages positions with stop-loss, take-profit, and trailing stops. Includes a live web dashboard with P&amp;L tracking, trade history, and multiple themes.</p>
-        <div class="card-tags">
-          <span class="card-tag">Python</span>
-          <span class="card-tag">Solana</span>
-          <span class="card-tag">FastAPI</span>
-          <span class="card-tag">WebSockets</span>
-          <span class="card-tag">Jupiter API</span>
-        </div>
-      </div>
-
-      <!-- GAME CARD -->
-      <div class="project-card reveal-up" style="border-left-color: #7b2fff;">
-        <span class="card-type" style="color:#7b2fff;">Game</span>
-        <h3>Snake<span class="accent">.</span>EXE</h3>
-        <p>A neon cyborg Snake game with glowing trails, particle bursts, leaderboard, and colour customiser.</p>
-        <div class="card-tags">
-          <span class="card-tag">JavaScript</span>
-          <span class="card-tag">Canvas</span>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;">
-          <a href="snake.html" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">Play in Browser ↗</a>
-        </div>
-      </div>
-
-      <!-- GRID WARS CARD -->
-      <div class="project-card reveal-up" style="border-left-color: #00b4ff;">
-        <span class="card-type" style="color:#00b4ff;">Game</span>
-        <h3>Grid<span style="color:#00b4ff;">Wars</span></h3>
-        <p>Geometry Wars-style bullet hell shooter. Spring-physics deforming grid, 5 enemy types, screen shake, particle explosions, wave survival, and a local leaderboard. No downloads needed — runs in any browser.</p>
-        <div class="card-tags">
-          <span class="card-tag">HTML5</span>
-          <span class="card-tag">Canvas</span>
-          <span class="card-tag">Web Audio</span>
-          <span class="card-tag">JavaScript</span>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;">
-          <a href="gridwars.html" class="btn btn-outline-sm" style="border-color:#00b4ff;color:#00b4ff;">Play in Browser ↗</a>
-        </div>
-      </div>
-
-      <!-- RAIDEN ZERO CARD -->
-      <div class="project-card reveal-up" style="border-left-color:#cc00ff;">
-        <span class="card-type" style="color:#cc00ff;">Game</span>
-        <h3>Raiden<span style="color:#cc00ff;">Zero</span></h3>
-        <p>Vertical scrolling shoot 'em up inspired by Raiden. 3 upgradeable weapons, 5 enemy types, multi-part bosses, screen shake, parallax scrolling terrain, and synthesized audio. No downloads — runs in any browser.</p>
-        <div class="card-tags">
-          <span class="card-tag">HTML5</span>
-          <span class="card-tag">Canvas</span>
-          <span class="card-tag">Web Audio</span>
-          <span class="card-tag">JavaScript</span>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;">
-          <a href="raiden.html" class="btn btn-outline-sm" style="border-color:#cc00ff;color:#cc00ff;">Play in Browser ↗</a>
-        </div>
-      </div>
-
     </div>
+    <div class="proj-grid" id="projGrid"></div>
+    <p class="proj-empty" id="projEmpty" hidden>No projects match &mdash; try another category or clear the search.</p>
   </section>
 
-  <!-- ── Websites gallery ─────────────────────────────────────────────────── -->
-  <section class="art-section" id="websites">
-    <div class="section-header reveal-up">
-      <p class="tag">// Websites</p>
-      <h2>Websites &amp; <span class="accent">Web Design</span></h2>
-    </div>
-    <div class="games-carousel reveal-up">
-      <div class="games-track" id="websitesTrack">
-
-        <div class="game-card">
-          <div class="game-card-img"><img src="games/supreme_screenshot.png" alt="Supreme Hero"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag">HTML · CSS · JavaScript · E-Commerce</span>
-            <h3>Supreme<span class="accent">.</span>Store — Hero</h3>
-            <p>Supreme-inspired streetwear storefront concept. Bold minimal design with full product catalogue and cart system. Placeholder images throughout.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-              <a href="supreme.html" class="btn btn-outline-sm">View Live ↗</a>
-            </div>
-          </div>
+  <!-- ── Demo modal ───────────────────────────────────────────────────────── -->
+  <div class="demo-modal" id="demoModal" aria-hidden="true">
+    <div class="demo-modal-inner">
+      <div class="demo-modal-head">
+        <div class="demo-modal-title">
+          <span class="demo-modal-cat" id="demoCat"></span>
+          <h3 id="demoTitle"></h3>
         </div>
-
-        <div class="game-card">
-          <div class="game-card-img"><img src="games/supreme_screenshot.png" alt="Supreme Product Grid"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag">HTML · CSS · JavaScript</span>
-            <h3>Supreme<span class="accent">.</span>Store — Product Grid</h3>
-            <p>Category-filtered product grid with dynamic card layout, hover effects and price display.</p>
-            <a href="supreme.html" class="btn btn-outline-sm" style="margin-top:0.75rem;display:inline-block;">View Live ↗</a>
-          </div>
+        <div class="demo-modal-actions">
+          <a class="btn btn-outline-sm" id="demoCode" target="_blank" rel="noopener" hidden>Code &#8599;</a>
+          <a class="btn btn-outline-sm" id="demoLive" target="_blank" rel="noopener" hidden>Open Live &#8599;</a>
+          <button class="demo-modal-close" id="demoClose" aria-label="Close demo">&#10005;</button>
         </div>
-
-        <div class="game-card">
-          <div class="game-card-img"><img src="games/supreme_screenshot.png" alt="Supreme Quick View"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag">HTML · CSS · JavaScript</span>
-            <h3>Supreme<span class="accent">.</span>Store — Quick View</h3>
-            <p>Product quick-view modal with size selector, add-to-cart, and smooth overlay animation.</p>
-            <a href="supreme.html" class="btn btn-outline-sm" style="margin-top:0.75rem;display:inline-block;">View Live ↗</a>
-          </div>
-        </div>
-
-        <div class="game-card">
-          <div class="game-card-img"><img src="games/supreme_screenshot.png" alt="Supreme Cart"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag">HTML · CSS · JavaScript</span>
-            <h3>Supreme<span class="accent">.</span>Store — Cart</h3>
-            <p>Shopping cart with item management, size tracking, quantity controls and checkout flow.</p>
-            <a href="supreme.html" class="btn btn-outline-sm" style="margin-top:0.75rem;display:inline-block;">View Live ↗</a>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:#6b21a8;">
-          <div class="game-card-img"><img src="games/vivana_screenshot.png" alt="Vivana Lounge"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:#a855f7;">HTML · CSS · JavaScript</span>
-            <h3><span style="color:#a855f7;">Vivana</span> Lounge</h3>
-            <p>Website I helped design for a premium shisha bar in Newcastle. Dark mood-led aesthetic with purple accents, full booking and menu system.</p>
-            <a href="vivana/index.html" class="btn btn-outline-sm" style="margin-top:0.75rem;display:inline-block;border-color:#6b21a8;color:#a855f7;">View Live ↗</a>
-          </div>
-        </div>
-
       </div>
-      <button class="games-btn games-prev" id="websitesPrev">‹</button>
-      <button class="games-btn games-next" id="websitesNext">›</button>
-      <div class="slide-progress" id="websitesProgress" style="position:absolute;bottom:0;left:0;height:3px;background:var(--accent);width:0%;transition:width 0.1s linear;z-index:5;"></div>
-    </div>
-  </section>
-
-  <!-- ── Software gallery ────────────────────────────────────────────────── -->
-  <section class="art-section" id="software">
-    <div class="section-header reveal-up">
-      <p class="tag" style="color:var(--red);">// Software</p>
-      <h2>Tools &amp; <span class="accent">Software</span></h2>
-    </div>
-    <div class="games-carousel reveal-up">
-      <div class="games-track" id="softwareTrack">
-
-        <div class="game-card" style="border-left-color:#00d4ff;">
-          <div class="game-card-img" style="background:linear-gradient(135deg,#000810 0%,#001a2e 60%,#002a40 100%);display:flex;align-items:center;justify-content:center;height:220px;position:relative;overflow:hidden;">
-            <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(0,212,255,0.04) 28px,rgba(0,212,255,0.04) 29px);pointer-events:none;"></div>
-            <div style="text-align:center;position:relative;">
-              <div style="font-size:22px;font-weight:900;letter-spacing:0.25em;color:#00d4ff;text-shadow:0 0 20px rgba(0,212,255,0.6);margin-bottom:8px;">ORACLE</div>
-              <div style="font-size:9px;color:rgba(0,212,255,0.55);letter-spacing:0.18em;text-transform:uppercase;">Geospatial Intelligence</div>
-            </div>
-          </div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:#00d4ff;">Next.js · CesiumJS · Google 3D Tiles · React</span>
-            <h3>Oracle — <span style="color:#00d4ff;">Geospatial Intelligence</span></h3>
-            <p>Real-time global intelligence platform. Live aviation, maritime, conflict, wildfire and GPS jamming data fused onto a photorealistic 3D globe. Palantir charges $500k+ for similar systems. This is free and open source.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-              <a href="http://localhost:3000/landing" class="btn btn-outline-sm" style="border-color:#00d4ff;color:#00d4ff;">View Demo ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:var(--red);">
-          <div class="game-card-img"><img src="games/sniper_1_dashboard.png" alt="SolSniper Dashboard"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:var(--red);">Python · FastAPI · Solana · WebSockets</span>
-            <h3>SolSniper — Dashboard</h3>
-            <p>Live trading dashboard with real-time P&amp;L, win rate, active positions and token feed.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-            </div>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:var(--red);">
-          <div class="game-card-img"><img src="games/sniper_2_trades.png" alt="SolSniper Trade History"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:var(--red);">Jupiter API · DEXScreener · Pump.fun</span>
-            <h3>SolSniper — Trade History</h3>
-            <p>Full trade log with entry/exit prices, position size, P&amp;L per trade and win/loss status.</p>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:var(--red);">
-          <div class="game-card-img"><img src="games/sniper_3_chart.png" alt="SolSniper P&L Chart"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:var(--red);">Chart.js · Lightweight Charts</span>
-            <h3>SolSniper — P&amp;L Chart</h3>
-            <p>Live equity curve showing cumulative profit and loss across all executed trades.</p>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:var(--red);">
-          <div class="game-card-img"><img src="games/sniper_4_settings.png" alt="SolSniper Settings"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:var(--red);">Stop-Loss · Take-Profit · Filters</span>
-            <h3>SolSniper — Settings</h3>
-            <p>Configurable filters: stop-loss, take-profit, trailing stops, liquidity thresholds and simulation mode.</p>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:var(--red);">
-          <div class="game-card-img"><img src="games/crypto_terminal_preview.png" alt="Crypto Terminal"></div>
-          <div class="game-card-info">
-            <span class="game-card-tag" style="color:var(--red);">CoinGecko · CryptoCompare · Canvas</span>
-            <h3>Crypto<span style="color:var(--red)">//</span>Terminal</h3>
-            <p>Retro hacker-style dashboard with live prices, candlestick charts, news feed and portfolio tracker. Three colour themes.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-              <a href="crypto_terminal.html" class="btn btn-outline-sm" style="border-color:var(--red);color:var(--red);">View Live ↗</a>
-            </div>
-          </div>
-        </div>
-
+      <div class="demo-modal-body" id="demoBody"></div>
+      <div class="demo-modal-foot">
+        <p id="demoBlurb"></p>
+        <div class="demo-tags" id="demoTags"></div>
       </div>
-      <button class="games-btn games-prev" id="softwarePrev" style="border-color:var(--red);">‹</button>
-      <button class="games-btn games-next" id="softwareNext" style="border-color:var(--red);">›</button>
-      <div class="slide-progress" id="softwareProgress" style="position:absolute;bottom:0;left:0;height:3px;background:var(--red);width:0%;transition:width 0.1s linear;z-index:5;"></div>
     </div>
-  </section>
-
-  <!-- ── Games gallery ───────────────────────────────────────────────────── -->
-  <section class="art-section" id="games">
-    <div class="section-header reveal-up">
-      <p class="tag" style="color:#7b2fff;">// Games</p>
-      <h2>Games &amp; <span style="color:#7b2fff;">Interactive</span></h2>
-    </div>
-    <div class="games-carousel reveal-up">
-      <div class="games-track" id="gamesTrack">
-
-        <div class="game-card">
-          <div class="game-card-img">
-            <img src="games/snake_preview.png" alt="Snake.EXE">
-          </div>
-          <div class="game-card-info">
-            <span class="game-card-tag">JavaScript · Python · Pygame</span>
-            <h3>Snake<span style="color:#7b2fff;">.</span>EXE</h3>
-            <p>Neon cyborg Snake with trails, leaderboard &amp; colour customiser.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-              <a href="snake.html" class="btn btn-outline-sm" style="border-color:#7b2fff;color:#7b2fff;">Play ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="game-card">
-          <div class="game-card-img">
-            <img src="games/gridwars_preview.png" alt="Grid Wars">
-          </div>
-          <div class="game-card-info">
-            <span class="game-card-tag">HTML5 · Canvas · Web Audio API</span>
-            <h3>Grid<span style="color:#00b4ff;">Wars</span></h3>
-            <p>Geometry Wars-style bullet hell — spring-physics grid, 5 enemy types, bombs &amp; wave survival.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-              <a href="gridwars.html" class="btn btn-outline-sm" style="border-color:#00b4ff;color:#00b4ff;">Play ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="game-card" style="border-left-color:#cc00ff;">
-          <div class="game-card-img">
-            <img src="games/raiden_preview.png" alt="Raiden Zero">
-          </div>
-          <div class="game-card-info">
-            <span class="game-card-tag">HTML5 · Canvas · Web Audio API</span>
-            <h3>Raiden<span style="color:#cc00ff;">Zero</span></h3>
-            <p>Vertical scrolling shoot 'em up — 3 weapon types, boss battles, parallax terrain &amp; wave formations.</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
-              <a href="raiden.html" class="btn btn-outline-sm" style="border-color:#cc00ff;color:#cc00ff;">Play ↗</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <button class="games-btn games-prev" id="gamesPrev">‹</button>
-      <button class="games-btn games-next" id="gamesNext">›</button>
-      <div class="slide-progress" id="gamesProgress" style="position:absolute;bottom:0;left:0;height:3px;background:var(--accent);width:0%;transition:width 0.1s linear;z-index:5;"></div>
-    </div>
-  </section>
+  </div>
 
   <!-- ── Art gallery ────────────────────────────────────────────────────── -->
   <section class="art-section" id="art">
@@ -1869,145 +1723,514 @@
       resetTimer();
     })();
 
-    // ── Websites Carousel ────────────────────────────────────────────────────
+    // ═══ Project system ══════════════════════════════════════════════════════
     (function () {
-      const track = document.getElementById('websitesTrack');
-      if (!track) return;
-      const cards = Array.from(track.querySelectorAll('.game-card'));
-      const progress = document.getElementById('websitesProgress');
-      const total = cards.length; let current = 0, timer = null, startTime = null;
-      const INTERVAL = 3500;
-      function goTo(i) { current=(i+total)%total; track.style.transform=`translateX(-${current*(cards[0].offsetWidth+24)}px)`; resetTimer(); }
-      function resetTimer() { clearInterval(timer); startTime=Date.now(); if(progress) progress.style.width='0%'; if(total>1) timer=setInterval(()=>goTo(current+1),INTERVAL); requestAnimationFrame(tick); }
-      function tick() { if(!startTime) return; const p=Math.min(((Date.now()-startTime)/INTERVAL)*100,100); if(progress) progress.style.width=p+'%'; if(p<100) requestAnimationFrame(tick); }
-      document.getElementById('websitesPrev')?.addEventListener('click',()=>goTo(current-1));
-      document.getElementById('websitesNext')?.addEventListener('click',()=>goTo(current+1));
-      track.closest('.games-carousel')?.addEventListener('mouseenter',()=>clearInterval(timer));
-      track.closest('.games-carousel')?.addEventListener('mouseleave',()=>resetTimer());
-      resetTimer();
-    })();
+      const CATS = {
+        web:      { label: 'Web',      accent: '#a855f7', glyph: '❯' },
+        crypto:   { label: 'Crypto',   accent: '#ff003c', glyph: '₿' },
+        ai:       { label: 'AI',       accent: '#00ffa3', glyph: '✦' },
+        security: { label: 'Security', accent: '#ff6b00', glyph: '⚡' },
+        tools:    { label: 'Tools',    accent: '#00f5ff', glyph: '⚙' },
+        games:    { label: 'Games',    accent: '#7b2fff', glyph: '◈' },
+      };
+      const ORDER = ['web', 'crypto', 'ai', 'security', 'tools', 'games'];
 
-    // ── Software Carousel ────────────────────────────────────────────────────
-    (function () {
-      const track    = document.getElementById('softwareTrack');
-      if (!track) return;
-      const cards    = Array.from(track.querySelectorAll('.game-card'));
-      const progress = document.getElementById('softwareProgress');
-      const total    = cards.length;
-      let   current  = 0, timer = null, startTime = null;
-      const INTERVAL = 3500;
-      function goTo(i) {
-        current = (i + total) % total;
-        track.style.transform = `translateX(-${current * (cards[0].offsetWidth + 24)}px)`;
-        resetTimer();
+      const PROJECTS = [
+        // ── WEB ──────────────────────────────────────────────────────────────
+        { id:'supreme', name:'Supreme.Store', cat:'web', live:true, tags:['HTML','CSS','JavaScript','E-Commerce'],
+          blurb:'Supreme-inspired streetwear storefront concept — product shop, category nav, quick-view modal and a working cart, all in a bold minimal aesthetic.',
+          demo:{type:'iframe', src:'supreme.html'} },
+        { id:'vivana', name:'Vivana Lounge', cat:'web', live:true, tags:['HTML','CSS','JavaScript','Web Design'],
+          blurb:'Website I helped design for a premium shisha bar in Newcastle. Dark, mood-led aesthetic with purple accents, a shisha menu, gallery and booking section.',
+          demo:{type:'iframe', src:'vivana/index.html'} },
+        { id:'dusk', name:'Dusk', cat:'web', tags:['Next.js','React','TypeScript'],
+          blurb:'Next.js clothing store with shop, lookbook, blog, size guide and contact — a full modern e-commerce front end.',
+          demo:{type:'preview', logo:'DUSK', stack:'next dev — localhost:3000',
+            points:['App-Router Next.js storefront with lookbook + editorial blog','Product catalogue, size guide and contact flow','TypeScript throughout, component-driven UI'] } },
+        { id:'omen', name:'Omen Storefront', cat:'web', tags:['Next.js','React','TypeScript','Admin'],
+          blurb:'Next.js storefront with an admin panel and API layer — manage products and orders behind a full e-commerce front end.',
+          demo:{type:'preview', logo:'OMEN', stack:'next dev — localhost:3000',
+            points:['Customer storefront + protected admin dashboard','API layer for products, orders and inventory','TypeScript / React App Router architecture'] } },
+        { id:'highersociety', name:'Higher Society', cat:'web', tags:['HTML','CSS','JavaScript','E-Commerce'],
+          blurb:'E-commerce site for a THCa flower, rosin, hemp gummies and dabs brand — product-led layout with a clean shop experience.',
+          demo:{type:'preview', logo:'HIGHER SOCIETY', stack:'static build — index.html',
+            points:['Product-led cannabis e-commerce storefront','Category browsing across flower, rosin, gummies & dabs','Hand-built HTML / CSS / JS, no framework overhead'] } },
+        { id:'imenergy', name:'IM Energy', cat:'web', tags:['HTML','CSS','Corporate','Rebrand'],
+          blurb:'Corporate rebrand — a 50-page static mirror of a national gas & power site, re-skinned end-to-end into IM Energy Solutions.',
+          demo:{type:'preview', logo:'IM ENERGY', stack:'static mirror — 50 pages',
+            points:['Full corporate site: home, services, case studies, team, news','50 core marketing pages rebranded end to end','Static HTML/CSS mirror — fast, portable, host-anywhere'] } },
+        { id:'simplymary', name:'Simply Mary', cat:'web', tags:['Next.js','Tailwind','TypeScript'],
+          blurb:'Byte-stable clone of the SimplyMary storefront generated with my own Ditto compiler — 11 components, 14 sections, 12 SVG modules.',
+          demo:{type:'preview', logo:'SIMPLY MARY', stack:'ditto build — next app',
+            points:['High-fidelity clone generated by the Ditto compiler','11 extracted components + 14 section modules','Next.js App Router + Tailwind, deterministic output'] } },
+
+        // ── CRYPTO ───────────────────────────────────────────────────────────
+        { id:'cryptoterminal', name:'Crypto//Terminal', cat:'crypto', live:true, tags:['HTML5','JavaScript','CoinGecko API','Canvas'],
+          blurb:'Retro hacker-style crypto dashboard with live prices, 7-day candlestick charts, a real-time news ticker and portfolio tracker. Three themes: Matrix, Neo, Synth.',
+          demo:{type:'iframe', src:'crypto_terminal.html'} },
+        { id:'stormchaser', name:'StormChaser', cat:'crypto', tags:['Python','FastAPI','SQLite','DexScreener'],
+          blurb:'Solana memecoin dashboard, paper-trading only. GHOST mode auto-trades on simulated forecasts; COPILOT queues trades for approval. Real market data, zero live wallet risk.',
+          demo:{type:'dashboard', panelTitle:'GHOST — Equity Curve',
+            stats:[{label:'Paper Balance',val:12480,unit:'$',dir:'up',trend:'+24.8% all-time'},{label:'Open Positions',val:5,dir:'up',trend:'3 in profit'},{label:'Win Rate',val:61,unit:'%',dir:'up',trend:'+4% 7d'},{label:'Rug Score Avg',val:18,unit:'/100',dir:'down',trend:'low risk'}],
+            rows:[{sym:'$WIF',meta:'entry 1.82 → 2.41',pct:78},{sym:'$BONK',meta:'entry .000021',pct:54},{sym:'$POPCAT',meta:'radar — forecast +',pct:41},{sym:'$MEW',meta:'trailing stop armed',pct:33}] } },
+        { id:'stormbreaker', name:'StormBreaker 2.0', cat:'crypto', tags:['Python 3.14','PySide6','Jupiter','0x API'],
+          blurb:'Native desktop trading terminal with a STORMCHASER cyberpunk UI. Cross-chain swaps (Solana via Jupiter, EVM via 0x), portfolio P&L charts and an encrypted local keystore.',
+          demo:{type:'dashboard', panelTitle:'Portfolio — P&L',
+            stats:[{label:'Net Worth',val:8642,unit:'$',dir:'up',trend:'+12.1% 24h'},{label:'Realised P&L',val:1930,unit:'$',dir:'up',trend:'green week'},{label:'Chains',val:2,dir:'up',trend:'SOL + EVM'},{label:'Keystore',val:100,unit:'%',dir:'up',trend:'scrypt + Fernet'}],
+            rows:[{sym:'SOL / USDC',meta:'Jupiter route — 0.3% slip',pct:70},{sym:'ETH / USDT',meta:'0x route v2',pct:52},{sym:'JUP',meta:'staked',pct:44},{sym:'ARB',meta:'limit set',pct:29}] } },
+        { id:'cryptodeck', name:'CryptoDeck', cat:'crypto', tags:['Python','FastAPI','SQLite','Electron'],
+          blurb:'Paper-trading platform tuned for the Steam Deck. Eight bot strategies each run a $1,000 paper wallet with a circuit breaker — momentum, mean-reversion, RSI, DCA and more.',
+          demo:{type:'dashboard', panelTitle:'Bot Fleet — Aggregate',
+            stats:[{label:'Bots Live',val:8,dir:'up',trend:'all green'},{label:'Fleet Equity',val:9214,unit:'$',dir:'up',trend:'+15.2%'},{label:'Best Bot',val:38,unit:'%',dir:'up',trend:'momentum_majors'},{label:'Breakers',val:0,dir:'down',trend:'none tripped'}],
+            rows:[{sym:'momentum_majors',meta:'+38.0% — $1,380',pct:88},{sym:'rsi_oscillator',meta:'+12.4% — $1,124',pct:57},{sym:'mean_reversion',meta:'+6.1% — $1,061',pct:46},{sym:'dca_baseline',meta:'+2.0% — $1,020',pct:31}] } },
+        { id:'tradebot', name:'Tradebot', cat:'crypto', tags:['Python','FastAPI','SQLite','CoinGecko'],
+          blurb:'Simulation-only trading framework — simulated USD balances traded against real market data, with a FastAPI backend and SQLite state. A clean base for live adapters.',
+          demo:{type:'dashboard', panelTitle:'Simulation — Balance',
+            stats:[{label:'Sim Balance',val:10420,unit:'$',dir:'up',trend:'+4.2%'},{label:'Trades',val:146,dir:'up',trend:'sim only'},{label:'Data Source',val:1,dir:'up',trend:'CoinGecko live'},{label:'Mode',val:100,unit:'%',dir:'down',trend:'sim / safe'}],
+            rows:[{sym:'BTC',meta:'sim long',pct:62},{sym:'ETH',meta:'sim long',pct:48},{sym:'SOL',meta:'sim flat',pct:35},{sym:'USDC',meta:'reserve',pct:20}] } },
+        { id:'solanabot', name:'SolSniper / Solana Bot', cat:'crypto', tags:['Python','Solana','FastAPI','Jupiter API'],
+          blurb:'Solana token sniper (devnet/paper mode). Detects new Pump.fun & DEXScreener launches, auto-buys on filters, and manages stop-loss / take-profit / trailing exits with live P&L.',
+          demo:{type:'terminal', host:'solsniper@devnet', lines:[
+            ['prompt','$ '],['cmd','python -m solsniper --mode paper --watch pumpfun,dexscreener'],
+            ['dim','[ 09:41:02 ] booting SolSniper — SIMULATION MODE (no live funds)'],
+            ['ok','[ ok ] connected: Jupiter v6  •  Pump.fun WS  •  DEXScreener WS'],
+            ['out','[ scan ] new token: $NOVA  liq $42k  mint renounced ✓  age 8s'],
+            ['warn','[ filter ] $DEGN rejected — liquidity below $10k threshold'],
+            ['ok','[ buy ] $NOVA  0.75 SOL @ 0.00041  slip 0.4%  (paper)'],
+            ['out','[ pos ] $NOVA  +38.2%  — trailing stop armed at +22%'],
+            ['ok','[ exit ] $NOVA  take-profit hit → +41.0%  P&L +0.31 SOL (paper)'],
+            ['dim','[ 09:44:57 ] session P&L: +0.63 SOL  •  win rate 61%'],
+            ['prompt','$ '] ] } },
+        { id:'cryptowidget', name:'Crypto Widget', cat:'crypto', tags:['Python 3','CLI','CoinGecko'],
+          blurb:'A tiny terminal price widget — live, colour-coded market moves at a glance, straight in your shell. Zero-dependency and instant.',
+          demo:{type:'terminal', host:'haroon@omen', lines:[
+            ['prompt','$ '],['cmd','cryptowidget --watch btc,eth,sol'],
+            ['dim','refreshing every 5s  —  ctrl-c to quit'],
+            ['out','BTC   $67,412   '],['ok','▲ +2.14%'],
+            ['out','ETH   $3,528    '],['ok','▲ +1.02%'],
+            ['out','SOL   $181.40   '],['err','▼ -0.87%'],
+            ['dim','updated 09:41:07 — source: CoinGecko'],
+            ['prompt','$ '] ] } },
+
+        // ── AI ───────────────────────────────────────────────────────────────
+        { id:'odysseus', name:'Odysseus', cat:'ai', tags:['Python','FastAPI','React','ChromaDB','MCP'],
+          blurb:'A self-hosted, local-first AI workspace — chat with local or API models, run agents with MCP tools, deep research, persistent memory, notes, calendar and email, all on your own machine.',
+          demo:{type:'chat', model:'odysseus — local • llama.cpp + MCP tools', msgs:[
+            ['user','Summarise my unread emails and add any deadlines to my calendar.'],
+            ['bot','Scanning inbox via the IMAP tool… 3 unread. Two are newsletters (skipped). One from your accountant: VAT return due 7 Aug.'],
+            ['bot','Added “VAT return” to your CalDAV calendar for 7 Aug 09:00, with a 2-day reminder. Want me to draft a reply confirming receipt?'] ] } },
+        { id:'worldwideview', name:'WorldWideView', cat:'ai', tags:['Next.js','CesiumJS','TypeScript','PostgreSQL'],
+          blurb:'Open-source geospatial intelligence platform — live data fused onto a photorealistic 3D globe, plugin-driven, with horizon culling and an optional MCP server for LLM access.',
+          demo:{type:'globe', feed:[
+            '[ live ] 1,284 entities tracked — horizon-culled',
+            '[ air ] flight tracks ingested • [ sea ] AIS vessels online',
+            '[ mcp ] LLM query interface: ready'] } },
+        { id:'moneyprinter', name:'MoneyPrinterTurbo', cat:'ai', tags:['Python','Streamlit','FastAPI','ffmpeg','Whisper'],
+          blurb:'AI short-video generator — give it a topic and it writes a script, matches footage, synthesises voiceover and subtitles, and renders a finished 9:16 or 16:9 clip.',
+          demo:{type:'chat', model:'MoneyPrinterTurbo — pipeline', msgs:[
+            ['user','Make a 30s vertical video: “3 facts about the ocean”.'],
+            ['bot','✓ Script generated (3 beats, 62 words)\n✓ Footage matched — 5 clips\n✓ Voiceover synthesised (Edge TTS)\n✓ Subtitles aligned via Whisper'],
+            ['bot','✓ Rendered ocean_facts_9x16.mp4 — 0:29, 1080×1920. Ready to publish.'] ] } },
+
+        // ── SECURITY ─────────────────────────────────────────────────────────
+        { id:'secos', name:'SecOS', cat:'security', tags:['Electron','Node.js','Python','xterm.js'],
+          blurb:'A unified security toolkit desktop — one Electron window with tabbed access to NetMap, MITM, HackLab and Bandwidth, streaming live Rich TUIs to the browser over a Python PTY bridge.',
+          demo:{type:'terminal', host:'secos@lab', lines:[
+            ['prompt','secos › '],['cmd','launch --suite'],
+            ['ok','[ ok ] Electron shell up — tabs: NetMap • MITM • HackLab • Bandwidth'],
+            ['dim','[ pty ] pty_bridge.py streaming Rich → xterm.js over WebSocket'],
+            ['out','[ netmap ] 14 devices on wlan0 — 2 unknown MACs flagged'],
+            ['out','[ bandwidth ] shaping active — 3 devices capped'],
+            ['ok','[ ok ] all modules healthy'],
+            ['prompt','secos › '] ] } },
+        { id:'hacklab', name:'HackLab', cat:'security', tags:['Python','Rich','podman','FastAPI'],
+          blurb:'A local pentest lab dashboard — spin up vulnerable targets (DVWA, Juice Shop, WebGoat) in containers and fire attack runners for SQLi, XSS, auth and file-upload flaws.',
+          demo:{type:'terminal', host:'hacklab@kali', lines:[
+            ['prompt','hacklab › '],['cmd','up dvwa && run sqli'],
+            ['ok','[ ok ] podman: dvwa container healthy on :8080'],
+            ['out','[ recon ] login form found — param: id (GET)'],
+            ['out','[ sqli ] payload: 1 OR 1=1 UNION SELECT user,password'],
+            ['warn','[ vuln ] SQL injection confirmed — 5 credential rows dumped'],
+            ['ok','[ report ] findings written → reports/dvwa_sqli.md'],
+            ['prompt','hacklab › '] ] } },
+        { id:'netmap', name:'NetMap', cat:'security', tags:['Python','scapy','nmap'],
+          blurb:'WiFi network intelligence — device discovery, port scanning, live traffic capture and file-transfer detection, all from a single Python suite.',
+          demo:{type:'terminal', host:'netmap@omen', lines:[
+            ['prompt','$ '],['cmd','sudo netmap scan --iface wlan0'],
+            ['dim','[ * ] sweeping 192.168.1.0/24 …'],
+            ['out','192.168.1.1    gateway      GL.iNet'],
+            ['out','192.168.1.42   omen         this host'],
+            ['warn','192.168.1.88   ??           unknown vendor — flagged'],
+            ['out','[ ports ] .88 → 22/ssh  445/smb open'],
+            ['ok','[ done ] 14 hosts • 1 flagged • capture saved'],
+            ['prompt','$ '] ] } },
+        { id:'architect', name:'Architect', cat:'security', tags:['Python','distrobox','Kali','podman'],
+          blurb:'A modular authorized-testing CLI — routes tools to Kali distrobox, host or repos, guards against public IPs, and writes a markdown report for every workflow. Plugins: scan, recon, web, osint, crack, pcap and more.',
+          demo:{type:'terminal', host:'architect@host', lines:[
+            ['prompt','architect › '],['cmd','recon --target 192.168.1.88 --report'],
+            ['ok','[ guard ] target is RFC1918 — authorized ✓'],
+            ['dim','[ route ] osint→host  scan→kali(distrobox)  web→kali'],
+            ['out','[ scan ] 22/ssh 445/smb 3000/http'],
+            ['out','[ web ] http :3000 → nodejs express — header leak'],
+            ['ok','[ report ] reports/2026-08-16_192.168.1.88.md written'],
+            ['prompt','architect › '] ] } },
+        { id:'bandwidth', name:'Bandwidth Manager', cat:'security', tags:['Node.js','Express','tc','ARP'],
+          blurb:'Home-network bandwidth monitor and manager with a web UI — per-device speed limits, live traffic shaping via tc, and ARP-based control.',
+          demo:{type:'dashboard', panelTitle:'Live Throughput',
+            stats:[{label:'Devices',val:14,dir:'up',trend:'3 capped'},{label:'Total Down',val:82,unit:'Mbps',dir:'up',trend:'peak 210'},{label:'Total Up',val:11,unit:'Mbps',dir:'up',trend:'steady'},{label:'Shaping',val:100,unit:'%',dir:'up',trend:'tc active'}],
+            rows:[{sym:'living-room-tv',meta:'capped 15 Mbps',pct:82},{sym:'omen-laptop',meta:'uncapped',pct:60},{sym:'iphone-13',meta:'capped 8 Mbps',pct:44},{sym:'unknown-88',meta:'throttled',pct:12}] } },
+        { id:'deckgateway', name:'Deck Gateway', cat:'security', tags:['Python 3','DHCP','sockets'],
+          blurb:'A minimal DHCP server that turns a Steam Deck into a per-device gateway — route only the devices you choose through the Deck; everyone else uses the real router. Zero impact when off.',
+          demo:{type:'terminal', host:'deck@gateway', lines:[
+            ['prompt','$ '],['cmd','sudo ./start.sh --target aa:bb:cc:11:22:33'],
+            ['ok','[ ok ] deckdhcp bound — serving targeted leases only'],
+            ['out','[ lease ] aa:bb:cc:11:22:33 → 10.42.0.50  gw 10.42.0.1'],
+            ['dim','[ info ] non-targeted devices untouched (real router)'],
+            ['out','[ route ] target traffic → Deck → upstream'],
+            ['warn','[ stop ] ctrl-c restores normal DHCP instantly'],
+            ['prompt','$ '] ] } },
+        { id:'routerqos', name:'Router QoS', cat:'security', tags:['Bash','OpenWrt','tc','IPv4/IPv6'],
+          blurb:'Per-device bandwidth control for OpenWrt routers — cap any device by MAC across IPv4 and IPv6 with a single script. Tuned for GL.iNet hardware.',
+          demo:{type:'terminal', host:'root@openwrt', lines:[
+            ['prompt','root@GL-AXT1800:~# '],['cmd','./devlimit.sh set aa:bb:cc:11:22:33 down 20 up 5'],
+            ['ok','[ ok ] tc class added — IPv4 + IPv6'],
+            ['out','[ cap ] aa:bb:cc:11:22:33 → 20 Mbit down / 5 Mbit up'],
+            ['dim','[ persist ] rule saved — survives reboot'],
+            ['out','[ list ] 3 devices currently limited'],
+            ['prompt','root@GL-AXT1800:~# '] ] } },
+
+        // ── TOOLS ────────────────────────────────────────────────────────────
+        { id:'ditto', name:'Ditto.site', cat:'tools', tags:['Node.js','Next.js','TypeScript','Playwright'],
+          blurb:'A deterministic website compiler — point it at any public URL and it captures the rendered page in a real browser and emits a byte-stable, self-contained Next.js app. REST API + MCP service.',
+          demo:{type:'terminal', host:'ditto@build', lines:[
+            ['prompt','$ '],['cmd','ditto compile https://example.com --out app/'],
+            ['dim','[ * ] launching Playwright — capturing rendered DOM + assets'],
+            ['ok','[ ok ] captured 1 route • 41 assets • 12 SVGs'],
+            ['out','[ emit ] TypeScript components → app/  (deterministic)'],
+            ['out','[ verify ] re-run diff: 0 bytes changed ✓'],
+            ['ok','[ done ] self-contained Next.js app ready — npm run dev'],
+            ['prompt','$ '] ] } },
+        { id:'comicui', name:'Comic UI', cat:'tools', tags:['Python','Flask','Selenium','img2pdf'],
+          blurb:'A Flask web app that scrapes and downloads comics as PDFs — bypasses Cloudflare with undetected-chromedriver, caches lists, marks what you already own, and bundles issues into clean PDFs.',
+          demo:{type:'dashboard', panelTitle:'Download Queue',
+            stats:[{label:'In Library',val:212,dir:'up',trend:'+6 today'},{label:'Queued',val:3,dir:'up',trend:'downloading'},{label:'Cache',val:6,unit:'h',dir:'down',trend:'fresh list'},{label:'CF Bypass',val:100,unit:'%',dir:'up',trend:'UC driver'}],
+            rows:[{sym:'Saga #54',meta:'building PDF — 22/44 pages',pct:50},{sym:'Invincible #7',meta:'queued',pct:15},{sym:'Sandman #1',meta:'queued',pct:5},{sym:'Watchmen #3',meta:'✓ downloaded',pct:100}] } },
+        { id:'comicscraper', name:'Comic Scraper CLI', cat:'tools', tags:['Python 3','Selenium','BeautifulSoup'],
+          blurb:'The standalone command-line core behind Comic UI — scrape a series, grab every issue and stitch pages into PDFs, straight from the terminal.',
+          demo:{type:'terminal', host:'haroon@omen', lines:[
+            ['prompt','$ '],['cmd','python comic_scraper.py --series "saga" --issues 1-3'],
+            ['dim','[ * ] undetected-chromedriver — solving Cloudflare …'],
+            ['ok','[ ok ] session established'],
+            ['out','[ #1 ] 44 pages → saga_001.pdf'],
+            ['out','[ #2 ] 44 pages → saga_002.pdf'],
+            ['out','[ #3 ] 44 pages → saga_003.pdf'],
+            ['ok','[ done ] 3 issues saved'],
+            ['prompt','$ '] ] } },
+        { id:'omencontrol', name:'Omen Control', cat:'tools', tags:['Electron','Node.js','node-hid','Linux'],
+          blurb:'An HP Omen control panel for Linux — CPU/GPU temps, fan (PWM) control and RGB via node-hid, reading straight from /sys/class/hwmon. The vendor app Windows users get, on Linux.',
+          demo:{type:'dashboard', panelTitle:'Thermals — Live',
+            stats:[{label:'CPU',val:64,unit:'°C',dir:'up',trend:'boost 4.6GHz'},{label:'GPU',val:58,unit:'°C',dir:'down',trend:'71% mem'},{label:'Fans',val:3200,unit:'rpm',dir:'up',trend:'PWM auto'},{label:'RGB',val:1,dir:'up',trend:'cyber preset'}],
+            rows:[{sym:'CPU package',meta:'coretemp — 64°C',pct:64},{sym:'GPU core',meta:'nvme/pch — 58°C',pct:58},{sym:'Fan 1',meta:'3200 rpm',pct:64},{sym:'Fan 2',meta:'3050 rpm',pct:61}] } },
+
+        // ── GAMES ────────────────────────────────────────────────────────────
+        { id:'snake', name:'Snake.EXE', cat:'games', live:true, tags:['JavaScript','Canvas','Web Audio'],
+          blurb:'A neon cyborg Snake with glowing trails, particle bursts, a leaderboard and a colour customiser. Playable right here in the browser.',
+          demo:{type:'iframe', src:'snake.html'} },
+        { id:'gridwars', name:'GridWars', cat:'games', live:true, tags:['HTML5','Canvas','Web Audio'],
+          blurb:'A Geometry Wars-style bullet-hell shooter — spring-physics deforming grid, 5 enemy types, screen shake, bombs, wave survival and a local leaderboard.',
+          demo:{type:'iframe', src:'gridwars.html'} },
+        { id:'raiden', name:'Raiden Zero', cat:'games', live:true, tags:['HTML5','Canvas','Web Audio'],
+          blurb:'A vertical scrolling shoot ’em up inspired by Raiden — 3 upgradeable weapons, multi-part bosses, parallax terrain and synthesised audio.',
+          demo:{type:'iframe', src:'raiden.html'} },
+        { id:'cleave', name:'CLEAVE', cat:'games', tags:['Unity','C#','URP'],
+          blurb:'A 1:1 Unity C# port of a greybox action prototype — arc-sweep cleave attack, dodge, pinball launch, seeded deterministic runs, wave spawner and a momentum-reactive camera with hitstop.',
+          demo:{type:'preview', logo:'CLEAVE', stack:'Unity 2021+ — URP',
+            points:['Arc-sweep cleave, dodge and pinball-launch combat','Deterministic PRNG-seeded runs + wave spawner','Momentum-reactive chase camera with hitstop / bullet-time','Desktop build via Electron wrapper'] } },
+        { id:'snakenative', name:'Snake (Native)', cat:'games', tags:['Python','Pygame','PyInstaller'],
+          blurb:'The desktop cousin of Snake.EXE — a Pygame build with persistent settings and high scores, packaged into a standalone Windows .exe with PyInstaller.',
+          demo:{type:'preview', logo:'SNAKE.EXE', stack:'python — pygame',
+            points:['Retro Snake.EXE aesthetic, native performance','Persistent settings + high scores (JSON)','Optional numpy sound effects','Ships as a standalone Windows .exe (PyInstaller)'] } },
+        { id:'slotmonitor', name:'Slot Monitor', cat:'games', tags:['Python 3','numpy','RNG'],
+          blurb:'A slot-machine RNG simulator for testing fairness — run NORMAL, HIGH_RTP, LOW_RTP and BROKEN_RNG modes to probe paytables, probabilities and multipliers.',
+          demo:{type:'terminal', host:'slots@sim', lines:[
+            ['prompt','$ '],['cmd','python slot_monitor.py --mode NORMAL --spins 100000'],
+            ['dim','[ * ] running 100,000 spins …'],
+            ['out','[ rtp ] returned 96.1%  (target 96.0%)'],
+            ['out','[ hits ] top symbol ×5 → 0.0021% (expected 0.0020%)'],
+            ['ok','[ pass ] paytable within tolerance — RNG fair'],
+            ['warn','[ mode ] try --mode BROKEN_RNG to see it fail'],
+            ['prompt','$ '] ] } },
+      ];
+
+      // ── helpers ──────────────────────────────────────────────────────────
+      function hexToRgba(hex, a) {
+        const h = hex.replace('#',''); const n = parseInt(h.length===3 ? h.replace(/(.)/g,'$1$1') : h, 16);
+        return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
       }
-      function resetTimer() {
-        clearInterval(timer);
-        startTime = Date.now();
-        if (progress) progress.style.width = '0%';
-        if (total > 1) timer = setInterval(() => goTo(current + 1), INTERVAL);
-        requestAnimationFrame(tick);
+      function fmt(v, unit) {
+        let s = typeof v === 'number' && v >= 1000 ? v.toLocaleString('en-US') : String(v);
+        if (unit === '$') return '$' + s;
+        if (unit) return s + (unit.length > 2 ? ' ' + unit : unit);
+        return s;
       }
-      function tick() {
-        if (!startTime) return;
-        const pct = Math.min(((Date.now() - startTime) / INTERVAL) * 100, 100);
-        if (progress) progress.style.width = pct + '%';
-        if (pct < 100) requestAnimationFrame(tick);
-      }
-      document.getElementById('softwarePrev')?.addEventListener('click', () => goTo(current - 1));
-      document.getElementById('softwareNext')?.addEventListener('click', () => goTo(current + 1));
-      track.closest('.games-carousel')?.addEventListener('mouseenter', () => clearInterval(timer));
-      track.closest('.games-carousel')?.addEventListener('mouseleave', () => resetTimer());
-      resetTimer();
-    })();
+      function frag(html) { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content; }
 
-    // ── Games Carousel ───────────────────────────────────────────────────────
-    (function () {
-      const track    = document.getElementById('gamesTrack');
-      if (!track) return;
-      const cards    = Array.from(track.querySelectorAll('.game-card'));
-      const progress = document.getElementById('gamesProgress');
-      const total    = cards.length;
-      let   current  = 0;
-      let   timer    = null;
-      let   startTime = null;
-      const INTERVAL = 3500;
+      const grid = document.getElementById('projGrid');
 
-      function goTo(index) {
-        current = (index + total) % total;
-        const cardW = cards[0].offsetWidth + 24;
-        track.style.transform = `translateX(-${current * cardW}px)`;
-        resetTimer();
-      }
+      // ── build category bands + cards ─────────────────────────────────────
+      ORDER.forEach(cat => {
+        const meta = CATS[cat];
+        const items = PROJECTS.filter(p => p.cat === cat);
+        if (!items.length) return;
+        const band = document.createElement('div');
+        band.className = 'cat-band'; band.dataset.cat = cat;
+        band.style.setProperty('--bc', meta.accent);
+        band.innerHTML = `<h3 class="cat-band-title">${meta.label} <span style="color:var(--muted);font-weight:400">(${items.length})</span></h3><div class="band-cards"></div>`;
+        const holder = band.querySelector('.band-cards');
+        items.forEach(p => holder.appendChild(makeCard(p, meta)));
+        grid.appendChild(band);
+      });
 
-      function resetTimer() {
-        clearInterval(timer);
-        startTime = Date.now();
-        if (progress) progress.style.width = '0%';
-        if (total > 1) timer = setInterval(() => goTo(current + 1), INTERVAL);
-        requestAnimationFrame(tick);
+      function makeCard(p, meta) {
+        const card = document.createElement('article');
+        card.className = 'pcard'; card.dataset.cat = p.cat;
+        card.dataset.search = (p.name + ' ' + p.tags.join(' ') + ' ' + p.blurb + ' ' + meta.label).toLowerCase();
+        card.style.setProperty('--pc', meta.accent);
+        card.style.setProperty('--pc-dim', hexToRgba(meta.accent, 0.28));
+        const liveBadge = p.live ? '<span class="pcard-live">Live</span>' : '';
+        const action = p.demo.type === 'iframe' ? 'Play &#9654;' : 'Launch Demo &#8594;';
+        const tagsHtml = p.tags.slice(0, 4).map(t => `<span>${t}</span>`).join('');
+        card.innerHTML = `
+          <div class="pcard-thumb">${liveBadge}<span class="pcard-glyph">${meta.glyph}</span><span class="pcard-cat">${meta.label}</span></div>
+          <div class="pcard-body"><h3>${p.name}</h3><p>${p.blurb}</p><div class="pcard-tags">${tagsHtml}</div></div>
+          <div class="pcard-foot"><button class="pcard-launch">${action}</button></div>`;
+        const open = () => openDemo(p, meta);
+        card.querySelector('.pcard-launch').addEventListener('click', e => { e.stopPropagation(); open(); });
+        card.addEventListener('click', open);
+        return card;
       }
 
-      function tick() {
-        if (!startTime) return;
-        const pct = Math.min(((Date.now() - startTime) / INTERVAL) * 100, 100);
-        if (progress) progress.style.width = pct + '%';
-        if (pct < 100) requestAnimationFrame(tick);
+      // ── filtering ────────────────────────────────────────────────────────
+      const pills = document.getElementById('filterPills');
+      const search = document.getElementById('projSearch');
+      const emptyMsg = document.getElementById('projEmpty');
+      const countEl = document.getElementById('searchCount');
+      let activeCat = 'all';
+
+      function applyFilter() {
+        const q = search.value.trim().toLowerCase();
+        grid.classList.toggle('filtered', activeCat !== 'all' || q !== '');
+        let shown = 0;
+        grid.querySelectorAll('.cat-band').forEach(band => {
+          let bandShown = 0;
+          band.querySelectorAll('.pcard').forEach(card => {
+            const okCat = activeCat === 'all' || card.dataset.cat === activeCat;
+            const okQ = !q || card.dataset.search.includes(q);
+            const vis = okCat && okQ;
+            card.hidden = !vis;
+            if (vis) bandShown++;
+          });
+          band.hidden = bandShown === 0;
+          shown += bandShown;
+        });
+        emptyMsg.hidden = shown !== 0;
+        countEl.textContent = shown === PROJECTS.length ? `${PROJECTS.length} projects` : `${shown} of ${PROJECTS.length}`;
       }
 
-      document.getElementById('gamesPrev')?.addEventListener('click', () => goTo(current - 1));
-      document.getElementById('gamesNext')?.addEventListener('click', () => goTo(current + 1));
-      track.closest('.games-carousel')?.addEventListener('mouseenter', () => clearInterval(timer));
-      track.closest('.games-carousel')?.addEventListener('mouseleave', () => resetTimer());
+      pills.addEventListener('click', e => {
+        const btn = e.target.closest('.pill'); if (!btn) return;
+        activeCat = btn.dataset.cat;
+        pills.querySelectorAll('.pill').forEach(b => b.classList.toggle('active', b === btn));
+        applyFilter();
+      });
+      search.addEventListener('input', applyFilter);
 
-      resetTimer();
-    })();
-
-    // ── Games Slideshow ──────────────────────────────────────────────────────
-    (function () {
-      const slideshow  = document.getElementById('gameSlideshow');
-      if (!slideshow) return;
-      const slides     = Array.from(slideshow.querySelectorAll('.slide'));
-      const counter    = document.getElementById('gameSlideCounter');
-      const progress   = document.getElementById('gameSlideProgress');
-      const prevBtn    = document.getElementById('gameSlidePrev');
-      const nextBtn    = document.getElementById('gameSlideNext');
-      const total      = slides.length;
-      let   current    = 0;
-      let   timer      = null;
-      let   startTime  = null;
-      const INTERVAL   = 3500;
-
-      function goTo(index) {
-        slides[current].classList.remove('active');
-        current = (index + total) % total;
-        slides[current].classList.add('active');
-        counter.textContent = `${current + 1} / ${total}`;
-        resetTimer();
+      function selectCat(cat) {
+        const btn = pills.querySelector(`.pill[data-cat="${cat}"]`);
+        if (btn) { activeCat = cat; pills.querySelectorAll('.pill').forEach(b => b.classList.toggle('active', b === btn)); applyFilter(); }
+        document.getElementById('projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+      document.querySelectorAll('[data-jump]').forEach(el => {
+        el.addEventListener('click', e => { e.preventDefault(); selectCat(el.dataset.jump); });
+      });
 
-      function resetTimer() {
-        clearInterval(timer);
-        startTime = Date.now();
-        progress.style.width = '0%';
-        timer = setInterval(() => goTo(current + 1), INTERVAL);
-        requestAnimationFrame(tickProgress);
+      applyFilter();
+
+      // ── demo modal ───────────────────────────────────────────────────────
+      const modal   = document.getElementById('demoModal');
+      const mInner  = modal.querySelector('.demo-modal-inner');
+      const mBody   = document.getElementById('demoBody');
+      const mTitle  = document.getElementById('demoTitle');
+      const mCat    = document.getElementById('demoCat');
+      const mBlurb  = document.getElementById('demoBlurb');
+      const mTags   = document.getElementById('demoTags');
+      const mCode   = document.getElementById('demoCode');
+      const mLive   = document.getElementById('demoLive');
+      let cleanups  = [];
+      const reg = fn => cleanups.push(fn);
+
+      function openDemo(p, meta) {
+        teardown();
+        mInner.style.setProperty('--dc', meta.accent);
+        mCat.textContent = meta.label;
+        mTitle.textContent = p.name;
+        mBlurb.textContent = p.blurb;
+        mTags.innerHTML = p.tags.map(t => `<span>${t}</span>`).join('');
+        const isFrame = p.demo.type === 'iframe';
+        mLive.style.display = isFrame ? '' : 'none';
+        if (isFrame) mLive.href = p.demo.src;
+        mCode.style.display = p.code ? '' : 'none';
+        if (p.code) mCode.href = p.code;
+        mBody.innerHTML = '';
+        (DEMOS[p.demo.type] || DEMOS.preview)(p, mBody, reg, meta);
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
       }
-
-      function tickProgress() {
-        const elapsed = Date.now() - startTime;
-        const pct = Math.min((elapsed / INTERVAL) * 100, 100);
-        progress.style.width = pct + '%';
-        if (pct < 100) requestAnimationFrame(tickProgress);
+      function teardown() { cleanups.forEach(fn => { try { fn(); } catch (e) {} }); cleanups = []; }
+      function closeDemo() {
+        teardown(); mBody.innerHTML = '';
+        modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
       }
+      document.getElementById('demoClose').addEventListener('click', closeDemo);
+      modal.addEventListener('click', e => { if (e.target === modal) closeDemo(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeDemo(); });
 
-      prevBtn.addEventListener('click', () => goTo(current - 1));
-      nextBtn.addEventListener('click', () => goTo(current + 1));
+      // ── demo archetypes ──────────────────────────────────────────────────
+      const DEMOS = {
+        iframe(p, body) {
+          body.innerHTML = `<iframe class="demo-frame" src="${p.demo.src}" title="${p.name}" loading="lazy"></iframe>`;
+        },
 
-      slideshow.addEventListener('mouseenter', () => { clearInterval(timer); progress.style.transition = 'none'; });
-      slideshow.addEventListener('mouseleave', () => resetTimer());
+        terminal(p, body, reg) {
+          const wrap = document.createElement('div');
+          wrap.className = 'demo-term';
+          wrap.innerHTML = `<div class="demo-term-bar"><i></i><i></i><i></i><span>${p.demo.host}</span></div><pre></pre>`;
+          body.appendChild(wrap);
+          const pre = wrap.querySelector('pre');
+          const lines = p.demo.lines; let li = 0, alive = true, timers = [];
+          reg(() => { alive = false; timers.forEach(clearTimeout); });
+          const wait = (fn, ms) => { timers.push(setTimeout(() => alive && fn(), ms)); };
+          const cursor = document.createElement('span'); cursor.className = 'dt-cursor';
+          function nextLine() {
+            if (!alive) return;
+            if (li >= lines.length) { pre.appendChild(cursor); return; }
+            const [cls, text] = lines[li++];
+            if (cls === 'prompt') { const s = document.createElement('span'); s.className = 'dt-prompt'; s.textContent = text; pre.appendChild(s); wait(nextLine, 120); return; }
+            if (cls === 'cmd') { typeCmd(text); return; }
+            const s = document.createElement('span'); s.className = 'dt-' + cls; s.textContent = text + '\n'; pre.appendChild(s); wait(nextLine, 260);
+          }
+          function typeCmd(text) {
+            const s = document.createElement('span'); s.className = 'dt-cmd'; pre.appendChild(s); let i = 0;
+            (function tick() { if (!alive) return; s.textContent = text.slice(0, i++); if (i <= text.length) wait(tick, 24); else { s.textContent = text + '\n'; wait(nextLine, 300); } })();
+          }
+          wrap.addEventListener('click', () => {
+            if (!alive) return; alive = false; timers.forEach(clearTimeout);
+            pre.innerHTML = lines.map(([c, t]) => `<span class="dt-${c}">${c === 'cmd' || c === 'prompt' ? t : t + '\n'}</span>`).join('');
+          });
+          wait(nextLine, 300);
+        },
 
-      resetTimer();
+        dashboard(p, body, reg, meta) {
+          const d = p.demo;
+          const wrap = document.createElement('div'); wrap.className = 'demo-dash';
+          wrap.innerHTML = `
+            <div class="demo-dash-stats">${d.stats.map(s => `
+              <div class="dd-stat"><div class="dd-label">${s.label}</div>
+              <div class="dd-val" data-to="${s.val}" data-unit="${s.unit || ''}">0</div>
+              <div class="dd-trend ${s.dir === 'down' ? 'dd-down' : 'dd-up'}">${s.dir === 'down' ? '▼' : '▲'} ${s.trend}</div></div>`).join('')}</div>
+            <div class="demo-dash-main">
+              <div class="dd-panel"><h4>${d.panelTitle}</h4><canvas></canvas></div>
+              <div class="dd-panel"><h4>Positions</h4><div class="dd-rows">${d.rows.map(r => `
+                <div><div class="dd-row"><span class="dd-sym">${r.sym}</span><span class="dd-meta">${r.meta}</span></div>
+                <div class="dd-bar"><i data-w="${r.pct}"></i></div></div>`).join('')}</div></div>
+            </div>`;
+          body.appendChild(wrap);
+          // count-up
+          wrap.querySelectorAll('.dd-val').forEach(el => {
+            const to = parseFloat(el.dataset.to), unit = el.dataset.unit; const start = performance.now(), dur = 900;
+            let raf; reg(() => cancelAnimationFrame(raf));
+            (function step(now) { const t = Math.min((now - start) / dur, 1); const v = to * (1 - Math.pow(1 - t, 3)); el.textContent = fmt(Math.round(v), unit); if (t < 1) raf = requestAnimationFrame(step); })(start);
+          });
+          setTimeout(() => wrap.querySelectorAll('.dd-bar i').forEach(b => b.style.width = b.dataset.w + '%'), 120);
+          // sparkline
+          const cv = wrap.querySelector('canvas'); const ctx = cv.getContext('2d');
+          const accent = meta.accent; let pts = [], t0 = 0, raf2, alive = true;
+          reg(() => { alive = false; cancelAnimationFrame(raf2); });
+          function resize() { const r = cv.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1; cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+          function seed() { let v = 50; pts = []; for (let i = 0; i < 60; i++) { v += (Math.random() - 0.45) * 8; v = Math.max(10, Math.min(90, v)); pts.push(v); } }
+          function draw() {
+            if (!alive) return; const r = cv.getBoundingClientRect(), w = r.width, h = r.height;
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = hexToRgba(accent, 0.12); ctx.lineWidth = 1;
+            for (let gy = 0; gy <= 4; gy++) { const y = (h / 4) * gy; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+            ctx.beginPath();
+            pts.forEach((v, i) => { const x = (w / (pts.length - 1)) * i, y = h - (v / 100) * h; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+            const grad = ctx.createLinearGradient(0, 0, 0, h); grad.addColorStop(0, hexToRgba(accent, 0.35)); grad.addColorStop(1, hexToRgba(accent, 0));
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+            ctx.beginPath(); pts.forEach((v, i) => { const x = (w / (pts.length - 1)) * i, y = h - (v / 100) * h; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+            ctx.strokeStyle = accent; ctx.lineWidth = 2; ctx.shadowColor = accent; ctx.shadowBlur = 10; ctx.stroke(); ctx.shadowBlur = 0;
+            t0++; if (t0 % 18 === 0) { pts.shift(); let v = pts[pts.length - 1] + (Math.random() - 0.45) * 8; v = Math.max(10, Math.min(90, v)); pts.push(v); }
+            raf2 = requestAnimationFrame(draw);
+          }
+          requestAnimationFrame(() => { resize(); seed(); draw(); });
+        },
+
+        chat(p, body, reg) {
+          const wrap = document.createElement('div'); wrap.className = 'demo-chat';
+          wrap.innerHTML = `<div class="dc-model">${p.demo.model}</div>`;
+          body.appendChild(wrap);
+          const msgs = p.demo.msgs; let i = 0, timers = [], alive = true;
+          reg(() => { alive = false; timers.forEach(clearTimeout); });
+          function show() {
+            if (!alive || i >= msgs.length) return;
+            const [role, text] = msgs[i++];
+            const m = document.createElement('div'); m.className = 'dc-msg ' + (role === 'user' ? 'dc-user' : 'dc-bot');
+            m.innerHTML = role === 'user' ? text.replace(/\n/g, '<br>') : `<span class="dc-role">Assistant</span>${text.replace(/\n/g, '<br>')}`;
+            wrap.appendChild(m); wrap.scrollTop = wrap.scrollHeight;
+            timers.push(setTimeout(show, role === 'user' ? 620 : 1050));
+          }
+          timers.push(setTimeout(show, 300));
+        },
+
+        globe(p, body, reg) {
+          const wrap = document.createElement('div'); wrap.className = 'demo-globe';
+          wrap.innerHTML = `<div class="dg-label">WorldWideView — live</div><canvas></canvas><div class="dg-feed">${p.demo.feed.map(f => f).join('<br>')}</div>`;
+          body.appendChild(wrap);
+          const cv = wrap.querySelector('canvas'), ctx = cv.getContext('2d');
+          let alive = true, raf, ang = 0;
+          reg(() => { alive = false; cancelAnimationFrame(raf); });
+          const N = 340, dots = [];
+          for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2; const rad = Math.sqrt(1 - y * y); const th = i * 2.399963; dots.push([Math.cos(th) * rad, y, Math.sin(th) * rad]); }
+          const markers = []; for (let i = 0; i < 12; i++) { const y = Math.random() * 2 - 1, rad = Math.sqrt(1 - y * y), th = Math.random() * 6.283; markers.push([Math.cos(th) * rad, y, Math.sin(th) * rad, Math.random() * 6.283]); }
+          function draw() {
+            if (!alive) return; const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+            if (cv.width !== r.width * dpr) { cv.width = r.width * dpr; cv.height = r.height * dpr; }
+            const w = cv.width, h = cv.height, cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.34;
+            ctx.clearRect(0, 0, w, h);
+            ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.2832); ctx.strokeStyle = hexToRgba('#00ffa3', 0.25); ctx.lineWidth = dpr; ctx.stroke();
+            const ca = Math.cos(ang), sa = Math.sin(ang);
+            dots.forEach(d => { const x = d[0] * ca - d[2] * sa, z = d[0] * sa + d[2] * ca; if (z < 0) return; const px = cx + x * R, py = cy + d[1] * R; const a = 0.25 + z * 0.55; ctx.fillStyle = hexToRgba('#00ffa3', a); ctx.fillRect(px, py, dpr * 1.6, dpr * 1.6); });
+            markers.forEach(m => { const x = m[0] * ca - m[2] * sa, z = m[0] * sa + m[2] * ca; if (z < 0) return; const px = cx + x * R, py = cy + m[1] * R; const pulse = (Math.sin(ang * 3 + m[3]) + 1) / 2; ctx.beginPath(); ctx.arc(px, py, dpr * (2 + pulse * 3), 0, 6.2832); ctx.fillStyle = hexToRgba('#ff6b00', 0.5 + pulse * 0.5); ctx.shadowColor = '#ff6b00'; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0; });
+            ang += 0.0045; raf = requestAnimationFrame(draw);
+          }
+          requestAnimationFrame(draw);
+        },
+
+        preview(p, body) {
+          const d = p.demo;
+          const wrap = document.createElement('div'); wrap.className = 'demo-preview';
+          wrap.innerHTML = `
+            <div class="dp-window">
+              <div class="dp-bar"><i></i><i></i><i></i><span>${d.stack || p.name}</span></div>
+              <div class="dp-screen"><div class="dp-logo">${d.logo || p.name}</div></div>
+            </div>
+            <div class="dp-points">${(d.points || []).map(pt => `<div>${pt}</div>`).join('')}</div>
+            <p class="dp-note">Runs as a full application — launch the code locally to explore it live.</p>`;
+          body.appendChild(wrap);
+        },
+      };
     })();
 
     // ── Contact form → email ─────────────────────────────────────────────────
