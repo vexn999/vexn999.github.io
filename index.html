@@ -1268,6 +1268,13 @@
     .demo-globe .dg-label { position: absolute; top: 14px; left: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--dc, var(--accent)); letter-spacing: 0.1em; }
     .demo-globe .dg-feed { position: absolute; bottom: 14px; left: 16px; right: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--muted2); line-height: 1.6; }
     .demo-frame { width: 100%; height: 74vh; border: none; display: block; background: #000; }
+    .demo-video { padding: 1rem 1.2rem 0.6rem; }
+    .dv-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.8rem; }
+    .dv-tab { cursor: pointer; font: inherit; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 10px; background: transparent; color: var(--muted2); border: 1px solid var(--border2); border-radius: 2px; }
+    .dv-tab.active, .dv-tab:hover { color: var(--dc, var(--accent)); border-color: var(--dc, var(--accent)); }
+    .dv-player { width: 100%; max-height: 62vh; display: block; background: #000; border: 1px solid var(--border); }
+    .dv-note { font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem; }
     .demo-preview { padding: 1.2rem; }
     .dp-window { border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; background: var(--bg3); }
     .dp-bar { display: flex; align-items: center; gap: 6px; padding: 0.6rem 0.9rem; background: var(--bg4); border-bottom: 1px solid var(--border); }
@@ -1787,26 +1794,20 @@
         { id:'cryptoterminal', name:'Crypto//Terminal', cat:'crypto', live:true, tags:['HTML5','JavaScript','CoinGecko API','Canvas'],
           blurb:'Retro hacker-style crypto dashboard with live prices, 7-day candlestick charts, a real-time news ticker and portfolio tracker. Three themes: Matrix, Neo, Synth.',
           demo:{type:'iframe', src:'crypto_terminal.html'} },
-        { id:'stormchaser', name:'StormChaser', cat:'crypto', tags:['Python','FastAPI','SQLite','DexScreener'],
+        { id:'stormchaser', name:'StormChaser', cat:'crypto', live:true, tags:['Python','FastAPI','SQLite','DexScreener'],
           blurb:'Solana memecoin dashboard, paper-trading only. GHOST mode auto-trades on simulated forecasts; COPILOT queues trades for approval. Real market data, zero live wallet risk.',
-          demo:{type:'dashboard', panelTitle:'GHOST — Equity Curve',
-            stats:[{label:'Paper Balance',val:12480,unit:'$',dir:'up',trend:'+24.8% all-time'},{label:'Open Positions',val:5,dir:'up',trend:'3 in profit'},{label:'Win Rate',val:61,unit:'%',dir:'up',trend:'+4% 7d'},{label:'Rug Score Avg',val:18,unit:'/100',dir:'down',trend:'low risk'}],
-            rows:[{sym:'$WIF',meta:'entry 1.82 → 2.41',pct:78},{sym:'$BONK',meta:'entry .000021',pct:54},{sym:'$POPCAT',meta:'radar — forecast +',pct:41},{sym:'$MEW',meta:'trailing stop armed',pct:33}] } },
+          demo:{type:'iframe', src:'live/stormchaser/'} },
         { id:'stormbreaker', name:'StormBreaker 2.0', cat:'crypto', tags:['Python 3.14','PySide6','Jupiter','0x API'],
           blurb:'Native desktop trading terminal with a STORMCHASER cyberpunk UI. Cross-chain swaps (Solana via Jupiter, EVM via 0x), portfolio P&L charts and an encrypted local keystore.',
           demo:{type:'dashboard', panelTitle:'Portfolio — P&L',
             stats:[{label:'Net Worth',val:8642,unit:'$',dir:'up',trend:'+12.1% 24h'},{label:'Realised P&L',val:1930,unit:'$',dir:'up',trend:'green week'},{label:'Chains',val:2,dir:'up',trend:'SOL + EVM'},{label:'Keystore',val:100,unit:'%',dir:'up',trend:'scrypt + Fernet'}],
             rows:[{sym:'SOL / USDC',meta:'Jupiter route — 0.3% slip',pct:70},{sym:'ETH / USDT',meta:'0x route v2',pct:52},{sym:'JUP',meta:'staked',pct:44},{sym:'ARB',meta:'limit set',pct:29}] } },
-        { id:'cryptodeck', name:'CryptoDeck', cat:'crypto', tags:['Python','FastAPI','SQLite','Electron'],
+        { id:'cryptodeck', name:'CryptoDeck', cat:'crypto', live:true, tags:['Python','FastAPI','SQLite','Electron'],
           blurb:'Paper-trading platform tuned for the Steam Deck. Eight bot strategies each run a $1,000 paper wallet with a circuit breaker — momentum, mean-reversion, RSI, DCA and more.',
-          demo:{type:'dashboard', panelTitle:'Bot Fleet — Aggregate',
-            stats:[{label:'Bots Live',val:8,dir:'up',trend:'all green'},{label:'Fleet Equity',val:9214,unit:'$',dir:'up',trend:'+15.2%'},{label:'Best Bot',val:38,unit:'%',dir:'up',trend:'momentum_majors'},{label:'Breakers',val:0,dir:'down',trend:'none tripped'}],
-            rows:[{sym:'momentum_majors',meta:'+38.0% — $1,380',pct:88},{sym:'rsi_oscillator',meta:'+12.4% — $1,124',pct:57},{sym:'mean_reversion',meta:'+6.1% — $1,061',pct:46},{sym:'dca_baseline',meta:'+2.0% — $1,020',pct:31}] } },
-        { id:'tradebot', name:'Tradebot', cat:'crypto', tags:['Python','FastAPI','SQLite','CoinGecko'],
+          demo:{type:'iframe', src:'live/cryptodeck/'} },
+        { id:'tradebot', name:'Tradebot', cat:'crypto', live:true, tags:['Python','FastAPI','SQLite','Binance'],
           blurb:'Simulation-only trading framework — simulated USD balances traded against real market data, with a FastAPI backend and SQLite state. A clean base for live adapters.',
-          demo:{type:'dashboard', panelTitle:'Simulation — Balance',
-            stats:[{label:'Sim Balance',val:10420,unit:'$',dir:'up',trend:'+4.2%'},{label:'Trades',val:146,dir:'up',trend:'sim only'},{label:'Data Source',val:1,dir:'up',trend:'CoinGecko live'},{label:'Mode',val:100,unit:'%',dir:'down',trend:'sim / safe'}],
-            rows:[{sym:'BTC',meta:'sim long',pct:62},{sym:'ETH',meta:'sim long',pct:48},{sym:'SOL',meta:'sim flat',pct:35},{sym:'USDC',meta:'reserve',pct:20}] } },
+          demo:{type:'iframe', src:'live/tradebot/'} },
         { id:'solanabot', name:'SolSniper / Solana Bot', cat:'crypto', tags:['Python','Solana','FastAPI','Jupiter API'],
           blurb:'Solana token sniper (devnet/paper mode). Detects new Pump.fun & DEXScreener launches, auto-buys on filters, and manages stop-loss / take-profit / trailing exits with live P&L.',
           demo:{type:'terminal', host:'solsniper@devnet', lines:[
@@ -1834,10 +1835,7 @@
         // ── AI ───────────────────────────────────────────────────────────────
         { id:'odysseus', name:'Odysseus', cat:'ai', tags:['Python','FastAPI','React','ChromaDB','MCP'],
           blurb:'A self-hosted, local-first AI workspace — chat with local or API models, run agents with MCP tools, deep research, persistent memory, notes, calendar and email, all on your own machine.',
-          demo:{type:'chat', model:'odysseus — local • llama.cpp + MCP tools', msgs:[
-            ['user','Summarise my unread emails and add any deadlines to my calendar.'],
-            ['bot','Scanning inbox via the IMAP tool… 3 unread. Two are newsletters (skipped). One from your accountant: VAT return due 7 Aug.'],
-            ['bot','Added “VAT return” to your CalDAV calendar for 7 Aug 09:00, with a 2-day reminder. Want me to draft a reply confirming receipt?'] ] } },
+          demo:{type:'video', base:'media/odysseus/', clips:[['Chat','chat'],['Deep research','research'],['Model compare','compare'],['Documents','document'],['Notes','notes'],['Gallery','gallery'],['Themes','theme']]} },
         { id:'worldwideview', name:'WorldWideView', cat:'ai', tags:['Next.js','CesiumJS','TypeScript','PostgreSQL'],
           blurb:'Open-source geospatial intelligence platform — live data fused onto a photorealistic 3D globe, plugin-driven, with horizon culling and an optional MCP server for LLM access.',
           demo:{type:'globe', feed:[
@@ -2141,6 +2139,19 @@
       const DEMOS = {
         iframe(p, body) {
           body.innerHTML = `<iframe class="demo-frame" src="${p.demo.src}" title="${p.name}" loading="lazy"></iframe>`;
+        },
+
+        video(p, body) {
+          const d = p.demo;
+          body.innerHTML = `<div class="demo-video">
+            <div class="dv-tabs">${d.clips.map(([label], i) => `<button class="dv-tab${i ? '' : ' active'}" data-i="${i}">${label}</button>`).join('')}</div>
+            <video class="dv-player" autoplay muted loop playsinline controls></video>
+            <p class="dv-note">Real screen recordings of the app running.</p></div>`;
+          const v = body.querySelector('video');
+          const play = i => { v.src = d.base + d.clips[i][1] + '.webm'; v.play().catch(() => {});
+            body.querySelectorAll('.dv-tab').forEach(t => t.classList.toggle('active', +t.dataset.i === i)); };
+          body.querySelector('.dv-tabs').addEventListener('click', e => { const t = e.target.closest('.dv-tab'); if (t) play(+t.dataset.i); });
+          play(0);
         },
 
         terminal(p, body, reg) {

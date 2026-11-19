@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STORMCHASER — Solana Memecoin Forecast Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="scan-overlay" class="scan-overlay"></div>
+<div id="paper-banner">📄 GHOST = PAPER TRADING, NOT REAL MONEY · COPILOT = SIMULATED APPROVALS, NO WALLET IS EVER CONNECTED · read /settings</div>
+
+<header id="hdr">
+  <div class="brand">
+    <div class="brand-name">STORM<span class="acc2">CHASER</span></div>
+    <div class="brand-jp">恐れず嵐に挑め · <span class="acc2">FEAR THE STORM, OR BECOME IT</span></div>
+  </div>
+  <div id="mode-chip" class="mode-chip"></div>
+  <div class="flex1"></div>
+  <div id="hdr-tickers" class="hdr-tickers"></div>
+</header>
+
+<div id="ticker-strip" class="ticker-strip"><div id="ticker-track" class="ticker-track"></div></div>
+
+<nav id="nav" class="nav"></nav>
+
+<div id="wallet-dock" class="wallet-dock"></div>
+
+<main id="view"></main>
+
+<script>window.PYAPP = {"id": "stormchaser", "name": "StormChaser", "bundle": "bundle.json", "scripts": ["app.js"], "packages": [], "boot": "from stormchaser.app import AppContext\nfrom stormchaser.api.server import create_app\nctx = AppContext()\napp = create_app(ctx)", "after": ""};</script>
+<script src="../_runtime/pyapp.js"></script>
+</body>
+</html>

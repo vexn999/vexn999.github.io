@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TRADEBOT // SIMULATION</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<script src="https://unpkg.com/lightweight-charts@5.2.0/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scanlines" id="scanlines"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="app">
+  <header class="titlebar">
+    <div class="brand">TRADE<span class="accent">BOT</span></div>
+    <div class="mode-badge">// SIMULATION MODE — NO LIVE ORDERS</div>
+    <div class="conn-status" id="connStatus"><span class="dot" id="connDot"></span><span id="connText">CONNECTING</span></div>
+  </header>
+
+  <div class="summary-strip">
+    <div class="summary-equity">
+      <span class="summary-label">TOTAL EQUITY</span>
+      <span class="summary-value" id="summaryEquity">$0.00</span>
+      <span class="summary-pnl" id="summaryPnl">+0.00%</span>
+    </div>
+    <div class="summary-bots" id="summaryBots"></div>
+  </div>
+
+  <nav class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="overview">// 01 OVERVIEW</button>
+    <button class="tab-btn" data-tab="signals">// 02 SIGNALS &amp; PRICE ACTION</button>
+    <button class="tab-btn" data-tab="performance">// 03 PERFORMANCE</button>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="section-label">// BOTS</div>
+      <div class="panel-hint">Three robo-traders, each with a different strategy, competing with pretend money. A glowing dot = awake &amp; trading. "Pause" tells one to stop.</div>
+      <div id="botList" class="bot-list"></div>
+
+      <div class="section-label">// QUOTES</div>
+      <div class="panel-hint">Just the current price of one coin — a price tag, not money the bots hold.</div>
+      <div id="quoteList" class="quote-list"></div>
+    </aside>
+
+    <main class="stage-wrap">
+      <div class="stage tab-panel active" data-tab="overview">
+        <section class="panel equity-panel">
+          <div class="section-label">EQUITY <span class="accent">CURVE</span></div>
+          <div class="panel-hint">Your pretend money over time. All bots started with $3,000 total — this line going up means they're winning, down means losing.</div>
+          <div class="equity-header">
+            <div class="equity-number" id="equityNumber">$0.00</div>
+            <div class="equity-pnl" id="equityPnl">+0.00%</div>
+          </div>
+          <svg id="equityChart" class="equity-chart" viewBox="0 0 800 260" preserveAspectRatio="none">
+            <path id="equityPath" class="equity-path" />
+            <path id="equityFill" class="equity-fill" />
+          </svg>
+        </section>
+
+        <section class="panel gauge-panel">
+          <div class="section-label">ML <span class="accent">INDICATOR</span></div>
+          <div class="panel-hint">The AI's current gut-call for each coin. Needle to the right (blue) = it expects the price to go up; left (red) = down; straight up = unsure.</div>
+          <div id="gaugeGrid" class="gauge-grid"></div>
+        </section>
+
+        <section class="panel model-panel">
+          <div class="section-label">MODEL <span class="accent">READOUT</span></div>
+          <div class="panel-hint">A peek inside the AI's head. The bar shows how likely it thinks each coin will go <b class="up-txt">up</b>, stay <b>flat</b>, or go <b class="down-txt">down</b>. "Top signals" = the data it's leaning on most to decide.</div>
+          <div id="modelGrid" class="model-grid"></div>
+        </section>
+
+        <section class="panel positions-panel">
+          <div class="section-label">OPEN <span class="accent">POSITIONS</span></div>
+          <div class="panel-hint">Coins a bot is holding right now, and whether that bet is currently up or down. Empty = everyone's sitting on cash, waiting.</div>
+          <table class="data-table">
+            <thead><tr><th>SYMBOL</th><th>QTY</th><th>ENTRY</th><th>CURRENT</th><th>PNL</th></tr></thead>
+            <tbody id="positionsBody"><tr class="empty-row"><td colspan="5">NO OPEN POSITIONS</td></tr></tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="stage tab-panel" data-tab="signals">
+        <section class="panel signals-panel">
+          <div class="section-label">SIGNAL <span class="accent">FEED</span></div>
+          <div class="panel-hint">A live diary of every prediction the bots make. Each line is one hunch: <b class="up-txt">blue = expects price to rise</b>, <b class="down-txt">red = expects it to fall</b>, and the % is how confident it is. These are just guesses, not guarantees.</div>
+          <div id="signalFeed" class="signal-feed"></div>
+        </section>
+
+        <section class="panel candles-panel">
+          <div class="candles-header">
+            <div class="section-label">PRICE <span class="accent">ACTION</span></div>
+            <select id="candleSymbolSelect" class="symbol-select">
+              <option value="BTCUSDT">BTCUSDT</option>
+              <option value="ETHUSDT">ETHUSDT</option>
+              <option value="SOLUSDT">SOLUSDT</option>
+            </select>
+          </div>
+          <div class="panel-hint">The real market price. Each candle = one hour: <b class="up-txt">blue = price rose that hour</b>, <b class="down-txt">red = it fell</b>. The thin lines poking out are the highest and lowest it touched. Use the dropdown to switch coins.</div>
+          <div id="candleChart" class="candle-chart"></div>
+        </section>
+      </div>
+
+      <div class="stage tab-panel" data-tab="performance">
+        <section class="panel trades-panel">
+          <div class="section-label">TRADE <span class="accent">HISTORY</span></div>
+          <div class="panel-hint">Every buy and sell a bot has actually made, and how much pretend money it won or lost on each. "Reason" says why it closed the trade (hit its profit target, stop-loss, etc.).</div>
+          <table class="data-table">
+            <thead><tr><th>BOT</th><th>SYMBOL</th><th>SIDE</th><th>QTY</th><th>PRICE</th><th>PNL</th><th>REASON</th><th>TIME</th></tr></thead>
+            <tbody id="tradesBody"><tr class="empty-row"><td colspan="8">NO TRADES YET</td></tr></tbody>
+          </table>
+        </section>
+
+        <section class="panel leaderboard-panel">
+          <div class="leaderboard-header">
+            <div class="section-label">BACKTEST <span class="accent">LEADERBOARD</span></div>
+            <button id="leaderboardRefresh" class="btn-run">RUN NOW</button>
+          </div>
+          <div class="panel-hint">A report card: how each strategy <i>would have</i> done if it traded the last 90 days of real prices. Green = it made money, red = lost. (Heads up: they're mostly negative — none has proven a real edge yet.)</div>
+          <div id="leaderboardGrid" class="leaderboard-grid"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>window.PYAPP = {"id": "tradebot", "name": "Tradebot", "bundle": "bundle.json", "scripts": ["app.js"], "packages": ["pandas"], "boot": "from tradebot.app import AppContext\nfrom tradebot.api.server import create_app\nctx = AppContext()\napp = create_app(ctx)\nfor _s in ctx.cfg.symbols:\n    ctx.db.add_ohlcv_bars(_s, await ctx.binance.get_klines(_s, '1h', limit=1000), 3600, 'binance')", "after": "import asyncio\nasyncio.ensure_future(ctx.signals.scan())"};</script>
+<script src="../_runtime/pyapp.js"></script>
+</body>
+</html>
