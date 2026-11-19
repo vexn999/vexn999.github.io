@@ -1143,6 +1143,19 @@
       background-size: 26px 26px; opacity: 0.5;
       mask-image: radial-gradient(circle at 30% 30%, #000 0%, transparent 75%);
     }
+    .pcard-thumb.has-shot { height: 180px; background: #05060a; }
+    .pcard-thumb.has-shot::before { display: none; }
+    .pcard-shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top;
+      transition: transform 0.5s ease; }
+    .pcard-thumb.has-shot::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(5,6,10,0.15) 0%, transparent 35%, rgba(5,6,10,0.55) 100%);
+      box-shadow: inset 0 -1px 0 var(--pc); }
+    .pcard:hover .pcard-shot { transform: scale(1.05); }
+    .pcard-thumb.has-shot .pcard-cat { background: rgba(5,6,10,0.88); }
+    .pcard-thumb .pcard-live, .pcard-thumb .pcard-cat, .pcard-new { z-index: 1; }
+    .pcard-new { position: absolute; bottom: 10px; left: 12px; font-size: 0.52rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #05070c; background: var(--pc); padding: 3px 6px; border-radius: 2px; font-weight: 800; }
+    .pcard-date { float: right; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
     .pcard-glyph { position: relative; font-size: 2.6rem; color: var(--pc); line-height: 1;
       text-shadow: 0 0 26px var(--pc); }
     .pcard-cat {
@@ -1967,6 +1980,39 @@
       }
       function frag(html) { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content; }
 
+      // Last-worked-on dates (newest first within each category) + card screenshots
+      const DATES = {
+        birchcare:'2026-11-15', northstar:'2026-10-09', imenergy:'2026-07-11', simplymary:'2026-07-08', highersociety:'2026-07-04',
+        dusk:'2026-06-27', omen:'2026-06-27', supreme:'2026-06-02', vivana:'2026-06-01',
+        stormbreaker:'2026-08-21', tradebot:'2026-08-19', stormchaser:'2026-07-24', cryptodeck:'2026-07-10', solanabot:'2026-07-03',
+        cryptoterminal:'2026-06-02', cryptowidget:'2026-04-30',
+        odysseus:'2026-11-11', worldwideview:'2026-08-28', moneyprinter:'2026-07-23',
+        architect:'2026-07-30', secos:'2026-07-17', hacklab:'2026-07-17', netmap:'2026-07-02', bandwidth:'2026-07-02',
+        deckgateway:'2026-07-02', routerqos:'2026-07-02',
+        ditto:'2026-11-10', comicui:'2026-07-08', omencontrol:'2026-07-08', comicscraper:'2026-07-05',
+        raiden:'2026-06-03', gridwars:'2026-06-02', snake:'2026-06-02', snakenative:'2026-06-01',
+      };
+      const THUMBS = {
+        birchcare:'shots/birchcare.jpg', northstar:'shots/northstar.jpg', imenergy:'shots/imenergy.jpg',
+        simplymary:'shots/simplymary.jpg', highersociety:'shots/highersociety.jpg', supreme:'shots/supreme.jpg', vivana:'shots/vivana.jpg',
+        cryptoterminal:'games/crypto_terminal_preview.png', solanabot:'games/solsniper_preview.png',
+        raiden:'games/raiden_preview.png', gridwars:'games/gridwars_preview.png', snake:'games/snake_preview.png',
+        snakenative:'games/snake_preview.png',
+        dusk:'shots/dusk.jpg', omen:'shots/omen.jpg',
+        odysseus:'shots/odysseus.jpg', worldwideview:'shots/worldwideview.jpg', moneyprinter:'shots/moneyprinter.jpg',
+        stormbreaker:'shots/stormbreaker.jpg', tradebot:'shots/tradebot.jpg', stormchaser:'shots/stormchaser.jpg',
+        cryptodeck:'shots/cryptodeck.jpg', cryptowidget:'shots/cryptowidget.jpg',
+        architect:'shots/architect.jpg', secos:'shots/secos.jpg', hacklab:'shots/hacklab.jpg', netmap:'shots/netmap.jpg',
+        bandwidth:'shots/bandwidth.jpg', deckgateway:'shots/deckgateway.jpg', routerqos:'shots/routerqos.jpg',
+        ditto:'shots/ditto.jpg', comicui:'shots/comicui.jpg', comicscraper:'shots/comicscraper.jpg', omencontrol:'shots/omencontrol.jpg',
+      };
+      PROJECTS.forEach(p => { p.date = DATES[p.id] || '2026-01-01'; if (THUMBS[p.id]) p.thumb = THUMBS[p.id]; });
+      PROJECTS.sort((a, b) => b.date.localeCompare(a.date));
+      const newest = cat => PROJECTS.find(p => p.cat === cat)?.date || '';
+      ORDER.sort((a, b) => newest(b).localeCompare(newest(a)));
+      const NEW_CUTOFF = new Date(Date.now() - 45 * 864e5).toISOString().slice(0, 10);
+      const fmtDate = d => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+
       const grid = document.getElementById('projGrid');
 
       // ── build category bands + cards ─────────────────────────────────────
@@ -1993,8 +2039,10 @@
         const action = p.demo.type === 'iframe' ? 'Play &#9654;' : 'Launch Demo &#8594;';
         const tagsHtml = p.tags.slice(0, 4).map(t => `<span>${t}</span>`).join('');
         card.innerHTML = `
-          <div class="pcard-thumb">${liveBadge}<span class="pcard-glyph">${meta.glyph}</span><span class="pcard-cat">${meta.label}</span></div>
-          <div class="pcard-body"><h3>${p.name}</h3><p>${p.blurb}</p><div class="pcard-tags">${tagsHtml}</div></div>
+          <div class="pcard-thumb${p.thumb ? ' has-shot' : ''}">${p.thumb
+            ? `<img class="pcard-shot" src="${p.thumb}" alt="${p.name} screenshot" loading="lazy">`
+            : `<span class="pcard-glyph">${meta.glyph}</span>`}${liveBadge}<span class="pcard-cat">${meta.label}</span>${p.date >= NEW_CUTOFF ? '<span class="pcard-new">New</span>' : ''}</div>
+          <div class="pcard-body"><span class="pcard-date">${fmtDate(p.date)}</span><h3>${p.name}</h3><p>${p.blurb}</p><div class="pcard-tags">${tagsHtml}</div></div>
           <div class="pcard-foot"><button class="pcard-launch">${action}</button></div>`;
         const open = () => openDemo(p, meta);
         card.querySelector('.pcard-launch').addEventListener('click', e => { e.stopPropagation(); open(); });
