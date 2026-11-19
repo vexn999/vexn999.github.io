@@ -5,7 +5,7 @@
 
 For each app: copies the frontend into live/<app>/, bundles the Python
 package into live/<app>/bundle.json, and injects the Pyodide runtime
-(live/_runtime/pyapp.js) into index.html in place of the original scripts.
+(live/runtime/pyapp.js) into index.html in place of the original scripts.
 """
 from __future__ import annotations
 
@@ -105,7 +105,7 @@ def build(key: str, cfg: dict) -> None:
     html = re.sub(r'(href|src)="/(?:static/)?([^"/][^"]*)"', r'\1="\2"', html)
     conf = {"id": key, "name": cfg["name"], "bundle": "bundle.json", "scripts": [s.lstrip("/").replace("static/", "", 1) for s in local],
             "packages": cfg.get("pyodide_packages", []), "boot": cfg["boot"], "after": cfg.get("after", "")}
-    inject = ('\n<script>window.PYAPP = %s;</script>\n<script src="../_runtime/pyapp.js"></script>\n'
+    inject = ('\n<script>window.PYAPP = %s;</script>\n<script src="../runtime/pyapp.js"></script>\n'
               % json.dumps(conf))
     html = html.replace("</body>", inject + "</body>")
     index.write_text(html)

@@ -129,6 +129,6 @@
 </div>
 
 <script>window.PYAPP = {"id": "tradebot", "name": "Tradebot", "bundle": "bundle.json", "scripts": ["app.js"], "packages": ["pandas"], "boot": "from tradebot.app import AppContext\nfrom tradebot.api.server import create_app\nctx = AppContext()\napp = create_app(ctx)\nfor _s in ctx.cfg.symbols:\n    ctx.db.add_ohlcv_bars(_s, await ctx.binance.get_klines(_s, '1h', limit=1000), 3600, 'binance')", "after": "import asyncio\nasyncio.ensure_future(ctx.signals.scan())"};</script>
-<script src="../_runtime/pyapp.js"></script>
+<script src="../runtime/pyapp.js"></script>
 </body>
 </html>

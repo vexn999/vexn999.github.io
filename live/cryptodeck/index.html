@@ -29,6 +29,6 @@
 <footer>CryptoDeck · paper trading platform · data: CoinGecko &amp; DEXScreener</footer>
 
 <script>window.PYAPP = {"id": "cryptodeck", "name": "CryptoDeck", "bundle": "bundle.json", "scripts": ["app.js"], "packages": [], "boot": "from cryptodeck.app import AppContext\nfrom cryptodeck.api.server import create_app\nctx = AppContext()\napp = create_app(ctx)", "after": "import asyncio\nfrom cryptodeck.models import Quote\nasync def _seed():\n    for gid, coin in list(ctx.hub._majors.items())[:3]:\n        if len(ctx.db.snapshot_history(coin.id, 24)) > 50: continue\n        for ts, p in (await ctx.hub.coingecko.market_chart(gid, days=1))[:-1]:\n            ctx.db.add_snapshot(coin.id, Quote(price_usd=p, ts=ts))\nasyncio.ensure_future(_seed())"};</script>
-<script src="../_runtime/pyapp.js"></script>
+<script src="../runtime/pyapp.js"></script>
 </body>
 </html>
