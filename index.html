@@ -1274,6 +1274,7 @@
       padding: 5px 10px; background: transparent; color: var(--muted2); border: 1px solid var(--border2); border-radius: 2px; }
     .dv-tab.active, .dv-tab:hover { color: var(--dc, var(--accent)); border-color: var(--dc, var(--accent)); }
     .dv-player { width: 100%; max-height: 62vh; display: block; background: #000; border: 1px solid var(--border); }
+    .dv-cast { border: 1px solid var(--border); max-height: 64vh; overflow: auto; }
     .dv-note { font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem; }
     .demo-preview { padding: 1.2rem; }
     .dp-window { border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; background: var(--bg3); }
@@ -1883,14 +1884,7 @@
             ['prompt','$ '] ] } },
         { id:'architect', name:'Architect', cat:'security', tags:['Python','distrobox','Kali','podman'],
           blurb:'A modular authorized-testing CLI — routes tools to Kali distrobox, host or repos, guards against public IPs, and writes a markdown report for every workflow. Plugins: scan, recon, web, osint, crack, pcap and more.',
-          demo:{type:'terminal', host:'architect@host', lines:[
-            ['prompt','architect › '],['cmd','recon --target 192.168.1.88 --report'],
-            ['ok','[ guard ] target is RFC1918 — authorized ✓'],
-            ['dim','[ route ] osint→host  scan→kali(distrobox)  web→kali'],
-            ['out','[ scan ] 22/ssh 445/smb 3000/http'],
-            ['out','[ web ] http :3000 → nodejs express — header leak'],
-            ['ok','[ report ] reports/2026-08-16_192.168.1.88.md written'],
-            ['prompt','architect › '] ] } },
+          demo:{type:'cast', src:'media/casts/architect.cast', note:'Real recording: architect\'s web chain (whatweb → ffuf → nikto) against a local OWASP Juice Shop container on 127.0.0.1 — an intentionally vulnerable lab target.'} },
         { id:'bandwidth', name:'Bandwidth Manager', cat:'security', tags:['Node.js','Express','tc','ARP'],
           blurb:'Home-network bandwidth monitor and manager with a web UI — per-device speed limits, live traffic shaping via tc, and ARP-based control.',
           demo:{type:'dashboard', panelTitle:'Live Throughput',
@@ -2139,6 +2133,20 @@
       const DEMOS = {
         iframe(p, body) {
           body.innerHTML = `<iframe class="demo-frame" src="${p.demo.src}" title="${p.name}" loading="lazy"></iframe>`;
+        },
+
+        cast(p, body, reg) {
+          const AP = 'https://cdn.jsdelivr.net/npm/asciinema-player@3.18.1/dist/bundle/asciinema-player';
+          body.innerHTML = `<div class="demo-video"><div class="dv-cast"></div><p class="dv-note">${p.demo.note || 'Real terminal recording.'}</p></div>`;
+          const load = () => window.AsciinemaPlayer ? Promise.resolve() : new Promise((res, rej) => {
+            const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = AP + '.css'; document.head.appendChild(l);
+            const sc = document.createElement('script'); sc.src = AP + '.min.js'; sc.onload = res; sc.onerror = rej; document.head.appendChild(sc);
+          });
+          load().then(() => {
+            const pl = AsciinemaPlayer.create(p.demo.src, body.querySelector('.dv-cast'),
+              { autoPlay: true, loop: false, fit: 'width', idleTimeLimit: 1.5, theme: 'monokai', terminalFontSize: '13px' });
+            reg(() => pl.dispose());
+          });
         },
 
         video(p, body) {
