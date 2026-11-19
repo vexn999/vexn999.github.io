@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Birch Care Group</title>
+<meta name="description" content="Get in touch with Birch Care Group for placement enquiries, referrals or general questions about our residential children's homes.">
+<link rel="icon" href="assets/birch-care-group-logo.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo-link" href="index.html">
+      <img src="assets/birch-care-group-logo.png" alt="Birch Care Group — Residential Children's Care Homes">
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about-us.html">About Us</a></li>
+        <li><a href="our-homes.html">Our Homes</a></li>
+        <li><a href="our-services.html">Our Services</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="contact-us.html">Contact Us</a></li>
+      </ul>
+    </nav>
+    <div class="header-cta">
+      <a class="phone-link" href="tel:+441911234567">0191 123 4567</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">
+        <span class="sr-only">Toggle menu</span>Menu
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumb"><a href="index.html">Home</a> / Contact Us</p>
+      <h1>Contact Us</h1>
+      <p class="prose" style="margin:0 auto;">Whether you're a local authority, a family, or
+      someone interested in working with us, we're here to help.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); margin-bottom:48px;">
+        <div class="card accent-top">
+          <h3>General Enquiries</h3>
+          <p>For questions about our homes, services or careers.</p>
+          <p><a href="tel:+441911234567">0191 123 4567</a><br>
+          <a href="mailto:info@birchcaregroup.co.uk">info@birchcaregroup.co.uk</a></p>
+        </div>
+        <div class="card accent-top">
+          <h3>Placements &amp; Referrals</h3>
+          <p>For local authorities and social workers making a placement enquiry.</p>
+          <p><a href="tel:+441911234568">0191 123 4568</a><br>
+          <a href="mailto:referrals@birchcaregroup.co.uk">referrals@birchcaregroup.co.uk</a></p>
+        </div>
+        <div class="card accent-top">
+          <h3>Safeguarding Concerns</h3>
+          <p>To raise a safeguarding concern about a child in our care, contact our
+          designated safeguarding lead directly.</p>
+          <p><a href="tel:+441911234569">0191 123 4569</a><br>
+          <a href="mailto:safeguarding@birchcaregroup.co.uk">safeguarding@birchcaregroup.co.uk</a></p>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>Placeholder:</strong> all phone numbers, email addresses and the postal
+        address below are placeholders and must be replaced with real, monitored contact
+        details before this site goes live. A separate, clearly sign-posted safeguarding
+        contact route (as above) should be kept even once real details are added.
+      </div>
+
+      <div class="hero" style="padding:48px 0 0;">
+        <div class="hero-copy">
+          <h2>Send Us a Message</h2>
+          <p class="notice" style="margin-top:0;">
+            This form is a front-end prototype only &mdash; it is not yet wired up to send
+            email or save submissions. It needs a backend (e.g. a form service, server
+            endpoint, or Netlify Forms-style integration) connected before launch.
+          </p>
+          <form aria-describedby="form-note">
+            <div class="form-field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" autocomplete="name" required>
+            </div>
+            <div class="form-field">
+              <label for="email">Email address</label>
+              <input type="email" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="form-field">
+              <label for="reason">Reason for contact</label>
+              <select id="reason" name="reason">
+                <option>General enquiry</option>
+                <option>Placement / referral</option>
+                <option>Careers</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+              <p class="hint" id="form-note">Please do not share sensitive details about a
+              child via this form &mdash; for safeguarding concerns, call us directly.</p>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+        <div class="hero-media">
+          <h2 style="margin-top:0;">Our Address</h2>
+          <p>Birch Care Group<br>
+          Head Office Address Line 1 (placeholder)<br>
+          Newcastle upon Tyne<br>
+          North East England<br>
+          Postcode TBC</p>
+          <p class="hint">Exact head office address to be confirmed and added here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <img class="footer-logo" src="assets/birch-care-group-logo.png" alt="">
+      <p>Birch Care Group provides nurturing, Ofsted-registered residential care homes
+      for children and young people across North East England.</p>
+    </div>
+    <div>
+      <h3>Quick Links</h3>
+      <ul class="footer-links">
+        <li><a href="about-us.html">About Us</a></li>
+        <li><a href="our-homes.html">Our Homes</a></li>
+        <li><a href="our-services.html">Our Services</a></li>
+        <li><a href="careers.html">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Our Homes</h3>
+      <ul class="footer-links">
+        <li><a href="our-homes.html#birchwood-house">Birchwood House</a></li>
+        <li><a href="our-homes.html#hazelbrook-house">Hazelbrook House</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><a href="tel:+441911234567">0191 123 4567</a></li>
+        <li><a href="mailto:info@birchcaregroup.co.uk">info@birchcaregroup.co.uk</a></li>
+        <li>North East England</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>&copy; <span data-year>2026</span> Birch Care Group. All rights reserved.</p>
+    <p><a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="accessibility.html">Accessibility Statement</a></p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
